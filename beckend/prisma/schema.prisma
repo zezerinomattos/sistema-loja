@@ -70,10 +70,10 @@ model Colaborador {
   salario_base Float
   salario_liquido Float
   complemento_salario Int
-  adiantamento_salario Float
+  adiantamento_salario Int
   saldo_salario Float?
   limite_credito Float
-  data_admissao DateTime
+  data_admissao DateTime? @default(now())
   data_demisao DateTime?
   senha String
   obs String

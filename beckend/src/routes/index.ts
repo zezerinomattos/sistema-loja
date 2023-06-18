@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+
+import { CreateColaboradorController } from '../controllers/Colaborador/CreateColaboradorController';
 
 const router = Router();
 
-router.get('/teste', (req: Request, res: Response) => {
-    //return res.json({ok: true});
-    throw new Error('Erro ao fazer essa requisição!');
-});
+// -- ROTAS COLABORADOR --
+router.post('/colaborador', new CreateColaboradorController().handle);
 
 export { router };
