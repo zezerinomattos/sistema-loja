@@ -9,3 +9,125 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// TABELA DE ENDEREÇOS
+model Endereco {
+  id String @id @default(uuid())
+  cep String?
+  logradouro String
+  numero String
+  complemento String?
+  bairro String
+  cidade String
+  uf String
+  pais String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("enderecos")
+
+  usuarios Usuario[]
+}
+
+// TABELA DE USUÁRIOS
+model Usuario {
+  id String @id @default(uuid())
+  cpf String
+  nome String
+  nascimento String
+  sexo String
+  email String
+  foto String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  endereco Endereco @relation(fields: [endereco_id], references: [id])
+
+  @@map("usuarios")
+
+  endereco_id String
+
+  colaborador Colaborador[]
+  cliente Cliente[]
+  representante Representante[]
+}
+
+// TABELA DE COLABORADORES
+model Colaborador {
+  id String @id @default(uuid())
+  situacao Boolean
+  cargo String
+  celular String
+  telefone String
+  rg String
+  orgao_emissor String
+  carteira_trabalho String
+  serie String
+  pis String
+  titulo_eleitor String
+  zona_eleitoral String
+  secao_eleitoral String
+  salario_base Float
+  salario_liquido Float
+  complemento_salario Int
+  adiantamento_salario Float
+  saldo_salario Float?
+  limite_credito Float
+  data_admissao DateTime
+  data_demisao DateTime?
+  senha String
+  obs String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
+
+  @@map("colaboradores")
+
+  usuario_id String
+}
+
+// TABELA DE CLIENTES
+model Cliente {
+  id String @id @default(uuid())
+  rg String?
+  orgao_emissor String?
+  celular String
+  telefone String?
+  telefone_referencia1 String
+  nome_referencia1 String
+  telefone_referencia2 String
+  nome_referencia2 String
+  telefone_referencia3 String
+  nome_referencia3 String
+  score String
+  limite_credito Float @default(0.0)
+  situacao Boolean?
+  ultima_compra DateTime?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
+
+  @@map("clientes")
+
+  usuario_id String
+}
+
+// TABELA DE REPRESENTANTES
+model Representante {
+  id String @id @default(uuid())
+  empresa String
+  cnpj String
+  razaosocial String
+  celular String
+  telefone String
+  telefone_fabrica String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
+
+  @@map("representantes")
+  usuario_id String
+}
