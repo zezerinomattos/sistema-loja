@@ -1,4 +1,5 @@
 import prismaClient from "../../prisma";
+import { hash } from 'bcryptjs';
 
 interface ColaboradorRequest {
     cpf: string;
@@ -57,6 +58,9 @@ class CreateColaboradorService {
             throw new Error('Esse CPF já existe em nosso Banco de dados!');
         }
 
+        // Criptografando a senha
+        const passwordHash = await hash(senha, 8);
+
         // Salvando o endereço
         const endereco = await prismaClient.endereco.create({
             data:{
@@ -107,13 +111,13 @@ class CreateColaboradorService {
                 limite_credito: limite_credito,
                 data_admissao: data_admissao,
                 data_demisao: data_demisao,
-                senha: senha,
+                senha: passwordHash,
                 obs: obs,
                 usuario_id: usuario.id,
             },
         });
         
-        return { ok: true };
+        return [colaborador, usuario, endereco];
     }
 }
 
