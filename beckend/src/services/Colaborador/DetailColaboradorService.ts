@@ -1,0 +1,43 @@
+import prismaClient from "../../prisma"
+
+class DetailColaboradorService{
+    async execute(user_id: string){
+        
+        const colaborador = await prismaClient.usuario.findFirst({
+            where: {
+                id: user_id
+            },
+            include: {
+                colaborador: {
+                    select:{
+                        situacao: true,
+                        cargo: true,
+                        celular: true,
+                        telefone: true,
+                        rg: true,
+                        orgao_emissor: true,
+                        carteira_trabalho: true,
+                        serie: true,
+                        pis: true,
+                        titulo_eleitor: true,
+                        zona_eleitoral: true,
+                        secao_eleitoral: true,
+                        salario_base: true,
+                        salario_liquido: true,
+                        complemento_salario: true,
+                        adiantamento_salario: true,
+                        saldo_salario: true,
+                        limite_credito: true,
+                        data_admissao: true,
+                        data_demisao: true,
+                        obs: true
+                    }
+                },
+                endereco: true
+            }
+        });
+        return colaborador;
+    }
+}
+
+export { DetailColaboradorService }
