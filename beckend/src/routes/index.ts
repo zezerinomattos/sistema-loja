@@ -5,6 +5,7 @@ import { CreateColaboradorController } from '../controllers/Colaborador/CreateCo
 import { AuthColaboradorController } from '../controllers/Colaborador/AuthColaboradorController';
 import { DetailColaboradorController } from '../controllers/Colaborador/DetailColaboradorController';
 import { ListColaboradorController } from '../controllers/Colaborador/ListColaboradorController';
+import { CreateClienteController } from '../controllers/Cliente/CreateClienteController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -22,6 +23,6 @@ router.post('/login', new AuthColaboradorController().handle);
 router.get('/me', isAuthenticated, new DetailColaboradorController().handle);
 
 // -- ROTAS CLIENTE --
-
+router.post('/cliente', isAuthenticated, upload.single('file'), new CreateClienteController().handle);
 
 export { router };

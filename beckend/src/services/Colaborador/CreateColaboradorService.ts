@@ -1,5 +1,6 @@
 import prismaClient from "../../prisma";
 import { hash } from 'bcryptjs';
+import {  parseISO } from 'date-fns';
 
 interface ColaboradorRequest {
     cpf: string;
@@ -75,12 +76,15 @@ class CreateColaboradorService {
             },
         });
 
+        // Convertendo a string da nascimento em um objeto Date
+        const dataNascimento = parseISO(nascimento);
+
         // Salvando o usuário
         const usuario = await prismaClient.usuario.create({
             data:{
                 cpf: cpf,
                 nome: nome,
-                nascimento: nascimento,
+                nascimento: dataNascimento,
                 sexo: sexo,
                 email: email,
                 foto: foto,

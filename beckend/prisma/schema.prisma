@@ -34,7 +34,7 @@ model Usuario {
   id String @id @default(uuid())
   cpf String
   nome String
-  nascimento String
+  nascimento DateTime
   sexo String
   email String
   foto String
