@@ -21,4 +21,7 @@ router.get('/colaborador', isAuthenticated, new ListColaboradorController().hand
 router.post('/login', new AuthColaboradorController().handle);
 router.get('/me', isAuthenticated, new DetailColaboradorController().handle);
 
+// -- ROTAS CLIENTE --
+
+
 export { router };
