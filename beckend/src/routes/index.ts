@@ -4,6 +4,7 @@ import multer from 'multer';
 import { CreateColaboradorController } from '../controllers/Colaborador/CreateColaboradorController';
 import { AuthColaboradorController } from '../controllers/Colaborador/AuthColaboradorController';
 import { DetailUserController } from '../controllers/Colaborador/DetailUserController';
+import { DetailColaboradorController } from '../controllers/Colaborador/DetailColaboradorController';
 import { ListColaboradorController } from '../controllers/Colaborador/ListColaboradorController';
 import { CreateClienteController } from '../controllers/Cliente/CreateClienteController';
 
@@ -17,6 +18,7 @@ const upload = multer(uploadConfig.upload("./tmp"));
 // -- ROTAS COLABORADOR --
 router.post('/colaborador', upload.single('file'), new CreateColaboradorController().handle);
 router.get('/colaborador', isAuthenticated, new ListColaboradorController().handle);
+router.get('/colaborador/detail', isAuthenticated, new DetailColaboradorController().handle);
 
 // -- ROTAS LOGIN --
 router.post('/login', new AuthColaboradorController().handle);
