@@ -1,9 +1,9 @@
 import prismaClient from "../../prisma"
 
-class DetailColaboradorService{
+class DetailUserService{
     async execute(user_id: string){
         
-        const colaborador = await prismaClient.usuario.findFirst({
+        const user = await prismaClient.usuario.findFirst({
             where: {
                 id: user_id
             },
@@ -36,8 +36,8 @@ class DetailColaboradorService{
                 endereco: true
             }
         });
-        return colaborador;
+        return user;
     }
 }
 
-export { DetailColaboradorService }
+export { DetailUserService }

@@ -3,7 +3,7 @@ import multer from 'multer';
 
 import { CreateColaboradorController } from '../controllers/Colaborador/CreateColaboradorController';
 import { AuthColaboradorController } from '../controllers/Colaborador/AuthColaboradorController';
-import { DetailColaboradorController } from '../controllers/Colaborador/DetailColaboradorController';
+import { DetailUserController } from '../controllers/Colaborador/DetailUserController';
 import { ListColaboradorController } from '../controllers/Colaborador/ListColaboradorController';
 import { CreateClienteController } from '../controllers/Cliente/CreateClienteController';
 
@@ -20,7 +20,7 @@ router.get('/colaborador', isAuthenticated, new ListColaboradorController().hand
 
 // -- ROTAS LOGIN --
 router.post('/login', new AuthColaboradorController().handle);
-router.get('/me', isAuthenticated, new DetailColaboradorController().handle);
+router.get('/me', isAuthenticated, new DetailUserController().handle);
 
 // -- ROTAS CLIENTE --
 router.post('/cliente', isAuthenticated, upload.single('file'), new CreateClienteController().handle);
