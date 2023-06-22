@@ -15,6 +15,7 @@ import { ListClienteController } from '../controllers/Cliente/ListClienteControl
 
 import { CreateRepresentanteController } from '../controllers/Representante/CreateRepresentanteController';
 import { ListRepresentanteController } from '../controllers/Representante/ListRepresentanteController';
+import { EditRepresentanteController } from '../controllers/Representante/EditRepresentanteController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -42,5 +43,6 @@ router.put('/cliente/edit', isAuthenticated, upload.single('file'), new EditClie
 // -- ROTAS REPRESENTANTE --
 router.post('/representante', isAuthenticated, upload.single('file'), new CreateRepresentanteController().handle);
 router.get('/representante', isAuthenticated, new ListRepresentanteController().handle);
+router.put('/representante/edit', isAuthenticated, upload.single('file'), new EditRepresentanteController().handle);
 
 export { router };

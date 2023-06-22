@@ -1,0 +1,43 @@
+import { Request, Response } from 'express';
+
+import { EditRepresentanteService } from '../../services/Representante/EditRepresentanteService';
+
+class EditRepresentanteController{
+    async handle(req: Request, res: Response){
+        const { representante_id, nome, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, cnpj, razaosocial, celular, telefone, telefone_fabrica } = req.body;
+
+        const editRepresentanteService = new EditRepresentanteService;
+
+        if(!req.file){
+            throw new Error('Error upload file');
+        }else{
+            const { originalname, filename: foto } = req.file;
+
+            const representante = await editRepresentanteService.execute({
+                representante_id, 
+                nome, 
+                sexo, 
+                foto,
+                email, 
+                cep, 
+                logradouro, 
+                numero, 
+                complemento, 
+                bairro, 
+                cidade, 
+                uf, 
+                pais, 
+                empresa, 
+                cnpj, 
+                razaosocial, 
+                celular, 
+                telefone, 
+                telefone_fabrica,
+            });
+    
+            return res.json(representante);
+        }
+    }
+}
+
+export { EditRepresentanteController }
