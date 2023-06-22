@@ -16,8 +16,8 @@ class CreateClienteController{
             //--------------------------------------------------------
             // apenas para pode cadastrar um colaborador com Insominia
 
-            const situacao = JSON.parse(req.body.situacao);
-            const limite_credito = parseFloat(req.body.limite_credito);
+            // const situacao = JSON.parse(req.body.situacao);
+            // const limite_credito = parseFloat(req.body.limite_credito);
 
             //--------------------------------------------------------
 
