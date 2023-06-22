@@ -22,6 +22,7 @@ import { CreateFabricaController } from '../controllers/Fabrica/CreateFabricaCon
 import { EditFabricaController } from '../controllers/Fabrica/EditFabricaController';
 import { DetailFabricaController } from '../controllers/Fabrica/DetailFabricaController';
 import { ListFabricaController } from '../controllers/Fabrica/ListFabricaController';
+import { DeleteFabricaController } from '../controllers/Fabrica/DeleteFabricaController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -57,5 +58,6 @@ router.post('/fabrica', isAuthenticated, new CreateFabricaController().handle);
 router.get('/fabrica', isAuthenticated, new ListFabricaController().handle);
 router.put('/fabrica/edit', isAuthenticated, new EditFabricaController().handle);
 router.get('/fabrica/detail', isAuthenticated, new DetailFabricaController().handle);
+router.delete('/fabrica/delete', isAuthenticated, new DeleteFabricaController().handle);
 
 export { router };
