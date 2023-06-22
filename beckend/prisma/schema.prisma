@@ -130,4 +130,18 @@ model Representante {
 
   @@map("representantes")
   usuario_id String
+  fabrica Fabrica[]
+}
+
+// TABELA DE FABRICA
+model Fabrica {
+  id String @id @default(uuid())
+  ie String
+  contato String
+
+  representante Representante @relation(fields: [fabrica_id], references: [id])
+
+  @@map("fabricas")
+
+  fabrica_id String
 }
