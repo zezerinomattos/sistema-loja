@@ -13,6 +13,8 @@ import { DetailClienteController } from '../controllers/Cliente/DetailClienteCon
 import { EditClienteController } from '../controllers/Cliente/EditClienteController';
 import { ListClienteController } from '../controllers/Cliente/ListClienteController';
 
+import { CreateRepresentanteController } from '../controllers/Representante/CreateRepresentanteController';
+
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
 
@@ -35,5 +37,8 @@ router.post('/cliente', isAuthenticated, upload.single('file'), new CreateClient
 router.get('/cliente', isAuthenticated, new ListClienteController().handle);
 router.get('/cliente/detail', isAuthenticated, new DetailClienteController().handle);
 router.put('/cliente/edit', isAuthenticated, upload.single('file'), new EditClienteController().handle);
+
+// -- ROTAS REPRESENTANTE --
+router.post('/representante', isAuthenticated, upload.single('file'), new CreateRepresentanteController().handle);
 
 export { router };
