@@ -4,7 +4,7 @@ import { EditRepresentanteService } from '../../services/Representante/EditRepre
 
 class EditRepresentanteController{
     async handle(req: Request, res: Response){
-        const { representante_id, nome, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, cnpj, razaosocial, celular, telefone, telefone_fabrica } = req.body;
+        const { representante_id, nome, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, celular, telefone } = req.body;
 
         const editRepresentanteService = new EditRepresentanteService;
 
@@ -28,11 +28,8 @@ class EditRepresentanteController{
                 uf, 
                 pais, 
                 empresa, 
-                cnpj, 
-                razaosocial, 
                 celular, 
                 telefone, 
-                telefone_fabrica,
             });
     
             return res.json(representante);

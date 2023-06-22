@@ -118,11 +118,8 @@ model Cliente {
 model Representante {
   id String @id @default(uuid())
   empresa String
-  cnpj String
-  razaosocial String
   celular String
   telefone String
-  telefone_fabrica String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
@@ -136,12 +133,17 @@ model Representante {
 // TABELA DE FABRICA
 model Fabrica {
   id String @id @default(uuid())
+  empresa String
+  cnpj String
   ie String
   contato String
+  razaosocial String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
 
-  representante Representante @relation(fields: [fabrica_id], references: [id])
+  representante Representante @relation(fields: [representante_id], references: [id])
 
   @@map("fabricas")
 
-  fabrica_id String
+  representante_id String
 }

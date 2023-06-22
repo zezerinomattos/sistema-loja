@@ -17,15 +17,12 @@ interface RepresentanteRequest{
     uf: string;
     pais: string;
     empresa: string; 
-    cnpj: string; 
-    razaosocial: string; 
     celular: string; 
     telefone: string; 
-    telefone_fabrica: string;
 }
 
 class CreateRepresentanteService{
-    async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, cnpj, razaosocial, celular, telefone, telefone_fabrica }: RepresentanteRequest){
+    async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, celular, telefone }: RepresentanteRequest){
 
         //Verificando se tem cpf digitado
         if(!cpf || cpf.length !== 11){
@@ -74,12 +71,9 @@ class CreateRepresentanteService{
         // Salvando o representante
         const representante = await prismaClient.representante.create({
             data:{
-                empresa: empresa,
-                cnpj: cnpj, 
-                razaosocial: razaosocial, 
+                empresa: empresa, 
                 celular: celular, 
                 telefone: telefone, 
-                telefone_fabrica: telefone_fabrica,
                 usuario_id: usuario.id,
             }
         });

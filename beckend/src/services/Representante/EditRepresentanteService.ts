@@ -15,15 +15,12 @@ interface RepresentanteRequest{
     uf: string;
     pais: string;
     empresa: string; 
-    cnpj: string; 
-    razaosocial: string; 
     celular: string; 
     telefone: string; 
-    telefone_fabrica: string;
 }
 
 class EditRepresentanteService{
-    async execute({ representante_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, cnpj, razaosocial, celular, telefone, telefone_fabrica }: RepresentanteRequest){
+    async execute({ representante_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, celular, telefone }: RepresentanteRequest){
 
         // Verificar se representante existe
         const existingRepresentante = await prismaClient.representante.findUnique({
@@ -39,12 +36,9 @@ class EditRepresentanteService{
         const updateRepresentante = await prismaClient.representante.update({
             where: { id: representante_id },
             data:{
-                empresa: empresa,
-                cnpj: cnpj, 
-                razaosocial: razaosocial, 
+                empresa: empresa, 
                 celular: celular, 
                 telefone: telefone, 
-                telefone_fabrica: telefone_fabrica,
             },
         });
 
