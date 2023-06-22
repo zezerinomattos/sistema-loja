@@ -21,6 +21,7 @@ import { DetailRepresentanteController } from '../controllers/Representante/Deta
 import { CreateFabricaController } from '../controllers/Fabrica/CreateFabricaController';
 import { EditFabricaController } from '../controllers/Fabrica/EditFabricaController';
 import { DetailFabricaController } from '../controllers/Fabrica/DetailFabricaController';
+import { ListFabricaController } from '../controllers/Fabrica/ListFabricaController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -53,6 +54,7 @@ router.put('/representante/edit', isAuthenticated, upload.single('file'), new Ed
 
 // -- ROTAS FABRICA --
 router.post('/fabrica', isAuthenticated, new CreateFabricaController().handle);
+router.get('/fabrica', isAuthenticated, new ListFabricaController().handle);
 router.put('/fabrica/edit', isAuthenticated, new EditFabricaController().handle);
 router.get('/fabrica/detail', isAuthenticated, new DetailFabricaController().handle);
 
