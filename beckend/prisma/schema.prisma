@@ -179,19 +179,15 @@ model Produto {
   id String @id @default(uuid())
   nome_produto String
   marca String
-  tamanho String
-  cor_primaria String
-  cor_segundaria String
   material String
-  estoque String
-  foto String
+  foto String?
   descricao String
-  custo String
-  porcentagem_venda String
-  preco_venda String
-  margem_lucro String
-  desconto_atual String
-  desconto_maximo String
+  custo Float
+  porcentagem_venda Int
+  preco_venda Float
+  margem_lucro Int
+  desconto_atual Int  // em %
+  desconto_maximo Int // em %
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
@@ -200,10 +196,34 @@ model Produto {
   fabrica Fabrica @relation(fields: [fabrica_id], references: [id])
   representante Representante @relation(fields: [representante_id], references: [id])
 
+  produto_tamanhos_estoque ProdutoTamanhoEstoque[]
+  produto_cor ProdutoCor[]
+
   @@map("produtos")
 
   secao_id String
   categoria_id String
   fabrica_id String
   representante_id String
+}
+
+model ProdutoTamanhoEstoque {
+  id String @id @default(uuid())
+  produto Produto @relation(fields: [produto_id], references: [id])
+  tamanho String
+  estoque Int
+
+  produto_id String
+
+  @@map("produto_tamanhos_estoque")
+}
+
+model ProdutoCor {
+  id String @id @default(uuid())
+  produto Produto @relation(fields: [produto_id], references: [id])
+  cor String
+
+  produto_id String
+
+  @@map("produto_cor")
 }

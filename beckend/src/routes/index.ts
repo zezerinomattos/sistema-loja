@@ -30,6 +30,8 @@ import { ListSecaoController } from  '../controllers/Secao/ListSecaoController';
 import { CreateCategoriaController } from '../controllers/Categoria/CreateCategoriaController';
 import { ListCategoriaController } from '../controllers/Categoria/ListCategoriaController';
 
+import { CreateProdutoController } from '../controllers/Produto/CreateProdutoController';
+
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
 
@@ -73,5 +75,8 @@ router.get('/secao', isAuthenticated, new ListSecaoController().handle);
 // -- ROTAS CATEGORIA --
 router.post('/categoria', isAuthenticated, new CreateCategoriaController().handle);
 router.get('/categoria', isAuthenticated, new ListCategoriaController().handle);
+
+// -- ROTAS PRODUTO --
+router.post('/produto', upload.single('file'), isAuthenticated, new CreateProdutoController().handle);
 
 export { router };

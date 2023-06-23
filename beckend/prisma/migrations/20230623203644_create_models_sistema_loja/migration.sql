@@ -20,7 +20,7 @@ CREATE TABLE "usuarios" (
     "id" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
-    "nascimento" TEXT NOT NULL,
+    "nascimento" TIMESTAMP(3) NOT NULL,
     "sexo" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "foto" TEXT NOT NULL,
@@ -49,10 +49,10 @@ CREATE TABLE "colaboradores" (
     "salario_base" DOUBLE PRECISION NOT NULL,
     "salario_liquido" DOUBLE PRECISION NOT NULL,
     "complemento_salario" INTEGER NOT NULL,
-    "adiantamento_salario" DOUBLE PRECISION NOT NULL,
+    "adiantamento_salario" INTEGER NOT NULL,
     "saldo_salario" DOUBLE PRECISION,
     "limite_credito" DOUBLE PRECISION NOT NULL,
-    "data_admissao" TIMESTAMP(3) NOT NULL,
+    "data_admissao" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "data_demisao" TIMESTAMP(3),
     "senha" TEXT NOT NULL,
     "obs" TEXT NOT NULL,
@@ -91,16 +91,84 @@ CREATE TABLE "clientes" (
 CREATE TABLE "representantes" (
     "id" TEXT NOT NULL,
     "empresa" TEXT NOT NULL,
-    "cnpj" TEXT NOT NULL,
-    "razaosocial" TEXT NOT NULL,
     "celular" TEXT NOT NULL,
     "telefone" TEXT NOT NULL,
-    "telefone_fabrica" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "usuario_id" TEXT NOT NULL,
 
     CONSTRAINT "representantes_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "fabricas" (
+    "id" TEXT NOT NULL,
+    "empresa" TEXT NOT NULL,
+    "cnpj" TEXT NOT NULL,
+    "ie" TEXT NOT NULL,
+    "contato" TEXT NOT NULL,
+    "razaosocial" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "representante_id" TEXT NOT NULL,
+
+    CONSTRAINT "fabricas_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "secoes" (
+    "id" TEXT NOT NULL,
+    "nome_secao" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "secoes_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "categorias" (
+    "id" TEXT NOT NULL,
+    "nome_categoria" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "categorias_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "produtos" (
+    "id" TEXT NOT NULL,
+    "nome_produto" TEXT NOT NULL,
+    "marca" TEXT NOT NULL,
+    "cor_primaria" TEXT NOT NULL,
+    "cor_segundaria" TEXT NOT NULL,
+    "material" TEXT NOT NULL,
+    "foto" TEXT,
+    "descricao" TEXT NOT NULL,
+    "custo" DOUBLE PRECISION NOT NULL,
+    "porcentagem_venda" INTEGER NOT NULL,
+    "preco_venda" DOUBLE PRECISION NOT NULL,
+    "margem_lucro" INTEGER NOT NULL,
+    "desconto_atual" INTEGER NOT NULL,
+    "desconto_maximo" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "secao_id" TEXT NOT NULL,
+    "categoria_id" TEXT NOT NULL,
+    "fabrica_id" TEXT NOT NULL,
+    "representante_id" TEXT NOT NULL,
+
+    CONSTRAINT "produtos_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "produto_tamanhos_estoque" (
+    "id" TEXT NOT NULL,
+    "tamanho" TEXT NOT NULL,
+    "estoque" INTEGER NOT NULL,
+    "produto_id" TEXT NOT NULL,
+
+    CONSTRAINT "produto_tamanhos_estoque_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey
@@ -114,3 +182,21 @@ ALTER TABLE "clientes" ADD CONSTRAINT "clientes_usuario_id_fkey" FOREIGN KEY ("u
 
 -- AddForeignKey
 ALTER TABLE "representantes" ADD CONSTRAINT "representantes_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "usuarios"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "fabricas" ADD CONSTRAINT "fabricas_representante_id_fkey" FOREIGN KEY ("representante_id") REFERENCES "representantes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "produtos" ADD CONSTRAINT "produtos_secao_id_fkey" FOREIGN KEY ("secao_id") REFERENCES "secoes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "produtos" ADD CONSTRAINT "produtos_categoria_id_fkey" FOREIGN KEY ("categoria_id") REFERENCES "categorias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "produtos" ADD CONSTRAINT "produtos_fabrica_id_fkey" FOREIGN KEY ("fabrica_id") REFERENCES "fabricas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "produtos" ADD CONSTRAINT "produtos_representante_id_fkey" FOREIGN KEY ("representante_id") REFERENCES "representantes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "produto_tamanhos_estoque" ADD CONSTRAINT "produto_tamanhos_estoque_produto_id_fkey" FOREIGN KEY ("produto_id") REFERENCES "produtos"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
