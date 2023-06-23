@@ -25,6 +25,7 @@ import { ListFabricaController } from '../controllers/Fabrica/ListFabricaControl
 import { DeleteFabricaController } from '../controllers/Fabrica/DeleteFabricaController';
 
 import { CreateSecaoController } from '../controllers/Secao/CreateSecaoController';
+import { ListSecaoController } from  '../controllers/Secao/ListSecaoController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -64,5 +65,6 @@ router.delete('/fabrica/delete', isAuthenticated, new DeleteFabricaController().
 
 // -- ROTAS SECAO --
 router.post('/secao', isAuthenticated, new CreateSecaoController().handle);
+router.get('/secao', isAuthenticated, new ListSecaoController().handle);
 
 export { router };
