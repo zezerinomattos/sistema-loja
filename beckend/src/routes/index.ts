@@ -31,6 +31,7 @@ import { CreateCategoriaController } from '../controllers/Categoria/CreateCatego
 import { ListCategoriaController } from '../controllers/Categoria/ListCategoriaController';
 
 import { CreateProdutoController } from '../controllers/Produto/CreateProdutoController';
+import { ListProdutosController } from '../controllers/Produto/ListProdutosController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -77,6 +78,7 @@ router.post('/categoria', isAuthenticated, new CreateCategoriaController().handl
 router.get('/categoria', isAuthenticated, new ListCategoriaController().handle);
 
 // -- ROTAS PRODUTO --
-router.post('/produto', upload.single('file'), isAuthenticated, new CreateProdutoController().handle);
+router.post('/produto', isAuthenticated, upload.single('file'), new CreateProdutoController().handle);
+router.get('/produto', isAuthenticated, new ListProdutosController().handle);
 
 export { router };
