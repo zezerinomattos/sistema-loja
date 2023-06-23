@@ -128,6 +128,7 @@ model Representante {
   @@map("representantes")
   usuario_id String
   fabrica Fabrica[]
+  produto Produto[]
 }
 
 // TABELA DE FABRICA
@@ -145,5 +146,64 @@ model Fabrica {
 
   @@map("fabricas")
 
+  representante_id String
+  produto Produto[]
+}
+
+// TABELA DE SECAO
+model Secao {
+  id String @id @default(uuid())
+  nome_secao String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("secoes")
+
+  produtos Produto[]
+}
+
+// TABELA DE CATEGORIA
+model Categoria {
+  id String @id @default(uuid())
+  nome_categoria String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("categorias")
+
+  produtos Produto[]
+}
+
+// TABELA DE PRODUTO
+model Produto {
+  id String @id @default(uuid())
+  nome_produto String
+  marca String
+  tamanho String
+  cor_primaria String
+  cor_segundaria String
+  material String
+  estoque String
+  foto String
+  descricao String
+  custo String
+  porcentagem_venda String
+  preco_venda String
+  margem_lucro String
+  desconto_atual String
+  desconto_maximo String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  secao Secao @relation(fields: [secao_id], references: [id])
+  categoria Categoria @relation(fields: [categoria_id], references: [id])
+  fabrica Fabrica @relation(fields: [fabrica_id], references: [id])
+  representante Representante @relation(fields: [representante_id], references: [id])
+
+  @@map("produtos")
+
+  secao_id String
+  categoria_id String
+  fabrica_id String
   representante_id String
 }
