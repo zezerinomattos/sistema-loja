@@ -38,6 +38,7 @@ import { DeleteProdutoController } from '../controllers/Produto/DeleteProdutoCon
 import { ListByCategoriaController } from '../controllers/Produto/ListByCategoriaController';
 import { ListBySecaoController } from '../controllers/Produto/ListBySecaoController';
 import { ListByNomeProdutoController } from '../controllers/Produto/ListByNomeProdutoController';
+import { ListByMarcaController } from '../controllers/Produto/ListByMarcaController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -92,5 +93,6 @@ router.delete('/produto/delete', isAuthenticated, new DeleteProdutoController().
 router.get('/categoria/produto', isAuthenticated, new ListByCategoriaController().handle);
 router.get('/secao/produto', isAuthenticated, new ListBySecaoController().handle);
 router.get('/nome/produto', isAuthenticated, new ListByNomeProdutoController().handle);
+router.get('/marca/produto', isAuthenticated, new ListByMarcaController().handle);
 
 export { router };
