@@ -25,6 +25,8 @@ import { EditFabricaController } from '../controllers/Fabrica/EditFabricaControl
 import { DetailFabricaController } from '../controllers/Fabrica/DetailFabricaController';
 import { ListFabricaController } from '../controllers/Fabrica/ListFabricaController';
 import { DeleteFabricaController } from '../controllers/Fabrica/DeleteFabricaController';
+import { ListByNomeFabricaController } from '../controllers/Fabrica/ListByNomeFabricaController';
+import { ListByRepresentanteFabricaController } from '../controllers/Fabrica/ListByRepresentanteFabricaController';
 
 import { CreateSecaoController } from '../controllers/Secao/CreateSecaoController';
 import { ListSecaoController } from  '../controllers/Secao/ListSecaoController';
@@ -80,6 +82,8 @@ router.get('/fabrica', isAuthenticated, new ListFabricaController().handle);
 router.put('/fabrica/edit', isAuthenticated, new EditFabricaController().handle);
 router.get('/fabrica/detail', isAuthenticated, new DetailFabricaController().handle);
 router.delete('/fabrica/delete', isAuthenticated, new DeleteFabricaController().handle);
+router.get('/nome/fabrica', isAuthenticated, new ListByNomeFabricaController().handle);
+router.get('/representante/fabrica', isAuthenticated, new ListByRepresentanteFabricaController().handle);
 
 // -- ROTAS SECAO --
 router.post('/secao', isAuthenticated, new CreateSecaoController().handle);
