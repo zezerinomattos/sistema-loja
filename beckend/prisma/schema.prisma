@@ -81,6 +81,7 @@ model Colaborador {
   updated_at DateTime? @default(now())
 
   usuario Usuario @relation(fields: [usuario_id], references: [id])
+  order Order[]
 
   @@map("colaboradores")
 
@@ -108,6 +109,7 @@ model Cliente {
   updated_at DateTime? @default(now())
   
   usuario Usuario @relation(fields: [usuario_id], references: [id])
+  order Order[]
 
   @@map("clientes")
 
@@ -198,6 +200,7 @@ model Produto {
 
   produto_tamanhos_estoque ProdutoTamanhoEstoque[]
   produto_cor ProdutoCor[]
+  items Item[]
 
   @@map("produtos")
 
@@ -226,4 +229,38 @@ model ProdutoCor {
   produto_id String
 
   @@map("produto_cor")
+}
+
+model Order{
+  id String @id @default(uuid())
+  status Boolean @default(false)
+  draft Boolean @default(true)
+  valor_total Float
+  desconto Int
+  valor_pagar Float
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  colaborado Colaborador @relation(fields: [colaborador_id], references: [id])
+  cliente Cliente @relation(fields: [cliente_id], references: [id])
+
+  @@map("orders")
+  items Item[]
+  cliente_id String
+  colaborador_id String
+}
+
+model Item{
+  id String @id @default(uuid())
+  qtd Int
+  preco Float
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  order Order @relation(fields: [order_id], references: [id])
+  produto Produto @relation(fields: [produto_id], references: [id])
+
+  @@map("items")
+  order_id String
+  produto_id String
 }
