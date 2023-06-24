@@ -7,6 +7,7 @@ import { DetailUserController } from '../controllers/Colaborador/DetailUserContr
 import { DetailColaboradorController } from '../controllers/Colaborador/DetailColaboradorController';
 import { ListColaboradorController } from '../controllers/Colaborador/ListColaboradorController';
 import { EditColaboradorController } from '../controllers/Colaborador/EditColaboradorController';
+import { ListByNomeColabController } from '../controllers/Colaborador/ListByNomeColabController';
 
 import { CreateClienteController } from '../controllers/Cliente/CreateClienteController';
 import { DetailClienteController } from '../controllers/Cliente/DetailClienteController';
@@ -54,6 +55,7 @@ router.post('/colaborador', upload.single('file'), new CreateColaboradorControll
 router.get('/colaborador', isAuthenticated, new ListColaboradorController().handle);
 router.get('/colaborador/detail', isAuthenticated, new DetailColaboradorController().handle);
 router.put('/colaborador/edit', isAuthenticated, upload.single('file'), new EditColaboradorController().handle);
+router.get('/nome/colaborador', isAuthenticated, new ListByNomeColabController().handle);
 
 // -- ROTAS LOGIN --
 router.post('/login', new AuthColaboradorController().handle);
