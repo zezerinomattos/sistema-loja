@@ -19,6 +19,7 @@ import { CreateRepresentanteController } from '../controllers/Representante/Crea
 import { ListRepresentanteController } from '../controllers/Representante/ListRepresentanteController';
 import { EditRepresentanteController } from '../controllers/Representante/EditRepresentanteController';
 import { DetailRepresentanteController } from '../controllers/Representante/DetailRepresentanteController';
+import { ListRepresentanteBynomeController } from '../controllers/Representante/ListRepresentanteBynomeController';
 
 import { CreateFabricaController } from '../controllers/Fabrica/CreateFabricaController';
 import { EditFabricaController } from '../controllers/Fabrica/EditFabricaController';
@@ -75,6 +76,8 @@ router.post('/representante', isAuthenticated, upload.single('file'), new Create
 router.get('/representante', isAuthenticated, new ListRepresentanteController().handle);
 router.get('/representante/detail', isAuthenticated, new DetailRepresentanteController().handle);
 router.put('/representante/edit', isAuthenticated, upload.single('file'), new EditRepresentanteController().handle);
+router.get('/representante/detail', isAuthenticated, new DetailRepresentanteController().handle);
+router.get('/mome/representante', isAuthenticated,  new ListRepresentanteBynomeController().handle);
 
 // -- ROTAS FABRICA --
 router.post('/fabrica', isAuthenticated, new CreateFabricaController().handle);
