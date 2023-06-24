@@ -78,11 +78,7 @@ class EditProdutoService{
                 categoria_id: categoria_id,
                 fabrica_id: fabrica_id,
                 representante_id: representante_id,
-            },
-            include: {
-                produto_tamanhos_estoque: true,
-                produto_cor: true,
-            },
+            }
         });
 
         // Atualizar os tamanhos e estoque do produto
