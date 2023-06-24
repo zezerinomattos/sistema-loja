@@ -24,12 +24,34 @@ class CreateProdutoController{
          } = req.body;
 
         const createProdutoService = new CreateProdutoService;
-
-        if(!req.file){
-            throw new Error('Error upload file');
-        }else{
+        
+        if(req.file){
             const { originalname, filename: foto } = req.file;
 
+            const produto = await createProdutoService.execute({
+                nome_produto,
+                marca,
+                tamanhos_estoque,
+                cor_produto,
+                material,
+                foto,
+                descricao,
+                custo,
+                porcentagem_venda,
+                preco_venda,
+                margem_lucro,
+                desconto_atual,
+                desconto_maximo,
+                representante_id,
+                fabrica_id,
+                secao_id,
+                categoria_id,
+            });
+    
+            return res.json(produto);
+        }else{
+
+            const foto = null;
 
             const produto = await createProdutoService.execute({
                 nome_produto,
@@ -53,7 +75,9 @@ class CreateProdutoController{
     
             return res.json(produto);
         }
+
         
+
     }
 }
 
