@@ -36,6 +36,7 @@ import { DetailProdutoController } from '../controllers/Produto/DetailProdutoCon
 import { EditProdutoController } from '../controllers/Produto/EditProdutoController';
 import { DeleteProdutoController } from '../controllers/Produto/DeleteProdutoController';
 import { ListByCategoriaController } from '../controllers/Produto/ListByCategoriaController';
+import { ListBySecaoController } from '../controllers/Produto/ListBySecaoController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -88,5 +89,6 @@ router.get('/produto/detail', isAuthenticated, new DetailProdutoController().han
 router.put('/produto/edit', isAuthenticated, upload.single('file'), new EditProdutoController().handle);
 router.delete('/produto/delete', isAuthenticated, new DeleteProdutoController().handle);
 router.get('/categoria/produto', isAuthenticated, new ListByCategoriaController().handle);
+router.get('/secao/produto', isAuthenticated, new ListBySecaoController().handle);
 
 export { router };
