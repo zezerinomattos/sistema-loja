@@ -39,6 +39,7 @@ import { ListByCategoriaController } from '../controllers/Produto/ListByCategori
 import { ListBySecaoController } from '../controllers/Produto/ListBySecaoController';
 import { ListByNomeProdutoController } from '../controllers/Produto/ListByNomeProdutoController';
 import { ListByMarcaController } from '../controllers/Produto/ListByMarcaController';
+import { ListByRepresentanteController } from '../controllers/Produto/ListByRepresentanteController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -94,5 +95,6 @@ router.get('/categoria/produto', isAuthenticated, new ListByCategoriaController(
 router.get('/secao/produto', isAuthenticated, new ListBySecaoController().handle);
 router.get('/nome/produto', isAuthenticated, new ListByNomeProdutoController().handle);
 router.get('/marca/produto', isAuthenticated, new ListByMarcaController().handle);
+router.get('/representante/produto', isAuthenticated, new ListByRepresentanteController().handle);
 
 export { router };
