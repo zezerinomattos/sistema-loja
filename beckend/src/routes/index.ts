@@ -37,6 +37,7 @@ import { EditProdutoController } from '../controllers/Produto/EditProdutoControl
 import { DeleteProdutoController } from '../controllers/Produto/DeleteProdutoController';
 import { ListByCategoriaController } from '../controllers/Produto/ListByCategoriaController';
 import { ListBySecaoController } from '../controllers/Produto/ListBySecaoController';
+import { ListByNomeProdutoController } from '../controllers/Produto/ListByNomeProdutoController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -90,5 +91,6 @@ router.put('/produto/edit', isAuthenticated, upload.single('file'), new EditProd
 router.delete('/produto/delete', isAuthenticated, new DeleteProdutoController().handle);
 router.get('/categoria/produto', isAuthenticated, new ListByCategoriaController().handle);
 router.get('/secao/produto', isAuthenticated, new ListBySecaoController().handle);
+router.get('/nome/produto', isAuthenticated, new ListByNomeProdutoController().handle);
 
 export { router };
