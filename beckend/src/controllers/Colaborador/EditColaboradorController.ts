@@ -5,7 +5,7 @@ import { EditColaboradorService } from '../../services/Colaborador/EditColaborad
 class EditColaboradorController{
     async handle(req: Request, res: Response){
         const {colaborador_id ,nome, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, 
-            situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, salario_liquido, complemento_salario, adiantamento_salario, saldo_salario, limite_credito, data_admissao, data_demisao, obs } = req.body;
+            situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, salario_liquido, complemento_salario, adiantamento_salario, bonificacao, saldo_salario, limite_credito, data_admissao, data_demisao, obs } = req.body;
         
         const editColaboradorService = new EditColaboradorService;
         
@@ -56,6 +56,7 @@ class EditColaboradorController{
                 salario_base, 
                 salario_liquido, 
                 complemento_salario, 
+                bonificacao,
                 adiantamento_salario, 
                 saldo_salario, 
                 limite_credito, 

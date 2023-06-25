@@ -29,6 +29,7 @@ class DetailColaboradorService{
                         salario_base: true,
                         salario_liquido: true,
                         complemento_salario: true,
+                        bonificacao: true,
                         adiantamento_salario: true,
                         saldo_salario: true,
                         limite_credito: true,
