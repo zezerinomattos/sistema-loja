@@ -69,8 +69,9 @@ model Colaborador {
   secao_eleitoral String
   salario_base Float
   salario_liquido Float
-  complemento_salario Int
-  adiantamento_salario Int
+  complemento_salario Int // comissao
+  adiantamento_salario Int?
+  bonificacao Float? @default(0) // campo para armazenar a bonificação adicional
   saldo_salario Float?
   limite_credito Float
   data_admissao DateTime? @default(now())
