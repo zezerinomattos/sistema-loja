@@ -47,6 +47,7 @@ import { ListByMarcaController } from '../controllers/Produto/ListByMarcaControl
 import { ListByRepresentanteController } from '../controllers/Produto/ListByRepresentanteController';
 
 import { CreateOrderController } from '../controllers/Order/CreateOrderController';
+import { DeleteOrderController } from '../controllers/Order/DeleteOrderController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -112,5 +113,6 @@ router.get('/representante/produto', isAuthenticated, new ListByRepresentanteCon
 
 // -- ROTAS ORDER --
 router.post('/order', isAuthenticated, new CreateOrderController().handle);
+router.delete('/delete/order', isAuthenticated, new DeleteOrderController().handle);
 
 export { router };
