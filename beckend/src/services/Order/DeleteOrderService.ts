@@ -6,14 +6,19 @@ interface OrderRequest{
 
 class DeleteOrderService{
     async execute({ order_id }: OrderRequest){
+        
+        try {
+            const deleteOrder = await prismaClient.order.delete({
+                where: {
+                    id: order_id
+                }
+            });
 
-        const deleteOrder = await prismaClient.order.delete({
-            where: {
-                id: order_id
-            }
-        });
+            return deleteOrder
 
-        return deleteOrder
+        } catch (error) {
+            throw new Error('Exclua todos os itens para excluir uma order');
+        }   
     }
 }
 
