@@ -220,7 +220,7 @@ model ProdutoTamanhoEstoque {
 
   produtoCor_id String
 
-  //items Item[]
+  items Item[]
 
   @@map("produto_tamanhos_estoque")
 }
@@ -267,12 +267,12 @@ model Item{
   order Order @relation(fields: [order_id], references: [id])
   produto Produto @relation(fields: [produto_id], references: [id])
   
-  //tamanho ProdutoTamanhoEstoque @relation(fields: [tamanho_id], references: [id])
+  tamanho ProdutoTamanhoEstoque @relation(fields: [tamanho_id], references: [id])
   cor ProdutoCor @relation(fields: [cor_id], references: [id])
 
   @@map("items")
   order_id String
   produto_id String
-  tamanho_id String
   cor_id String
+  tamanho_id String
 }

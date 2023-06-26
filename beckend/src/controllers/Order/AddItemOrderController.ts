@@ -12,8 +12,8 @@ class AddItemOrderController{
             qtd, 
             order_id, 
             produto_id, 
+            cor_id,
             tamanho_id, 
-            cor_id 
         });
 
         return res.json(order);
