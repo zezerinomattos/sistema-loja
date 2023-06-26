@@ -36,6 +36,9 @@ class DeleteItemService{
                 valor_total: {
                     decrement: item.qtd * item.preco,
                 },
+                valor_pagar: {
+                    decrement: item.qtd * item.preco,
+                },
             },
         });
 

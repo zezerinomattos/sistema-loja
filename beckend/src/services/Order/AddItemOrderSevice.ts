@@ -92,7 +92,10 @@ class AddItemOrderSevice{
             },
             data:{
                 valor_total: {
-                    increment: precoTotalItem
+                    increment: precoTotalItem,
+                },
+                valor_pagar:{
+                    increment: precoTotalItem,
                 },
             },
         });
