@@ -49,6 +49,7 @@ import { ListByRepresentanteController } from '../controllers/Produto/ListByRepr
 import { CreateOrderController } from '../controllers/Order/CreateOrderController';
 import { DeleteOrderController } from '../controllers/Order/DeleteOrderController';
 import { AddItemOrderController } from '../controllers/Order/AddItemOrderController';
+import { DeleteItemController } from '../controllers/Order/DeleteItemController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -116,5 +117,6 @@ router.get('/representante/produto', isAuthenticated, new ListByRepresentanteCon
 router.post('/order', isAuthenticated, new CreateOrderController().handle);
 router.delete('/delete/order', isAuthenticated, new DeleteOrderController().handle);
 router.post('/add/order', isAuthenticated, new AddItemOrderController().handle);
+router.delete('/delete/item', isAuthenticated, new DeleteItemController().handle);
 
 export { router };
