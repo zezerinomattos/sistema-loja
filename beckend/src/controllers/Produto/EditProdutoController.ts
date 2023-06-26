@@ -8,7 +8,6 @@ class EditProdutoController{
             produto_id,
             nome_produto,
             marca,
-            tamanhos_estoque, // Array de objetos contendo os tamanhos e estoque
             cor_produto, // Array de objetos contendo as cores do produto
             material,
             descricao,
@@ -33,7 +32,6 @@ class EditProdutoController{
                 produto_id,
                 nome_produto,
                 marca,
-                tamanhos_estoque,
                 cor_produto,
                 material,
                 foto,
@@ -59,7 +57,6 @@ class EditProdutoController{
                 produto_id,
                 nome_produto,
                 marca,
-                tamanhos_estoque,
                 cor_produto,
                 material,
                 foto,

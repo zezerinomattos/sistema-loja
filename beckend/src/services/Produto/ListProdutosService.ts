@@ -8,8 +8,8 @@ class ListProdutosService{
                 id: true,
                 nome_produto: true,
                 marca: true,
-                preco_venda: true
-            }
+                preco_venda: true,
+            },
         });
         return produto;
     }

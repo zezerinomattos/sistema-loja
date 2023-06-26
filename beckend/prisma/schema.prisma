@@ -199,8 +199,8 @@ model Produto {
   fabrica Fabrica @relation(fields: [fabrica_id], references: [id])
   representante Representante @relation(fields: [representante_id], references: [id])
 
-  produto_tamanhos_estoque ProdutoTamanhoEstoque[]
   produto_cor ProdutoCor[]
+  
   items Item[]
 
   @@map("produtos")
@@ -213,23 +213,29 @@ model Produto {
 
 model ProdutoTamanhoEstoque {
   id String @id @default(uuid())
-  produto Produto @relation(fields: [produto_id], references: [id])
   tamanho String
   estoque Int
 
-  produto_id String
+  produtoCor ProdutoCor @relation(fields: [produtoCor_id], references: [id])
+
+  produtoCor_id String
+
+  //items Item[]
 
   @@map("produto_tamanhos_estoque")
 }
 
 model ProdutoCor {
   id String @id @default(uuid())
-  produto Produto @relation(fields: [produto_id], references: [id])
   cor String
 
-  produto_id String
+  produto Produto @relation(fields: [produto_id], references: [id])
+  produto_tamanhos_estoque ProdutoTamanhoEstoque[]
+  items Item[]
 
   @@map("produto_cor")
+
+  produto_id String
 }
 
 model Order{
@@ -260,8 +266,13 @@ model Item{
 
   order Order @relation(fields: [order_id], references: [id])
   produto Produto @relation(fields: [produto_id], references: [id])
+  
+  //tamanho ProdutoTamanhoEstoque @relation(fields: [tamanho_id], references: [id])
+  cor ProdutoCor @relation(fields: [cor_id], references: [id])
 
   @@map("items")
   order_id String
   produto_id String
+  tamanho_id String
+  cor_id String
 }

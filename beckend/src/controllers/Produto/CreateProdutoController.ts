@@ -7,7 +7,7 @@ class CreateProdutoController{
         const {
             nome_produto,
             marca,
-            tamanhos_estoque, // Array de objetos contendo os tamanhos e estoque
+           // tamanhos_estoque, // Array de objetos contendo os tamanhos e estoque
             cor_produto, // Array de objetos contendo as cores do produto
             material,
             descricao,
@@ -31,7 +31,6 @@ class CreateProdutoController{
             const produto = await createProdutoService.execute({
                 nome_produto,
                 marca,
-                tamanhos_estoque,
                 cor_produto,
                 material,
                 foto,
@@ -56,7 +55,6 @@ class CreateProdutoController{
             const produto = await createProdutoService.execute({
                 nome_produto,
                 marca,
-                tamanhos_estoque,
                 cor_produto,
                 material,
                 foto,

@@ -16,12 +16,12 @@ interface ProdutoRequest{
     fabrica_id: string;
     secao_id: string;
     categoria_id: string;
-    tamanhos_estoque: {
-        tamanho: string;
-        estoque: number;
-    }[];
     cor_produto: {
         cor: string;
+        tamanhos_estoque: {
+            tamanho: string;
+            estoque: number;
+        }[];
     }[];
 }
 
@@ -42,17 +42,17 @@ class CreateProdutoService{
         fabrica_id,
         secao_id,
         categoria_id,
-        tamanhos_estoque,
         cor_produto,
      }: ProdutoRequest){
 
         //Vamos verificar se já tem esse produto cadastrado
         const produtoAllReadyExists = await prismaClient.produto.findFirst({
             where: {
-                nome_produto: nome_produto,
-                marca: marca,
-            }
-        });
+              nome_produto,
+              marca,
+            },
+
+          });
 
         if(produtoAllReadyExists){
             throw new Error('Esse PRODUTO já existe em nosso Banco de dados!');
@@ -78,31 +78,37 @@ class CreateProdutoService{
                 representante_id: representante_id,
             },
         });
-
-        // Criar os registros de tamanhos e estoque na tabela ProdutoTamanhoEstoque
-        const tamanhosEstoque  = tamanhos_estoque.map((tamanhoEstoque) => ({
-            tamanho: tamanhoEstoque.tamanho,
-            estoque: tamanhoEstoque.estoque,
-            produto_id: produto.id
-        }));
-
-        const produtosTamanhoEstoque  = await prismaClient.produtoTamanhoEstoque.createMany({
-            data: tamanhosEstoque,
-        }); 
         
         // Criar os registros de cores
-        const corProduto = cor_produto.map((cor) => ({
-            cor: cor.cor,
-            produto_id: produto.id
-        }));
-
-        const produtoCores = await prismaClient.produtoCor.createMany({
-            data: corProduto,
-        })
+        const corProduto = await Promise.all(cor_produto.map(async (cor) => {
+            const produtoCor = await prismaClient.produtoCor.create({
+            data: {
+                cor: cor.cor,
+                produto_id: produto.id,
+            },
+        });
+            
+            // Criar os registros de tamanhos e estoque
+            const tamanhosEstoque = cor.tamanhos_estoque.map((tamanhoEstoque) => ({
+            tamanho: tamanhoEstoque.tamanho,
+            estoque: tamanhoEstoque.estoque,
+            produtoCor_id: produtoCor.id,
+            }));
         
+            return { produtoCor, tamanhosEstoque };
+        }));
+        
+        const produtoCores = corProduto.map(({ produtoCor }) => produtoCor);
+        
+        const tamanhosEstoque = corProduto.flatMap(({ tamanhosEstoque }) => tamanhosEstoque);
+        
+        const produtosTamanhoEstoque = await prismaClient.produtoTamanhoEstoque.createMany({
+            data: tamanhosEstoque,
+        });
 
-        return produto;
-    }
+        return { produto, corProduto, produtosTamanhoEstoque };
+        }
 }
 
 export { CreateProdutoService }
+

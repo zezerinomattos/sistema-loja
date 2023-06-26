@@ -7,50 +7,26 @@ interface ProdutoRequest{
 class DetailProdutoService{
     async execute({ produto_id }: ProdutoRequest){
 
-        const produto = await prismaClient.produto.findMany({
+        const produto = await prismaClient.produto.findFirst({
             where: {
-                id: produto_id
+                id: produto_id,
             },
-            include: {
-                produto_cor: {
-                    select:{
-                        cor: true
-                    },
-                },
-                produto_tamanhos_estoque: {
+            include:{
+                produto_cor:{
                     select: {
-                        tamanho: true,
-                        estoque: true
-                    },
-                },
-                secao:{
-                    select: {
-                        nome_secao: true
-                    },
-                },
-                categoria: {
-                    select: {
-                        nome_categoria: true
-                    },
-                },
-                representante: {
-                    select:{
-                        usuario:{
-                            select: {
-                                nome: true
+                        cor: true,
+                        produto_tamanhos_estoque: {
+                            select:{
+                                tamanho: true,
+                                estoque: true
                             },
                         },
                     },
                 },
-                fabrica: {
-                    select: {
-                        empresa: true
-                    }
-                }
             }
-        });
+        })
 
-        return produto;
+        return { produto };
     }
 }
 

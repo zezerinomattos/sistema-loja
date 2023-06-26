@@ -17,12 +17,12 @@ interface ProdutoRequest{
     fabrica_id: string;
     secao_id: string;
     categoria_id: string;
-    tamanhos_estoque: {
-        tamanho: string;
-        estoque: number;
-    }[];
     cor_produto: {
         cor: string;
+        tamanhos_estoque: {
+            tamanho: string;
+            estoque: number;
+        }[];
     }[];
 }
 
@@ -44,7 +44,6 @@ class EditProdutoService{
         fabrica_id,
         secao_id,
         categoria_id,
-        tamanhos_estoque,
         cor_produto,
     }: ProdutoRequest){
 
@@ -81,41 +80,70 @@ class EditProdutoService{
             }
         });
 
-        // Atualizar os tamanhos e estoque do produto
+        // Obter os IDs dos produtoCor relacionados ao produto
+        const produtoCoress = await prismaClient.produtoCor.findMany({
+            where: {
+                produto_id: produto_id,
+            },
+            select: {
+                id: true,
+            },
+        });
+        
+        // Extrair os IDs dos produtoCor
+        const produtoCorIds = produtoCoress.map((produtoCor) => produtoCor.id);
+        
+        // Deletar os tamanhos e estoque relacionados aos produtoCor
         await prismaClient.produtoTamanhoEstoque.deleteMany({
             where: {
-            produto_id,
+                produtoCor_id: {
+                    in: produtoCorIds,
+                },
             },
         });
-
-        const tamanhosEstoque = tamanhos_estoque.map((tamanhoEstoque) => ({
-            tamanho: tamanhoEstoque.tamanho,
-            estoque: tamanhoEstoque.estoque,
-            produto_id: produto_id,
-        }));
-      
-        const updateTamanhoProduto = await prismaClient.produtoTamanhoEstoque.createMany({
-            data: tamanhosEstoque,
-        });
-
-         // Atualizar as cores do produto
+        
+        // Deletar as cores relacionadas ao produto
         await prismaClient.produtoCor.deleteMany({
             where: {
-            produto_id,
+                produto_id: produto_id,
             },
         });
-    
-        const corProduto = cor_produto.map((cor) => ({
-            cor: cor.cor,
-            produto_id: produto_id,
-        }));
-    
-        const updateCorProduto = await prismaClient.produtoCor.createMany({
-            data: corProduto,
-        });
-
-        return updatedProduto;
         
+
+        // Criar as novas cores relacionadas ao produto
+        const novasCores = await Promise.all(
+            cor_produto.map(async (cor) => {
+            const produtoCor = await prismaClient.produtoCor.create({
+                data: {
+                    cor: cor.cor,
+                    produto_id: produto_id,
+                },
+            });
+        
+            // Criar os registros de tamanhos e estoque
+            const tamanhosEstoque = cor.tamanhos_estoque.map((tamanhoEstoque) => ({
+                tamanho: tamanhoEstoque.tamanho,
+                estoque: tamanhoEstoque.estoque,
+                produtoCor_id: produtoCor.id,
+            }));
+        
+            return { produtoCor, tamanhosEstoque };
+            })
+        );
+        
+        const produtoCores = novasCores.map(({ produtoCor }) => produtoCor);
+        
+        const tamanhosEstoque = novasCores.flatMap(({ tamanhosEstoque }) => tamanhosEstoque);
+        
+        // Criar os novos tamanhos e estoque para cada cor
+        const produtosTamanhoEstoque = await prismaClient.produtoTamanhoEstoque.createMany({
+            data: tamanhosEstoque,
+        });
+        
+        return {
+            updatedProduto,
+            novasCores
+        };
     }
 }
 

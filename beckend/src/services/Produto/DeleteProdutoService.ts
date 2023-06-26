@@ -7,7 +7,7 @@ interface ProdutoRequest{
 class DeleteProdutoService{
     async execute({ produto_id }: ProdutoRequest){
 
-        // Verificar se o produto existe
+        // Obter os IDs dos produtoCor relacionados ao produto
         const existingProduto = await prismaClient.produto.findUnique({
             where: {
                 id: produto_id
@@ -18,15 +18,32 @@ class DeleteProdutoService{
             throw new Error('Produto not found');
         }
 
-        await prismaClient.produtoTamanhoEstoque.deleteMany({
-            where:{
+        // Obter os IDs dos produtoCor relacionados ao produto
+        const produtoCoress = await prismaClient.produtoCor.findMany({
+            where: {
                 produto_id: produto_id,
             },
+            select: {
+                id: true,
+            },
         });
-
-        await prismaClient.produtoCor.deleteMany({
+        
+        // Extrair os IDs dos produtoCor
+        const produtoCorIds = produtoCoress.map((produtoCor) => produtoCor.id);
+        
+        // Deletar os tamanhos e estoque relacionados aos produtoCor
+        const tamanho = await prismaClient.produtoTamanhoEstoque.deleteMany({
             where: {
-            produto_id: produto_id,
+                produtoCor_id: {
+                    in: produtoCorIds,
+                },
+            },
+        });
+        
+        // Deletar as cores relacionadas ao produto
+        const cor = await prismaClient.produtoCor.deleteMany({
+            where: {
+                produto_id: produto_id,
             },
         });
 
@@ -36,7 +53,8 @@ class DeleteProdutoService{
             },
         });
 
-        return produto;
+        return { produto}
+
     }
 }
 
