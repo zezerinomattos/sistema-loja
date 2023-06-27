@@ -12,11 +12,11 @@ class EditOrderService{
                 id: order_id
             },
         });
-
+        
         if(!existingOrder){
             throw new Error('Order não encontrada');
         }
-
+        
         const valor_desconto = (desconto / 100) * existingOrder.valor_total;
         const valor_pagar_com_desconto = existingOrder.valor_total - valor_desconto;
 
