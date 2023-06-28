@@ -54,6 +54,7 @@ import { EditOrderController } from '../controllers/Order/EditOrderController';
 import { SendOrderController } from '../controllers/Order/SendOrderController';
 import { ListOrderController } from '../controllers/Order/ListOrderController';
 import { ListDraftOrderController } from '../controllers/Order/ListDraftOrderController';
+import { DetailOrderController } from '../controllers/Order/DetailOrderController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -126,5 +127,6 @@ router.put('/edit/order', isAuthenticated, new EditOrderController().handle);
 router.put('/send/order', isAuthenticated, new SendOrderController().handle);
 router.get('/order', isAuthenticated, new ListOrderController().handle);
 router.get('/draft/order', isAuthenticated, new ListDraftOrderController().handle);
+router.get('/detail/order', isAuthenticated, new DetailOrderController().handle);
 
 export { router };

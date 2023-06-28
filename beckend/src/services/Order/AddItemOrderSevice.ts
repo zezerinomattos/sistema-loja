@@ -69,7 +69,7 @@ class AddItemOrderSevice{
             throw new Error("Estoque insuficiente");
         }
 
-        const preco = produto.porcentagem_venda;
+        const preco = produto.preco_venda;
         const precoTotalItem = qtd * preco; 
         const desconto_atual = produto.desconto_atual;
         const desconto_maximo = produto.desconto_maximo;   
@@ -79,7 +79,7 @@ class AddItemOrderSevice{
               order_id: order_id,
               produto_id: produto_id,
               qtd: qtd,
-              preco: preco,
+              preco: precoTotalItem,
               cor_id: cor_id,
               tamanho_id: tamanho_id,
             },
