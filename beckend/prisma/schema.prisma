@@ -83,6 +83,7 @@ model Colaborador {
 
   usuario Usuario @relation(fields: [usuario_id], references: [id])
   order Order[]
+  caixa Caixa []
 
   @@map("colaboradores")
 
@@ -250,11 +251,13 @@ model Order{
 
   colaborado Colaborador @relation(fields: [colaborador_id], references: [id])
   cliente Cliente @relation(fields: [cliente_id], references: [id])
+  caixa Caixa @relation(fields: [caixa_id], references: [id])
 
   @@map("orders")
   items Item[]
   cliente_id String
   colaborador_id String
+  caixa_id String
 }
 
 model Item{
@@ -275,4 +278,56 @@ model Item{
   produto_id String
   cor_id String
   tamanho_id String
+}
+
+model Caixa{
+  id String @id @default(uuid())
+  data_abertura DateTime @default(now())
+  data_fechamento DateTime?
+  status Boolean @default(true)
+  valor_inicial Float @default(0)
+  valor_final Float? 
+  obs String?
+
+  colaborador Colaborador @relation(fields: [colaborador_id], references: [id])
+
+  order Order[]
+  registrocaixa RegistroCaixa[]
+  retiradacaixa RetiradaCaixa[]
+
+  @@map("caixas")
+
+  colaborador_id String
+}
+
+model RegistroCaixa{
+  id String @id @default(uuid())
+  order_id String
+  data DateTime @default(now())
+  valor_recebido Float
+  troco Float
+  forma_pagamento String
+  bandera_pagamento String?
+  obs String?
+
+  caixa Caixa @relation(fields: [caixa_id], references: [id])
+
+  @@map("registrocaixas")
+
+  caixa_id String
+}
+
+model RetiradaCaixa{
+  id String @id @default(uuid())
+  colaborador_id String
+  data DateTime @default(now())
+  valor_retirado Float
+  motivo String
+  obs String?
+
+  caixa Caixa @relation(fields: [caixa_id], references: [id])
+
+  @@map("retiradacaixas")
+
+  caixa_id String
 }

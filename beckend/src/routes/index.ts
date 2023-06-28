@@ -57,6 +57,8 @@ import { ListDraftOrderController } from '../controllers/Order/ListDraftOrderCon
 import { DetailOrderController } from '../controllers/Order/DetailOrderController';
 import { FullListOrderController } from '../controllers/Order/FullListOrderController';
 
+import { CreateCaixaController } from '../controllers/Caixa/CreateCaixaController';
+
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
 
@@ -130,5 +132,8 @@ router.get('/order', isAuthenticated, new ListOrderController().handle);
 router.get('/draft/order', isAuthenticated, new ListDraftOrderController().handle);
 router.get('/detail/order', isAuthenticated, new DetailOrderController().handle);
 router.get('/full/order', isAuthenticated, new FullListOrderController().handle);
+
+// -- ROTAS CAIXA --
+router.post('/caixa', isAuthenticated, new CreateCaixaController().handle);
 
 export { router };
