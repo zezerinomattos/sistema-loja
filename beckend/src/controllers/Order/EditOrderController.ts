@@ -4,13 +4,14 @@ import { EditOrderService } from '../../services/Order/EditOrderService';
 
 class EditOrderController{
     async handle(req: Request, res: Response){
-        const { order_id, desconto } = req.body;
+        const { order_id, desconto, caixa_id } = req.body;
 
         const editOrderService = new EditOrderService;
 
         const order = await editOrderService.execute({
             order_id, 
-            desconto
+            desconto,
+            caixa_id
         });
 
         return res.json(order)
