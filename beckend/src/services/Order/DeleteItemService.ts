@@ -13,6 +13,9 @@ class DeleteItemService{
             },
             include:{
                 order: true,
+                produto: true,
+                tamanho: true,
+                cor: true,
             },
         });
 
@@ -42,7 +45,21 @@ class DeleteItemService{
             },
         });
 
-        return {deleteItem, updatedOrder};
+        // Atualizar o estoque adicionando a quantidade do item de volta
+        const updateTamanho = await prismaClient.produtoTamanhoEstoque.update({
+            where: {
+                id: item.tamanho.id,
+            },
+            data: {
+                estoque: item.tamanho.estoque + item.qtd,
+            },
+        });
+
+        return {
+            deleteItem, 
+            updatedOrder,
+            updateTamanho
+        };
     }
 }
 
