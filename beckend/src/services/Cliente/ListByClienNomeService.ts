@@ -23,6 +23,11 @@ class ListByClienNomeService{
                     },
                 },
             },
+            orderBy: {
+                usuario: {
+                  nome: "asc", // Ordenar em ordem crescente pelo nome do representante
+                },
+            },
         });
 
         return listNomeCliente;

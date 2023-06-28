@@ -30,6 +30,9 @@ class ListByRepresentanteService{
                     }
                 }
             },
+            orderBy: {
+                nome_produto: 'asc'
+            },
         });
 
         return listProdMarca

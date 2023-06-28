@@ -16,7 +16,10 @@ class ListByCategoriaService{
                 nome_produto: true,
                 marca: true,
                 preco_venda: true
-            }
+            },
+            orderBy: {
+                nome_produto: 'asc'
+            },
         });
         return prodByCategoria;
     }

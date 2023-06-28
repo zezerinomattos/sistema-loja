@@ -18,6 +18,9 @@ class ListByNomeProdutoService{
                 marca: true,
                 preco_venda: true
             },
+            orderBy: {
+                nome_produto: 'asc'
+            },
         });
 
         return listProdNome

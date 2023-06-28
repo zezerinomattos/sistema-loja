@@ -7,7 +7,10 @@ class ListCategoriaService{
             select: {
                 id: true,
                 nome_categoria: true
-            }
+            },
+            orderBy: {
+                nome_categoria: 'asc',
+            },
         });
         return categoria;
     }

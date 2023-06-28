@@ -8,6 +8,9 @@ class ListSecaoService{
                 id: true,
                 nome_secao: true
             },
+            orderBy:{
+                nome_secao: "asc"
+            }
         });
         return secao;
     }

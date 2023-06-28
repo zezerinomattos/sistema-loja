@@ -15,7 +15,10 @@ class ListBySecaoService{
                 nome_produto: true,
                 marca: true,
                 preco_venda: true
-            }
+            },
+            orderBy: {
+                nome_produto: 'asc'
+            },
         });
         return prodBysecao;
     }

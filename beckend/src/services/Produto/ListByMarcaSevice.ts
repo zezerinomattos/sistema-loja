@@ -23,6 +23,9 @@ class ListByMarcaSevice{
                     }
                 }
             },
+            orderBy: {
+                nome_produto: 'asc'
+            },
         });
 
         return listProdMarca
