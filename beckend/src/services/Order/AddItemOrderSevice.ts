@@ -100,11 +100,22 @@ class AddItemOrderSevice{
             },
         });
 
+        // Atualizar o estoque diminuindo o protuto
+        const produtoEstoque = await prismaClient.produtoTamanhoEstoque.update({
+            where: {
+                id: tamanhoEstoque.id,
+            },
+            data:{
+                estoque: tamanhoEstoque.estoque - qtd,
+            },
+        });
+        
         return{
             item,
             precoTotalItem,
             desconto_atual,
-            desconto_maximo,          
+            desconto_maximo,
+            produtoEstoque,          
         }
     }
 }
