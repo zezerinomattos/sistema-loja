@@ -295,6 +295,7 @@ model Caixa{
   registrocaixa RegistroCaixa[]
   retiradacaixa RetiradaCaixa[]
   entradacaixa EntradaCaixa[]
+  entradacartao EntradaCartao[]
 
   @@map("caixas")
 
@@ -312,10 +313,12 @@ model RegistroCaixa{
   obs String?
 
   caixa Caixa @relation(fields: [caixa_id], references: [id])
+  entradacartao EntradaCartao? @relation(fields: [entradacartao_id], references: [id])
 
   @@map("registrocaixas")
 
   caixa_id String
+  entradacartao_id String?
 }
 
 model RetiradaCaixa{
@@ -323,7 +326,7 @@ model RetiradaCaixa{
   colaborador_id String
   data DateTime @default(now())
   valor_retirado Float
-  motivo String
+  motivo String?
   obs String?
 
   caixa Caixa @relation(fields: [caixa_id], references: [id])
@@ -338,12 +341,29 @@ model EntradaCaixa {
   colaborador_id String
   data DateTime @default(now())
   valor_entrada Float
-  motivo String
+  motivo String?
   obs String
   
   caixa Caixa @relation(fields: [caixa_id], references: [id])
 
   @@map("entradas_caixa")
+
+  caixa_id String
+}
+
+model EntradaCartao {
+  id String @id @default(uuid())
+  colaborador_id String
+  data DateTime @default(now())
+  valor_entrada Float
+  motivo String?
+  obs String
+  cliente_paga_juros Boolean @default(true) // Indica se o cliente paga os juros da máquina
+
+  caixa Caixa @relation(fields: [caixa_id], references: [id])
+  registroCaixa RegistroCaixa[]
+
+  @@map("entradas_cartao")
 
   caixa_id String
 }
