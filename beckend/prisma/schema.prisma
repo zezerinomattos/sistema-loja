@@ -294,6 +294,7 @@ model Caixa{
   order Order[]
   registrocaixa RegistroCaixa[]
   retiradacaixa RetiradaCaixa[]
+  entradacaixa EntradaCaixa[]
 
   @@map("caixas")
 
@@ -328,6 +329,21 @@ model RetiradaCaixa{
   caixa Caixa @relation(fields: [caixa_id], references: [id])
 
   @@map("retiradacaixas")
+
+  caixa_id String
+}
+
+model EntradaCaixa {
+  id String @id @default(uuid())
+  colaborador_id String
+  data DateTime @default(now())
+  valor_entrada Float
+  motivo String
+  obs String
+  
+  caixa Caixa @relation(fields: [caixa_id], references: [id])
+
+  @@map("entradas_caixa")
 
   caixa_id String
 }

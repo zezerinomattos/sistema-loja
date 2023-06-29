@@ -29,7 +29,7 @@ class AddItemOrderSevice{
                         },
                     },
                 },
-            }
+            },
         });
 
         // Verificar se o order existe
