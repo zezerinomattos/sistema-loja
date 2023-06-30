@@ -61,6 +61,7 @@ import { CreateCaixaController } from '../controllers/Caixa/CreateCaixaControlle
 import { CloseCaixaController } from '../controllers/Caixa/CloseCaixaController';
 import { CreateRegistroCaixaController } from '../controllers/Caixa/CreateRegistroCaixaController';
 import { CancelarRegistroCaixaController } from '../controllers/Caixa/CancelarRegistroCaixaController';
+import { CreateEntradaCartaoController } from '../controllers/Caixa/CreateEntradaCartaoController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -141,5 +142,6 @@ router.post('/caixa', isAuthenticated, new CreateCaixaController().handle);
 router.put('/close/caixa', isAuthenticated, new CloseCaixaController().handle);
 router.post('/registro/caixa', isAuthenticated, new CreateRegistroCaixaController().handle);
 router.put('/cancelar/registro', isAuthenticated, new CancelarRegistroCaixaController().handle);
+router.post('/entrada/cartao', isAuthenticated, new CreateEntradaCartaoController().handle);
 
 export { router };

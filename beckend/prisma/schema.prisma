@@ -358,7 +358,7 @@ model EntradaCartao {
   data DateTime @default(now())
   valor_entrada Float
   motivo String?
-  obs String
+  obs String?
   cliente_paga_juros Boolean @default(true) // Indica se o cliente paga os juros da máquina
 
   caixa Caixa @relation(fields: [caixa_id], references: [id])

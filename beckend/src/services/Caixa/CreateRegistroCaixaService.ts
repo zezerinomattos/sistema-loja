@@ -36,47 +36,38 @@ class CreateRegistroCaixaService{
             throw new Error('Order já finalizada');
         }
 
-        if(valor_recebido < valorOrder.valor_pagar){
-            throw new Error('Valor invalido');
-        }
+        if(forma_pagamento === "CARTÃO"){
+            
+            if (!entradacartao_id) {
+                throw new Error("Informe o ID de entrada de cartão");
+            }
 
-        // Calculando o troco
-        let saldoTroco = valor_recebido - valorOrder.valor_pagar;
-        if(saldoTroco < 0){
-            saldoTroco = 0;
-        }
+            const valorCartao = await prismaClient.entradaCartao.findUnique({
+                where: {id: entradacartao_id},
+                select:{valor_entrada: true},
+            });
 
-        // Criando registro de caixa e verificando se é dinheiro ou cheque.
-        if(forma_pagamento === "DINHEIRO" || forma_pagamento === "CHEQUE"){
+            if (!valorCartao) {
+                throw new Error("Entrada de cartão não encontrada");
+            }
+
+            // Calculando valor cartão + dinheiro
+            const trocoCartao = valorCartao.valor_entrada + valor_recebido;
+
+            let saldoTrocoCartao = trocoCartao - valorOrder.valor_pagar;
+            if(saldoTrocoCartao < 0){
+                saldoTrocoCartao = 0;
+            }
+
+            if(forma_pagamento === "CARTÃO" && trocoCartao < valorOrder.valor_pagar){
+                throw new Error('Valor invalido');
+            }
 
             const registroCaixa = await prismaClient.registroCaixa.create({
                 data:{
                     order_id: order_id,
-                    valor_recebido: valor_recebido,
-                    troco: saldoTroco,
-                    forma_pagamento: forma_pagamento,
-                    bandera_pagamento: bandera_pagamento,
-                    obs: obs,
-                    status: true,
-                    caixa:{
-                        connect:{id: caixa_id}
-                    },
-                },
-            });
-
-            const order = await prismaClient.order.update({
-                where: {id: order_id},
-                data:{status: true}
-            });
-
-            return { registroCaixa, order}
-
-        }else{
-            const registroCaixa = await prismaClient.registroCaixa.create({
-                data:{
-                    order_id: order_id,
-                    valor_recebido: valor_recebido,
-                    troco: saldoTroco,
+                    valor_recebido: trocoCartao,
+                    troco: saldoTrocoCartao,
                     forma_pagamento: forma_pagamento,
                     bandera_pagamento: bandera_pagamento,
                     obs: obs,
@@ -96,6 +87,41 @@ class CreateRegistroCaixaService{
             });
     
             return { registroCaixa, order}
+
+        }else{
+
+            if(valor_recebido < valorOrder.valor_pagar){
+                throw new Error('Valor invalido');
+            }
+    
+            // Calculando o troco em dinheiro
+            let saldoTroco = valor_recebido - valorOrder.valor_pagar;
+            if( saldoTroco < 0){
+                saldoTroco = 0;
+            }
+
+            const registroCaixa = await prismaClient.registroCaixa.create({
+                data:{
+                    order_id: order_id,
+                    valor_recebido: valor_recebido,
+                    troco: saldoTroco,
+                    forma_pagamento: forma_pagamento,
+                    bandera_pagamento: bandera_pagamento,
+                    obs: obs,
+                    status: true,
+                    caixa:{
+                        connect:{id: caixa_id}
+                    },
+                },
+            });
+
+            const order = await prismaClient.order.update({
+                where: {id: order_id},
+                data:{status: true}
+            });
+
+            return { registroCaixa, order}
+
         }
         
     }
