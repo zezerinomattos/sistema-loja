@@ -9,8 +9,25 @@ class CancelarRegistroCaixaService{
         const registroCaixa = await prismaClient.registroCaixa.findUnique({
             where: {id: registro_caixa_id},
             include: {
-                entradacartao: true
+                entradacartao: true,
+                caixa:{
+                    select: {
+                        saldo: true
+                    }
+                }
             },
+        });
+
+        //Retirando o valor do registro para o saldo de caixa
+        const valorSaldo = registroCaixa.valor_recebido - registroCaixa.troco;
+
+        const caixa = await prismaClient.caixa.update({
+            where: {id: registroCaixa.caixa_id},
+            data:{
+                saldo: {
+                    decrement: valorSaldo,
+                }
+            }
         });
 
         const registroCaixaCancelar = await prismaClient.registroCaixa.update({
@@ -20,6 +37,7 @@ class CancelarRegistroCaixaService{
             },
         });
 
+
         if (registroCaixa.entradacartao) {
             await prismaClient.entradaCartao.delete({
                 where: {
@@ -28,7 +46,7 @@ class CancelarRegistroCaixaService{
             });
         }
 
-        return registroCaixaCancelar;
+        return {registroCaixaCancelar, caixa};
     }
 }
 
