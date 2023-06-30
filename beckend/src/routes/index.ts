@@ -60,6 +60,7 @@ import { FullListOrderController } from '../controllers/Order/FullListOrderContr
 import { CreateCaixaController } from '../controllers/Caixa/CreateCaixaController';
 import { CloseCaixaController } from '../controllers/Caixa/CloseCaixaController';
 import { CreateRegistroCaixaController } from '../controllers/Caixa/CreateRegistroCaixaController';
+import { CancelarRegistroCaixaController } from '../controllers/Caixa/CancelarRegistroCaixaController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -139,5 +140,6 @@ router.get('/full/order', isAuthenticated, new FullListOrderController().handle)
 router.post('/caixa', isAuthenticated, new CreateCaixaController().handle);
 router.put('/close/caixa', isAuthenticated, new CloseCaixaController().handle);
 router.post('/registro/caixa', isAuthenticated, new CreateRegistroCaixaController().handle);
+router.put('/cancelar/registro', isAuthenticated, new CancelarRegistroCaixaController().handle);
 
 export { router };
