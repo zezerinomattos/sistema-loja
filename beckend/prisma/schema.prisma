@@ -287,6 +287,7 @@ model Caixa{
   status Boolean @default(true)
   valor_inicial Float @default(0)
   valor_final Float? 
+  saldo Float @default(0)
   obs String?
 
   colaborador Colaborador @relation(fields: [colaborador_id], references: [id])
@@ -309,7 +310,7 @@ model RegistroCaixa{
   valor_recebido Float
   troco Float
   forma_pagamento String
-  bandera_pagamento String?
+  plataforma_pagamento String? // credito, debito ou pix
   obs String?
   status Boolean // finalizado = true ou cancelado false
 

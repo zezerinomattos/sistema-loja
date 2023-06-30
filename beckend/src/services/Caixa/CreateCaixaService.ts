@@ -23,7 +23,7 @@ class CreateCaixaService{
         });
         
         const saldo_anterior = caixaAnterior?.valor_final ?? 0;
-        const statusCaixa = caixaAnterior.status;
+        const statusCaixa = caixaAnterior?.status ?? false;
 
         if(statusCaixa){
             throw new Error('O caixa já está aberto');

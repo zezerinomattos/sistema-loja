@@ -25,6 +25,7 @@ class CreateRegistroCaixaService{
                 id: true,
                 valor_pagar: true,
                 status: true,
+                draft: true,
             },
         });
 
@@ -34,6 +35,10 @@ class CreateRegistroCaixaService{
 
         if(valorOrder.status){
             throw new Error('Order já finalizada');
+        }
+
+        if(valorOrder.draft){
+            throw new Error('Order em rascunho');
         }
 
         if(forma_pagamento === "CARTÃO"){
@@ -69,7 +74,7 @@ class CreateRegistroCaixaService{
                     valor_recebido: trocoCartao,
                     troco: saldoTrocoCartao,
                     forma_pagamento: forma_pagamento,
-                    bandera_pagamento: bandera_pagamento,
+                    plataforma_pagamento: bandera_pagamento,
                     obs: obs,
                     status: true,
                     caixa:{
@@ -81,12 +86,24 @@ class CreateRegistroCaixaService{
                 },
             });
 
+            // Incrementando valor de saldo na tabela Caixa
+            const valorIncremento = valor_recebido - saldoTrocoCartao;
+
+            const caixa = await prismaClient.caixa.update({
+                where: {id: caixa_id},
+                data: {
+                    saldo:{
+                        increment: valorIncremento,
+                    },
+                },
+            });
+
             const order = await prismaClient.order.update({
                 where: {id: order_id},
                 data:{status: true}
             });
     
-            return { registroCaixa, order}
+            return { registroCaixa, order, caixa}
 
         }else{
 
@@ -106,7 +123,7 @@ class CreateRegistroCaixaService{
                     valor_recebido: valor_recebido,
                     troco: saldoTroco,
                     forma_pagamento: forma_pagamento,
-                    bandera_pagamento: bandera_pagamento,
+                    plataforma_pagamento: bandera_pagamento,
                     obs: obs,
                     status: true,
                     caixa:{
@@ -115,12 +132,24 @@ class CreateRegistroCaixaService{
                 },
             });
 
+            // Incrementando valor de saldo na tabela Caixa
+            const valorIncremento = valor_recebido - saldoTroco;
+
+            const caixa = await prismaClient.caixa.update({
+                where: {id: caixa_id},
+                data: {
+                    saldo:{
+                        increment: valorIncremento,
+                    }
+                }
+            })
+
             const order = await prismaClient.order.update({
                 where: {id: order_id},
                 data:{status: true}
             });
 
-            return { registroCaixa, order}
+            return { registroCaixa, order, caixa}
 
         }
         
