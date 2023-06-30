@@ -13,6 +13,10 @@ interface RegistroCaixaRequest{
 class CreateRegistroCaixaService{
     async execute({ order_id, valor_recebido, forma_pagamento, bandera_pagamento, obs, caixa_id, entradacartao_id }: RegistroCaixaRequest){
 
+        if(order_id === '' || caixa_id === ''){
+            throw new Error('Informe o ID de caixa e order');
+        }
+        
         const valorOrder = await prismaClient.order.findUnique({
             where: {
                 id: order_id
@@ -32,7 +36,7 @@ class CreateRegistroCaixaService{
             throw new Error('Order já finalizada');
         }
 
-        if(valor_recebido - valorOrder.valor_pagar){
+        if(valor_recebido < valorOrder.valor_pagar){
             throw new Error('Valor invalido');
         }
 
@@ -53,6 +57,7 @@ class CreateRegistroCaixaService{
                     forma_pagamento: forma_pagamento,
                     bandera_pagamento: bandera_pagamento,
                     obs: obs,
+                    status: true,
                     caixa:{
                         connect:{id: caixa_id}
                     },
@@ -75,6 +80,7 @@ class CreateRegistroCaixaService{
                     forma_pagamento: forma_pagamento,
                     bandera_pagamento: bandera_pagamento,
                     obs: obs,
+                    status: true,
                     caixa:{
                         connect:{id: caixa_id}
                     },

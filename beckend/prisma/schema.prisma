@@ -311,6 +311,7 @@ model RegistroCaixa{
   forma_pagamento String
   bandera_pagamento String?
   obs String?
+  status Boolean // finalizado = true ou cancelado false
 
   caixa Caixa @relation(fields: [caixa_id], references: [id])
   entradacartao EntradaCartao? @relation(fields: [entradacartao_id], references: [id])
