@@ -14,27 +14,57 @@ class CloseCaixaService{
                 id: caixa_id
             },
             select: {
-                status: true
+                status: true,
+                saldo: true
             },
         });
 
-        if(!infoCaixa.status){
+        if(!infoCaixa || !infoCaixa.status){
             throw new Error('esse caixa não está aberto');
         }
 
-        const caixa = await prismaClient.caixa.update({
-            where:{
-                id: caixa_id,
-            },
-            data:{
-                status: false,
-                data_fechamento: new Date(), // Atualizar a data de atualização para a data atual
-                valor_final: valor_final,
-                obs: obs,
-            },
-        });
+        const valorToleranciaQuebraCaixa = valor_final - infoCaixa.saldo;
 
-        return caixa;
+        if(valorToleranciaQuebraCaixa < (-10)){
+            throw new Error('O valor de quebra de caixa é menor que $10,00, informe o quebra de caixa');
+        }
+
+        if(valorToleranciaQuebraCaixa > 10){
+            throw new Error('O valor de quebra de caixa é maior que $10,00, informe o quebra de caixa');
+        }
+
+        if (valorToleranciaQuebraCaixa > -10 && valorToleranciaQuebraCaixa < 10) {
+
+            const caixa = await prismaClient.caixa.update({
+                where:{
+                    id: caixa_id,
+                },
+                data:{
+                    status: false,
+                    data_fechamento: new Date(), // Atualizar a data de atualização para a data atual
+                    valor_final: valor_final,
+                    obs: obs,
+                    saldo: valor_final
+                },
+            });
+    
+            return caixa;
+        }else{
+
+            const caixa = await prismaClient.caixa.update({
+                where:{
+                    id: caixa_id,
+                },
+                data:{
+                    status: false,
+                    data_fechamento: new Date(), // Atualizar a data de atualização para a data atual
+                    valor_final: valor_final,
+                    obs: obs,
+                },
+            });
+    
+            return caixa;
+        }
     }
 }
 

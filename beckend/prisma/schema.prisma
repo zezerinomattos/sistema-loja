@@ -69,11 +69,11 @@ model Colaborador {
   secao_eleitoral String
   salario_base Float
   salario_liquido Float
-  complemento_salario Int // comissao
+  complemento_salario Int? // comissao em %
   adiantamento_salario Int?
-  bonificacao Float? @default(0) // campo para armazenar a bonificação adicional
+  bonificacao Float? @default(0) // campo para armazenar a bonificação adicional comissão ou quebra de caixa
   saldo_salario Float?
-  limite_credito Float
+  limite_credito Float? @default(0)
   data_admissao DateTime? @default(now())
   data_demisao DateTime?
   senha String
@@ -84,6 +84,7 @@ model Colaborador {
   usuario Usuario @relation(fields: [usuario_id], references: [id])
   order Order[]
   caixa Caixa []
+  quebraCaixa QuebraCaixa[]
 
   @@map("colaboradores")
 
@@ -297,6 +298,7 @@ model Caixa{
   retiradacaixa RetiradaCaixa[]
   entradacaixa EntradaCaixa[]
   entradacartao EntradaCartao[]
+  quebraCaixa QuebraCaixa[]
 
   @@map("caixas")
 
@@ -368,4 +370,20 @@ model EntradaCartao {
   @@map("entradas_cartao")
 
   caixa_id String
+}
+
+model QuebraCaixa {
+  id String @id @default(uuid())
+  data DateTime @default(now())
+  valor Float  //valor que tem em caixa
+  motivo String
+  obs String?
+
+  caixa Caixa @relation(fields: [caixa_id], references: [id])
+  colaborador Colaborador @relation(fields: [colaborador_id], references: [id])
+
+  @@map("quebras_caixa")
+
+  caixa_id String
+  colaborador_id String
 }

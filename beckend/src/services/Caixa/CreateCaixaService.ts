@@ -33,6 +33,7 @@ class CreateCaixaService{
             const caixa = await prismaClient.caixa.create({
                 data: {
                     valor_inicial: saldo_anterior,
+                    saldo: saldo_anterior,
                     obs: obs,
                     colaborador_id: colaborador_id,
                 },
