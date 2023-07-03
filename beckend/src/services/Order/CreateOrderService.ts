@@ -32,6 +32,20 @@ class CreateOrderService{
             throw new Error('Caixa fechado')
         }
 
+        // VERIFICANDO SE O COLABORADOR É GERENTE OU VENDEDOR
+        const colaborador = await prismaClient.colaborador.findUnique({
+            where:{
+                id: colaborado,
+            },
+            select: {
+                cargo: true,
+            }
+        })
+        
+        if(colaborador.cargo === 'CAIXA'){
+            throw new Error('Colaborador sem altorização para abrir um pedido');
+        }
+
         const order = await prismaClient.order.create({
             data: {
                 status: status,
