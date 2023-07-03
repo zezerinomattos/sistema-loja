@@ -4,7 +4,7 @@ interface RelatorioCaixa{
     caixa_id: string;
 }
 
-class CreateRelatorioFluxoCaixaService{
+class ListRelatorioFluxoCaixaService{
     async execute({ caixa_id }: RelatorioCaixa){
         const caixa = await prismaClient.caixa.findFirst({
             where: {
@@ -23,4 +23,4 @@ class CreateRelatorioFluxoCaixaService{
     }
 }
 
-export { CreateRelatorioFluxoCaixaService }
+export { ListRelatorioFluxoCaixaService }

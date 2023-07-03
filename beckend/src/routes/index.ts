@@ -66,8 +66,8 @@ import { CrateRetiradaCaixaController } from '../controllers/Caixa/CrateRetirada
 import { CreateEntradaCaixaController } from '../controllers/Caixa/CreateEntradaCaixaController';
 import { CreateQuebraCaixaController } from '../controllers/Caixa/CreateQuebraCaixaController';
 import { EditQuebraCaixaController } from '../controllers/Caixa/EditQuebraCaixaController';
-import { CreateRelatorioFluxoCaixaController } from '../controllers/Caixa/CreateRelatorioFluxoCaixaController';
-import { CreateRelatorioFluxoCaixaMesController } from '../controllers/Caixa/CreateRelatorioFluxoCaixaMesController';
+import { ListRelatorioFluxoCaixaController } from '../controllers/Caixa/ListRelatorioFluxoCaixaController';
+import { ListRelatorioFluxoCaixaMesController } from '../controllers/Caixa/ListRelatorioFluxoCaixaMesController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -153,7 +153,7 @@ router.post('/retirada/caixa', isAuthenticated, new CrateRetiradaCaixaController
 router.post('/entrada/caixa', isAuthenticated, new CreateEntradaCaixaController().handle);
 router.post('/quebra/caixa', isAuthenticated, new CreateQuebraCaixaController().handle);
 router.put('/edit/quebra/caixa', isAuthenticated, new EditQuebraCaixaController().handle);
-router.get('/fluxo/caixa/day', isAuthenticated, new CreateRelatorioFluxoCaixaController().handle);
-router.get('/fluxo/caixa/mes', isAuthenticated, new CreateRelatorioFluxoCaixaMesController().handle);
+router.get('/fluxo/caixa/day', isAuthenticated, new ListRelatorioFluxoCaixaController().handle);
+router.get('/fluxo/caixa/mes', isAuthenticated, new ListRelatorioFluxoCaixaMesController().handle);
 
 export { router };
