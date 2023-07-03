@@ -68,6 +68,8 @@ import { CreateQuebraCaixaController } from '../controllers/Caixa/CreateQuebraCa
 import { EditQuebraCaixaController } from '../controllers/Caixa/EditQuebraCaixaController';
 import { ListRelatorioFluxoCaixaController } from '../controllers/Caixa/ListRelatorioFluxoCaixaController';
 import { ListRelatorioFluxoCaixaMesController } from '../controllers/Caixa/ListRelatorioFluxoCaixaMesController';
+import { ListRelatorioFluxoCaixaFullController } from '../controllers/Caixa/ListRelatorioFluxoCaixaFullController';
+import { ListRelatorioFluxoCaixaDateController } from '../controllers/Caixa/ListRelatorioFluxoCaixaDateController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -155,5 +157,7 @@ router.post('/quebra/caixa', isAuthenticated, new CreateQuebraCaixaController().
 router.put('/edit/quebra/caixa', isAuthenticated, new EditQuebraCaixaController().handle);
 router.get('/fluxo/caixa/day', isAuthenticated, new ListRelatorioFluxoCaixaController().handle);
 router.get('/fluxo/caixa/mes', isAuthenticated, new ListRelatorioFluxoCaixaMesController().handle);
+router.get('/fluxo/caixa/full', isAuthenticated, new ListRelatorioFluxoCaixaFullController().handle);
+router.get('/fluxo/caixa/full/dates', isAuthenticated, new ListRelatorioFluxoCaixaDateController().handle);
 
 export { router };
