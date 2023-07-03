@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import { ListRelatorioFluxoCaixaDateService } from '../../services/Caixa/ListRelatorioFluxoCaixaDateService';
+import { ListRelatorioFluxoCaixaFullDateService } from '../../services/Caixa/ListRelatorioFluxoCaixaFullDateService';
 
-class ListRelatorioFluxoCaixaDateController{
+class ListRelatorioFluxoCaixaFullDateController{
     async handle(req: Request, res: Response){
         const { data_inicial, data_final } = req.body;
 
@@ -10,10 +10,10 @@ class ListRelatorioFluxoCaixaDateController{
         const dataInicial = new Date(data_inicial);
         const dataFinal = new Date(data_final);
 
-        const listRelatorioFluxoCaixaDateService = new ListRelatorioFluxoCaixaDateService;
+        const listRelatorioFluxoCaixaFullDateService = new ListRelatorioFluxoCaixaFullDateService;
 
         // convertido para poder testar no Insominia.
-        const relatorioCaixa = await listRelatorioFluxoCaixaDateService.execute({
+        const relatorioCaixa = await listRelatorioFluxoCaixaFullDateService.execute({
             data_inicial: dataInicial,
             data_final: dataFinal,
         });
@@ -22,4 +22,4 @@ class ListRelatorioFluxoCaixaDateController{
     }
 }
 
-export { ListRelatorioFluxoCaixaDateController }
+export { ListRelatorioFluxoCaixaFullDateController }

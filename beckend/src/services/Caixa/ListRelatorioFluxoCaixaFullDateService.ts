@@ -5,7 +5,7 @@ interface RelatorioFluxoCaixaRequest{
     data_final: Date;
 }
 
-class ListRelatorioFluxoCaixaDateService{
+class ListRelatorioFluxoCaixaFullDateService{
     async execute({ data_inicial, data_final }: RelatorioFluxoCaixaRequest){
         const caixas = await prismaClient.caixa.findMany({
             where: {
@@ -14,9 +14,12 @@ class ListRelatorioFluxoCaixaDateService{
                 lte: data_final,
               },
             },
+            orderBy: {
+                data_abertura: 'desc'
+            },
           });
         return caixas;
     }
 }
 
-export { ListRelatorioFluxoCaixaDateService }
+export { ListRelatorioFluxoCaixaFullDateService }

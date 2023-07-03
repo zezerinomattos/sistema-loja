@@ -69,7 +69,8 @@ import { EditQuebraCaixaController } from '../controllers/Caixa/EditQuebraCaixaC
 import { ListRelatorioFluxoCaixaController } from '../controllers/Caixa/ListRelatorioFluxoCaixaController';
 import { ListRelatorioFluxoCaixaMesController } from '../controllers/Caixa/ListRelatorioFluxoCaixaMesController';
 import { ListRelatorioFluxoCaixaFullController } from '../controllers/Caixa/ListRelatorioFluxoCaixaFullController';
-import { ListRelatorioFluxoCaixaDateController } from '../controllers/Caixa/ListRelatorioFluxoCaixaDateController';
+import { ListRelatorioFluxoCaixaFullDateController } from '../controllers/Caixa/ListRelatorioFluxoCaixaFullDateController';
+import { ListRelatorioFluxoMesDateController } from '../controllers/Caixa/ListRelatorioFluxoMesDateController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -158,6 +159,7 @@ router.put('/edit/quebra/caixa', isAuthenticated, new EditQuebraCaixaController(
 router.get('/fluxo/caixa/day', isAuthenticated, new ListRelatorioFluxoCaixaController().handle);
 router.get('/fluxo/caixa/mes', isAuthenticated, new ListRelatorioFluxoCaixaMesController().handle);
 router.get('/fluxo/caixa/full', isAuthenticated, new ListRelatorioFluxoCaixaFullController().handle);
-router.get('/fluxo/caixa/full/dates', isAuthenticated, new ListRelatorioFluxoCaixaDateController().handle);
+router.get('/fluxo/caixa/full/dates', isAuthenticated, new ListRelatorioFluxoCaixaFullDateController().handle);
+router.get('/fluxo/caixa/mes/dates', isAuthenticated, new ListRelatorioFluxoMesDateController().handle); // Rota de para caixa do colaborador.
 
 export { router };
