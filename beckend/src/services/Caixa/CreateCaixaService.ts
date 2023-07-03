@@ -21,6 +21,21 @@ class CreateCaixaService{
                 data_fechamento: 'desc',
             },
         });
+
+        // VERIFICANDO SE O COLABORADOR É GERENTE OU CAIXA
+        const colaborador = await prismaClient.colaborador.findUnique({
+            where:{
+                id: colaborador_id,
+            },
+            select: {
+                cargo: true,
+            }
+        })
+        
+        if(colaborador.cargo === 'VENDEDOR'){
+            throw new Error('Colaborador sem altorização para abrir um caixa');
+        }
+
         
         const saldo_anterior = caixaAnterior?.valor_final ?? 0;
         const statusCaixa = caixaAnterior?.status ?? false;
