@@ -71,6 +71,8 @@ import { ListRelatorioFluxoCaixaMesController } from '../controllers/Caixa/ListR
 import { ListRelatorioFluxoCaixaFullController } from '../controllers/Caixa/ListRelatorioFluxoCaixaFullController';
 import { ListRelatorioFluxoCaixaFullDateController } from '../controllers/Caixa/ListRelatorioFluxoCaixaFullDateController';
 import { ListRelatorioFluxoMesDateController } from '../controllers/Caixa/ListRelatorioFluxoMesDateController';
+import { ListRegistroCaixaController } from '../controllers/Caixa/ListRegistroCaixaController';
+import { ListRegistroCaixaColaboradorController } from '../controllers/Caixa/ListRegistroCaixaColaboradorController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -151,6 +153,8 @@ router.post('/caixa', isAuthenticated, new CreateCaixaController().handle);
 router.put('/close/caixa', isAuthenticated, new CloseCaixaController().handle);
 router.post('/registro/caixa', isAuthenticated, new CreateRegistroCaixaController().handle);
 router.put('/cancelar/registro', isAuthenticated, new CancelarRegistroCaixaController().handle);
+router.get('/registro/caixa', isAuthenticated, new ListRegistroCaixaController().handle);
+router.get('/registro/caixa/colaborador', isAuthenticated, new ListRegistroCaixaColaboradorController().handle);
 router.post('/entrada/cartao', isAuthenticated, new CreateEntradaCartaoController().handle);
 router.post('/retirada/caixa', isAuthenticated, new CrateRetiradaCaixaController().handle);
 router.post('/entrada/caixa', isAuthenticated, new CreateEntradaCaixaController().handle);
