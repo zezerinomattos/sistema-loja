@@ -16,7 +16,7 @@ class CreateRelatorioFluxoCaixaService{
                 retiradacaixa: true,
                 registrocaixa: true,
                 quebraCaixa: true,
-            }
+            },
         });
 
         return caixa;
