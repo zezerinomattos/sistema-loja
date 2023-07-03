@@ -376,7 +376,10 @@ model QuebraCaixa {
   id String @id @default(uuid())
   data DateTime @default(now())
   valor Float  //valor que tem em caixa
+  diferenca Float?
+  status Boolean @default(true)
   motivo String
+  motivo_reversao String?
   obs String?
 
   caixa Caixa @relation(fields: [caixa_id], references: [id])

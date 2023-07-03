@@ -29,7 +29,7 @@ class CreateRegistroCaixaService{
             },
         });
 
-        if(!valorOrder.id){
+        if(!valorOrder){
             throw new Error('Order não encontrada');
         }
 
@@ -85,7 +85,7 @@ class CreateRegistroCaixaService{
                     },
                 },
             });
-
+            
             // Incrementando valor de saldo na tabela Caixa
             const valorIncremento = valor_recebido - saldoTrocoCartao;
 

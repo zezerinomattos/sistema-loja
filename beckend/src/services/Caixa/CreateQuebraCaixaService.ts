@@ -32,7 +32,7 @@ class CreateQuebraCaixaService{
             },
         });
 
-        if(!caixa || !caixa.colaborador.id){
+        if(!caixa || !caixa.colaborador){
             throw new Error('Caixa ou Colaborador invalido');
         }
 
@@ -42,6 +42,7 @@ class CreateQuebraCaixaService{
             const quebra_caixa = await prismaClient.quebraCaixa.create({
                 data:{
                     valor,
+                    diferenca: valorQuebraCaixa,
                     motivo,
                     obs,
                     caixa_id,
@@ -80,6 +81,7 @@ class CreateQuebraCaixaService{
             const quebra_caixa = await prismaClient.quebraCaixa.create({
                 data:{
                     valor,
+                    diferenca: valorQuebraCaixa,
                     motivo,
                     obs,
                     caixa_id,
@@ -94,7 +96,7 @@ class CreateQuebraCaixaService{
                 },
                 data:{
                     saldo:{
-                        decrement: Math.abs(valorQuebraCaixa),
+                        increment: Math.abs(valorQuebraCaixa),
                     },
                 }
             });
