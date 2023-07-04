@@ -11,6 +11,7 @@ import { ListByNomeColabController } from '../controllers/Colaborador/ListByNome
 import { CreateHoleriteController } from '../controllers/Colaborador/CreateHoleriteController';
 import { ListFullHoleriteController } from '../controllers/Colaborador/ListFullHoleriteController';
 import { ListHoleriteColaboradorFilterController } from '../controllers/Colaborador/ListHoleriteColaboradorFilterController';
+import { DetailHoleriteController } from '../controllers/Colaborador/DetailHoleriteController';
 
 import { CreateClienteController } from '../controllers/Cliente/CreateClienteController';
 import { DetailClienteController } from '../controllers/Cliente/DetailClienteController';
@@ -100,6 +101,7 @@ router.get('/nome/colaborador', isAuthenticated, new ListByNomeColabController()
 router.post('/holerite', isAuthenticated, new CreateHoleriteController().handle);
 router.get('/holerite', isAuthenticated, new ListFullHoleriteController().handle);
 router.get('/holerite/filter/colaborador', isAuthenticated, new ListHoleriteColaboradorFilterController().handle);
+router.get('/holerite/detail', isAuthenticated, new DetailHoleriteController().handle);
 
 // -- ROTAS LOGIN --
 router.post('/login', new AuthColaboradorController().handle);
