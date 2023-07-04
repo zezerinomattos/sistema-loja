@@ -110,8 +110,36 @@ class CreateRegistroCaixaService{
                 where: {id: order_id},
                 data:{status: true}
             });
+
+            // Incrementando a comisão do colaborador
+            const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
+            const colaborador = await prismaClient.colaborador.update({
+                where:{
+                    id: valorOrder.colaborado.id,
+                },
+                data:{
+                    bonificacao: comissaoColaborador,
+                },
+                select:{
+                    id: true,
+                    bonificacao: true,
+                    usuario:{
+                        select: {
+                            nome: true,
+                        },
+                    },
+                },
+            });
+
+            // Trazendo para criar o comprovante de pagamento do cliente
+            const itemsOrder = await prismaClient.order.findFirst({
+                where: {id: order_id},
+                select:{
+                    items: true,
+                },
+            });
     
-            return { registroCaixa, order, caixa}
+            return { registroCaixa, order, caixa, colaborador, itemsOrder}
 
         }else{
 
@@ -166,9 +194,26 @@ class CreateRegistroCaixaService{
                 data:{
                     bonificacao: comissaoColaborador,
                 },
+                select:{
+                    id: true,
+                    bonificacao: true,
+                    usuario:{
+                        select: {
+                            nome: true,
+                        },
+                    },
+                },
             });
 
-            return { registroCaixa, order, caixa, colaborador}
+            // Trazendo para criar o comprovante de pagamento do cliente
+            const itemsOrder = await prismaClient.order.findFirst({
+                where: {id: order_id},
+                select:{
+                    items: true,
+                },
+            });
+
+            return { registroCaixa, order, caixa, colaborador, itemsOrder}
 
         }
         
