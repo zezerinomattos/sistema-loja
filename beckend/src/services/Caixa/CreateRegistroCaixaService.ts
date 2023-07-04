@@ -26,6 +26,14 @@ class CreateRegistroCaixaService{
                 valor_pagar: true,
                 status: true,
                 draft: true,
+
+                colaborado:{
+                    select: {
+                        id: true,
+                        complemento_salario: true,
+                        bonificacao: true
+                    },
+                },
             },
         });
 
@@ -149,7 +157,18 @@ class CreateRegistroCaixaService{
                 data:{status: true}
             });
 
-            return { registroCaixa, order, caixa}
+            // Incrementando a comisão do colaborador
+            const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
+            const colaborador = await prismaClient.colaborador.update({
+                where:{
+                    id: valorOrder.colaborado.id,
+                },
+                data:{
+                    bonificacao: comissaoColaborador,
+                },
+            });
+
+            return { registroCaixa, order, caixa, colaborador}
 
         }
         
