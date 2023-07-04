@@ -68,10 +68,11 @@ model Colaborador {
   zona_eleitoral String
   secao_eleitoral String
   salario_base Float
-  salario_liquido Float
+  //salario_liquido Float
   complemento_salario Int? // comissao em %
-  adiantamento_salario Int?
+  //adiantamento_salario Int?
   bonificacao Float? @default(0) // campo para armazenar a bonificação adicional comissão ou quebra de caixa
+  quebra_caixa Float? @default(0)
   saldo_salario Float?
   limite_credito Float? @default(0)
   data_admissao DateTime? @default(now())
@@ -85,6 +86,7 @@ model Colaborador {
   order Order[]
   caixa Caixa []
   quebraCaixa QuebraCaixa[]
+  holerite Holerite[]
 
   @@map("colaboradores")
 
@@ -389,4 +391,27 @@ model QuebraCaixa {
 
   caixa_id String
   colaborador_id String
+}
+
+model Holerite {
+  id        String      @id @default(uuid())
+  situacao Boolean
+  colaborador_nome String
+  cpf String
+  email String?
+  celular String?
+  mes        DateTime
+  salario    Float
+  descontos  Float
+  bonus      Float
+  quebra_caixa Float?
+  liquido    Float
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
+
+  colaborador Colaborador @relation(fields: [colaboradorId], references: [id])
+
+  @@map("holerite")
+
+  colaboradorId String
 }

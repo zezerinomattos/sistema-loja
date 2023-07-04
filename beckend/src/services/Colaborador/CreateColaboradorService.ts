@@ -30,10 +30,9 @@ interface ColaboradorRequest {
     zona_eleitoral: string
     secao_eleitoral: string;
     salario_base: number;
-    salario_liquido: number;
     complemento_salario: number;
     bonificacao: number;
-    adiantamento_salario: number;
+    quebra_caixa: number;
     saldo_salario: number;
     limite_credito: number;
     data_admissao: Date;
@@ -44,7 +43,7 @@ interface ColaboradorRequest {
 
 class CreateColaboradorService {
     async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, 
-        situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, salario_liquido, complemento_salario, bonificacao, adiantamento_salario, saldo_salario, limite_credito, data_admissao, data_demisao, senha, obs }: ColaboradorRequest){
+        situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, complemento_salario, bonificacao, quebra_caixa, saldo_salario, limite_credito, data_admissao, data_demisao, senha, obs }: ColaboradorRequest){
 
         //Verificando se tem cpf digitado
         if(!cpf || cpf.length !== 11){
@@ -109,10 +108,9 @@ class CreateColaboradorService {
                 zona_eleitoral: zona_eleitoral,
                 secao_eleitoral: secao_eleitoral,
                 salario_base: salario_base,
-                salario_liquido: salario_liquido,
                 complemento_salario: complemento_salario,
                 bonificacao: bonificacao,
-                adiantamento_salario: adiantamento_salario,
+                quebra_caixa: quebra_caixa,
                 saldo_salario: saldo_salario,
                 limite_credito: limite_credito,
                 data_admissao: data_admissao,

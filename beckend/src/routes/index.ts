@@ -8,6 +8,7 @@ import { DetailColaboradorController } from '../controllers/Colaborador/DetailCo
 import { ListColaboradorController } from '../controllers/Colaborador/ListColaboradorController';
 import { EditColaboradorController } from '../controllers/Colaborador/EditColaboradorController';
 import { ListByNomeColabController } from '../controllers/Colaborador/ListByNomeColabController';
+import { CreateHoleriteController } from '../controllers/Colaborador/CreateHoleriteController';
 
 import { CreateClienteController } from '../controllers/Cliente/CreateClienteController';
 import { DetailClienteController } from '../controllers/Cliente/DetailClienteController';
@@ -94,6 +95,7 @@ router.get('/colaborador', isAuthenticated, new ListColaboradorController().hand
 router.get('/colaborador/detail', isAuthenticated, new DetailColaboradorController().handle);
 router.put('/colaborador/edit', isAuthenticated, upload.single('file'), new EditColaboradorController().handle);
 router.get('/nome/colaborador', isAuthenticated, new ListByNomeColabController().handle);
+router.post('/holerite', isAuthenticated, new CreateHoleriteController().handle);
 
 // -- ROTAS LOGIN --
 router.post('/login', new AuthColaboradorController().handle);
