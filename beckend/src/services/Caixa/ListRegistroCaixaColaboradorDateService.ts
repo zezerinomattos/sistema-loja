@@ -9,6 +9,11 @@ interface RegistroCaixaRequest{
 // LISTANDO COLABORADOR PELO ID E POR UM PERÍODO DE TEMPO
 class ListRegistroCaixaColaboradorDateService{
     async execute({ colaborador_id, data_inicial, data_final }: RegistroCaixaRequest){
+
+        if(!colaborador_id){
+            throw new Error('Informe o ID do Colaborador');
+        }
+
         const registroCaixa = await prismaClient.registroCaixa.findMany({
             where: {
                 caixa:{

@@ -8,6 +8,11 @@ interface RegistroCaixaRequest{
 
 class ListRegistroCaixaColaboradorNomeDateService{
     async execute({ nome_colaborador, data_inicial, data_final }: RegistroCaixaRequest){
+
+        if(!nome_colaborador){
+            throw new Error('Informe o nome do colaborador');
+        }
+
         const registroCaixa = await prismaClient.registroCaixa.findMany({
             where: {
                 caixa:{
