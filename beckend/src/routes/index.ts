@@ -55,7 +55,8 @@ import { SendOrderController } from '../controllers/Order/SendOrderController';
 import { ListOrderController } from '../controllers/Order/ListOrderController';
 import { ListDraftOrderController } from '../controllers/Order/ListDraftOrderController';
 import { DetailOrderController } from '../controllers/Order/DetailOrderController';
-import { FullListOrderController } from '../controllers/Order/FullListOrderController';
+import { ListFullOrderController } from '../controllers/Order/ListFullOrderController';
+import { ListFullOrderDateController } from '../controllers/Order/ListFullOrderDateController';
 
 import { CreateCaixaController } from '../controllers/Caixa/CreateCaixaController';
 import { CloseCaixaController } from '../controllers/Caixa/CloseCaixaController';
@@ -149,7 +150,8 @@ router.put('/send/order', isAuthenticated, new SendOrderController().handle);
 router.get('/order', isAuthenticated, new ListOrderController().handle);
 router.get('/draft/order', isAuthenticated, new ListDraftOrderController().handle);
 router.get('/detail/order', isAuthenticated, new DetailOrderController().handle);
-router.get('/full/order', isAuthenticated, new FullListOrderController().handle);
+router.get('/full/order', isAuthenticated, new ListFullOrderController().handle);
+router.get('/full/order/date', isAuthenticated, new ListFullOrderDateController().handle);
 
 // -- ROTAS CAIXA --
 router.post('/caixa', isAuthenticated, new CreateCaixaController().handle);

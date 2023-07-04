@@ -1,6 +1,6 @@
 import prismaClient from "../../prisma";
 
-class FullListOrderService{
+class ListFullOrderService{
     async execute(){
         const fullListOrder = await prismaClient.order.findMany({
             orderBy: {
@@ -12,4 +12,4 @@ class FullListOrderService{
     }
 }
 
-export { FullListOrderService }
+export { ListFullOrderService }
