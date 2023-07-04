@@ -1,12 +1,12 @@
 import prismaClient from "../../prisma";
 
 interface OrderRequest{
-    draft?: boolean;
+    draft: boolean;
     data_inicial: Date;
     data_final: Date;
 }
 
-class ListOrderFilterDraftDateService{
+class ListFullOrderFilterDraftDateService{
     async execute({ data_inicial, data_final, draft }: OrderRequest){
 
         const order = await prismaClient.order.findMany({
@@ -21,7 +21,8 @@ class ListOrderFilterDraftDateService{
                 created_at: 'desc',
             },
         });
+        return order;
     }
 }
 
-export { ListOrderFilterDraftDateService }
+export { ListFullOrderFilterDraftDateService }
