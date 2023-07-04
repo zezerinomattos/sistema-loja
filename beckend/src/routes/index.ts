@@ -73,6 +73,7 @@ import { ListRelatorioFluxoCaixaFullDateController } from '../controllers/Caixa/
 import { ListRelatorioFluxoMesDateController } from '../controllers/Caixa/ListRelatorioFluxoMesDateController';
 import { ListRegistroCaixaController } from '../controllers/Caixa/ListRegistroCaixaController';
 import { ListRegistroCaixaColaboradorController } from '../controllers/Caixa/ListRegistroCaixaColaboradorController';
+import { ListRegistroCaixaColaboradorNomeController } from '../controllers/Caixa/ListRegistroCaixaColaboradorNomeController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -155,6 +156,7 @@ router.post('/registro/caixa', isAuthenticated, new CreateRegistroCaixaControlle
 router.put('/cancelar/registro', isAuthenticated, new CancelarRegistroCaixaController().handle);
 router.get('/registro/caixa', isAuthenticated, new ListRegistroCaixaController().handle);
 router.get('/registro/caixa/colaborador', isAuthenticated, new ListRegistroCaixaColaboradorController().handle);
+router.get('/registro/caixa/colaborador/nome', isAuthenticated, new ListRegistroCaixaColaboradorNomeController().handle);
 router.post('/entrada/cartao', isAuthenticated, new CreateEntradaCartaoController().handle);
 router.post('/retirada/caixa', isAuthenticated, new CrateRetiradaCaixaController().handle);
 router.post('/entrada/caixa', isAuthenticated, new CreateEntradaCaixaController().handle);
