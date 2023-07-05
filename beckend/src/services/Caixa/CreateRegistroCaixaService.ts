@@ -50,279 +50,285 @@ class CreateRegistroCaixaService{
             throw new Error('Order em rascunho');
         }
 
-        // CARTÃO ---------------------------------------------
-
-        if(forma_pagamento === "CARTÃO"){
+        try {
             
-            if (!entradacartao_id) {
-                throw new Error("Informe o ID de entrada de cartão");
-            }
+            // CARTÃO ---------------------------------------------
 
-            const valorCartao = await prismaClient.entradaCartao.findUnique({
-                where: {id: entradacartao_id},
-                select:{valor_entrada: true},
-            });
-
-            if (!valorCartao) {
-                throw new Error("Entrada de cartão não encontrada");
-            }
-
-            // Calculando valor cartão + dinheiro
-            const trocoCartao = valorCartao.valor_entrada + valor_recebido;
-
-            let saldoTrocoCartao = trocoCartao - valorOrder.valor_pagar;
-            if(saldoTrocoCartao < 0){
-                saldoTrocoCartao = 0;
-            }
-
-            if(forma_pagamento === "CARTÃO" && trocoCartao < valorOrder.valor_pagar){
-                throw new Error('Valor invalido');
-            }
-
-            const registroCaixa = await prismaClient.registroCaixa.create({
-                data:{
-                    order_id: order_id,
-                    valor_recebido: trocoCartao,
-                    troco: saldoTrocoCartao,
-                    forma_pagamento: forma_pagamento,
-                    plataforma_pagamento: bandera_pagamento,
-                    obs: obs,
-                    status: true,
-                    caixa:{
-                        connect:{id: caixa_id}
-                    },
-                    entradacartao:{
-                        connect:{id: entradacartao_id}
-                    },
-                },
-            });
-            
-            // Incrementando valor de saldo na tabela Caixa
-            const valorIncremento = valor_recebido - saldoTrocoCartao;
-
-            const caixa = await prismaClient.caixa.update({
-                where: {id: caixa_id},
-                data: {
-                    saldo:{
-                        increment: valorIncremento,
-                    },
-                },
-            });
-
-            const order = await prismaClient.order.update({
-                where: {id: order_id},
-                data:{status: true}
-            });
-
-            // Incrementando a comisão do colaborador
-            const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
-            const colaborador = await prismaClient.colaborador.update({
-                where:{
-                    id: valorOrder.colaborado.id,
-                },
-                data:{
-                    bonificacao: comissaoColaborador,
-                },
-                select:{
-                    id: true,
-                    bonificacao: true,
-                    usuario:{
-                        select: {
-                            nome: true,
-                        },
-                    },
-                },
-            });
-
-            // Trazendo para criar o comprovante de pagamento do cliente
-            const itemsOrder = await prismaClient.order.findFirst({
-                where: {id: order_id},
-                select:{
-                    items: true,
-                },
-            });
-    
-            return { registroCaixa, order, caixa, colaborador, itemsOrder}
-
-        }
-
-        // DINHEIRO ---------------------------------------------
-
-        if(forma_pagamento === "DINHEIRO"){
-
-            if(valor_recebido < valorOrder.valor_pagar){
-                throw new Error('Valor invalido');
-            }
-    
-            // Calculando o troco em dinheiro
-            let saldoTroco = valor_recebido - valorOrder.valor_pagar;
-            if( saldoTroco < 0){
-                saldoTroco = 0;
-            }
-
-            const registroCaixa = await prismaClient.registroCaixa.create({
-                data:{
-                    order_id: order_id,
-                    valor_recebido: valor_recebido,
-                    troco: saldoTroco,
-                    forma_pagamento: forma_pagamento,
-                    plataforma_pagamento: bandera_pagamento,
-                    obs: obs,
-                    status: true,
-                    caixa:{
-                        connect:{id: caixa_id}
-                    },
-                },
-            });
-
-            // Incrementando valor de saldo na tabela Caixa
-            const valorIncremento = valor_recebido - saldoTroco;
-
-            const caixa = await prismaClient.caixa.update({
-                where: {id: caixa_id},
-                data: {
-                    saldo:{
-                        increment: valorIncremento,
-                    }
+            if(forma_pagamento === "CARTÃO"){
+                
+                if (!entradacartao_id) {
+                    throw new Error("Informe o ID de entrada de cartão");
                 }
-            })
 
-            const order = await prismaClient.order.update({
-                where: {id: order_id},
-                data:{status: true}
-            });
+                const valorCartao = await prismaClient.entradaCartao.findUnique({
+                    where: {id: entradacartao_id},
+                    select:{valor_entrada: true},
+                });
 
-            // Incrementando a comisão do colaborador
-            const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
-            const colaborador = await prismaClient.colaborador.update({
-                where:{
-                    id: valorOrder.colaborado.id,
-                },
-                data:{
-                    bonificacao: comissaoColaborador,
-                },
-                select:{
-                    id: true,
-                    bonificacao: true,
-                    usuario:{
-                        select: {
-                            nome: true,
+                if (!valorCartao) {
+                    throw new Error("Entrada de cartão não encontrada");
+                }
+
+                // Calculando valor cartão + dinheiro
+                const trocoCartao = valorCartao.valor_entrada + valor_recebido;
+
+                let saldoTrocoCartao = trocoCartao - valorOrder.valor_pagar;
+                if(saldoTrocoCartao < 0){
+                    saldoTrocoCartao = 0;
+                }
+
+                if(forma_pagamento === "CARTÃO" && trocoCartao < valorOrder.valor_pagar){
+                    throw new Error('Valor invalido');
+                }
+
+                const registroCaixa = await prismaClient.registroCaixa.create({
+                    data:{
+                        order_id: order_id,
+                        valor_recebido: trocoCartao,
+                        troco: saldoTrocoCartao,
+                        forma_pagamento: forma_pagamento,
+                        plataforma_pagamento: bandera_pagamento,
+                        obs: obs,
+                        status: true,
+                        caixa:{
+                            connect:{id: caixa_id}
+                        },
+                        entradacartao:{
+                            connect:{id: entradacartao_id}
                         },
                     },
-                },
-            });
+                });
+                
+                // Incrementando valor de saldo na tabela Caixa
+                const valorIncremento = valor_recebido - saldoTrocoCartao;
 
-            // Trazendo para criar o comprovante de pagamento do cliente
-            const itemsOrder = await prismaClient.order.findFirst({
-                where: {id: order_id},
-                select:{
-                    items: true,
-                },
-            });
-
-            return { registroCaixa, order, caixa, colaborador, itemsOrder}
-
-        }
-
-        // CREDIARIO ---------------------------------------------
-
-        if(forma_pagamento === "CREDIARIO"){
-            if (!crediario_id) {
-                throw new Error("Informe o ID de entrada de CREDIÁRIO");
-            }
-
-            const valorCrediario = await prismaClient.crediario.findUnique({
-                where: {id: crediario_id},
-                select:{valorTotal: true},
-            });
-
-            if (!valorCrediario) {
-                throw new Error("Entrada de cartão não encontrada");
-            }
-
-            // Calculando valor crediario + dinheiro
-            const trocoCrediario = valorCrediario.valorTotal + valor_recebido;
-
-            let saldoTrocoCrediario = trocoCrediario - valorOrder.valor_pagar;
-            if(saldoTrocoCrediario < 0){
-                saldoTrocoCrediario = 0;
-            }
-
-            if(forma_pagamento === "CREDIARIO" && trocoCrediario < valorOrder.valor_pagar){
-                throw new Error('Valor invalido');
-            }
-
-            const registroCaixa = await prismaClient.registroCaixa.create({
-                data:{
-                    order_id: order_id,
-                    valor_recebido: trocoCrediario,
-                    troco: saldoTrocoCrediario,
-                    forma_pagamento: forma_pagamento,
-                    plataforma_pagamento: bandera_pagamento,
-                    obs: obs,
-                    status: true,
-                    caixa:{
-                        connect:{id: caixa_id}
-                    },
-                    crediario:{
-                        connect:{id: crediario_id}
-                    },
-                },
-            });
-            
-            // Incrementando valor de saldo na tabela Caixa
-            const valorIncremento = valor_recebido - saldoTrocoCrediario;
-
-            const caixa = await prismaClient.caixa.update({
-                where: {id: caixa_id},
-                data: {
-                    saldo:{
-                        increment: valorIncremento,
-                    },
-                },
-            });
-
-            const order = await prismaClient.order.update({
-                where: {id: order_id},
-                data:{status: true}
-            });
-
-            // Incrementando a comisão do colaborador
-            const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
-            const colaborador = await prismaClient.colaborador.update({
-                where:{
-                    id: valorOrder.colaborado.id,
-                },
-                data:{
-                    bonificacao: comissaoColaborador,
-                },
-                select:{
-                    id: true,
-                    bonificacao: true,
-                    usuario:{
-                        select: {
-                            nome: true,
+                const caixa = await prismaClient.caixa.update({
+                    where: {id: caixa_id},
+                    data: {
+                        saldo:{
+                            increment: valorIncremento,
                         },
                     },
-                },
-            });
+                });
 
-            // Trazendo para criar o comprovante de pagamento do cliente
-            const itemsOrder = await prismaClient.order.findFirst({
-                where: {id: order_id},
-                select:{
-                    items: true,
-                    crediario:{
-                        select:{
-                            id: true,
-                            parcelasCrediario: true,
-                            dataVencimento: true,
+                const order = await prismaClient.order.update({
+                    where: {id: order_id},
+                    data:{status: true}
+                });
+
+                // Incrementando a comisão do colaborador
+                const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
+                const colaborador = await prismaClient.colaborador.update({
+                    where:{
+                        id: valorOrder.colaborado.id,
+                    },
+                    data:{
+                        bonificacao: comissaoColaborador,
+                    },
+                    select:{
+                        id: true,
+                        bonificacao: true,
+                        usuario:{
+                            select: {
+                                nome: true,
+                            },
                         },
                     },
-                },
-            });
-    
-            return { registroCaixa, order, caixa, colaborador, itemsOrder}
+                });
+
+                // Trazendo para criar o comprovante de pagamento do cliente
+                const itemsOrder = await prismaClient.order.findFirst({
+                    where: {id: order_id},
+                    select:{
+                        items: true,
+                    },
+                });
+        
+                return { registroCaixa, order, caixa, colaborador, itemsOrder}
+
+            }
+
+            // DINHEIRO ---------------------------------------------
+
+            if(forma_pagamento === "DINHEIRO"){
+
+                if(valor_recebido < valorOrder.valor_pagar){
+                    throw new Error('Valor invalido');
+                }
+        
+                // Calculando o troco em dinheiro
+                let saldoTroco = valor_recebido - valorOrder.valor_pagar;
+                if( saldoTroco < 0){
+                    saldoTroco = 0;
+                }
+
+                const registroCaixa = await prismaClient.registroCaixa.create({
+                    data:{
+                        order_id: order_id,
+                        valor_recebido: valor_recebido,
+                        troco: saldoTroco,
+                        forma_pagamento: forma_pagamento,
+                        plataforma_pagamento: bandera_pagamento,
+                        obs: obs,
+                        status: true,
+                        caixa:{
+                            connect:{id: caixa_id}
+                        },
+                    },
+                });
+
+                // Incrementando valor de saldo na tabela Caixa
+                const valorIncremento = valor_recebido - saldoTroco;
+
+                const caixa = await prismaClient.caixa.update({
+                    where: {id: caixa_id},
+                    data: {
+                        saldo:{
+                            increment: valorIncremento,
+                        }
+                    }
+                })
+
+                const order = await prismaClient.order.update({
+                    where: {id: order_id},
+                    data:{status: true}
+                });
+
+                // Incrementando a comisão do colaborador
+                const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
+                const colaborador = await prismaClient.colaborador.update({
+                    where:{
+                        id: valorOrder.colaborado.id,
+                    },
+                    data:{
+                        bonificacao: comissaoColaborador,
+                    },
+                    select:{
+                        id: true,
+                        bonificacao: true,
+                        usuario:{
+                            select: {
+                                nome: true,
+                            },
+                        },
+                    },
+                });
+
+                // Trazendo para criar o comprovante de pagamento do cliente
+                const itemsOrder = await prismaClient.order.findFirst({
+                    where: {id: order_id},
+                    select:{
+                        items: true,
+                    },
+                });
+
+                return { registroCaixa, order, caixa, colaborador, itemsOrder}
+
+            }
+
+            // CREDIARIO ---------------------------------------------
+
+            if(forma_pagamento === "CREDIARIO"){
+                if (!crediario_id) {
+                    throw new Error("Informe o ID de entrada de CREDIÁRIO");
+                }
+
+                const valorCrediario = await prismaClient.crediario.findUnique({
+                    where: {id: crediario_id},
+                    select:{valorTotal: true},
+                });
+
+                if (!valorCrediario) {
+                    throw new Error("Entrada de cartão não encontrada");
+                }
+
+                // Calculando valor crediario + dinheiro
+                const trocoCrediario = valorCrediario.valorTotal + valor_recebido;
+
+                let saldoTrocoCrediario = trocoCrediario - valorOrder.valor_pagar;
+                if(saldoTrocoCrediario < 0){
+                    saldoTrocoCrediario = 0;
+                }
+
+                if(forma_pagamento === "CREDIARIO" && trocoCrediario < valorOrder.valor_pagar){
+                    throw new Error('Valor invalido');
+                }
+
+                const registroCaixa = await prismaClient.registroCaixa.create({
+                    data:{
+                        order_id: order_id,
+                        valor_recebido: trocoCrediario,
+                        troco: saldoTrocoCrediario,
+                        forma_pagamento: forma_pagamento,
+                        plataforma_pagamento: bandera_pagamento,
+                        obs: obs,
+                        status: true,
+                        caixa:{
+                            connect:{id: caixa_id}
+                        },
+                        crediario:{
+                            connect:{id: crediario_id}
+                        },
+                    },
+                });
+                
+                // Incrementando valor de saldo na tabela Caixa
+                const valorIncremento = valor_recebido - saldoTrocoCrediario;
+
+                const caixa = await prismaClient.caixa.update({
+                    where: {id: caixa_id},
+                    data: {
+                        saldo:{
+                            increment: valorIncremento,
+                        },
+                    },
+                });
+
+                const order = await prismaClient.order.update({
+                    where: {id: order_id},
+                    data:{status: true}
+                });
+
+                // Incrementando a comisão do colaborador
+                const comissaoColaborador = (valorOrder.colaborado.complemento_salario / 100) * valorOrder.valor_pagar;
+                const colaborador = await prismaClient.colaborador.update({
+                    where:{
+                        id: valorOrder.colaborado.id,
+                    },
+                    data:{
+                        bonificacao: comissaoColaborador,
+                    },
+                    select:{
+                        id: true,
+                        bonificacao: true,
+                        usuario:{
+                            select: {
+                                nome: true,
+                            },
+                        },
+                    },
+                });
+
+                // Trazendo para criar o comprovante de pagamento do cliente
+                const itemsOrder = await prismaClient.order.findFirst({
+                    where: {id: order_id},
+                    select:{
+                        items: true,
+                        crediario:{
+                            select:{
+                                id: true,
+                                parcelasCrediario: true,
+                                dataVencimento: true,
+                            },
+                        },
+                    },
+                });
+        
+                return { registroCaixa, order, caixa, colaborador, itemsOrder}
+            }
+
+        } catch (error) {
+            console.log(error);
         }
         
     }

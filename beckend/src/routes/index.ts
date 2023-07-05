@@ -86,6 +86,7 @@ import { ListRegistroCaixaColaboradorNomeDateController } from '../controllers/C
 import { ListRegistroCaixaColaboradorDateController } from '../controllers/Caixa/ListRegistroCaixaColaboradorDateController';
 
 import { CreateCrediarioController } from '../controllers/Crediario/CreateCrediarioController';
+import { DetailCrediarioController } from '../controllers/Crediario/DetailCrediarioController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -191,5 +192,6 @@ router.get('/fluxo/caixa/full/dates', isAuthenticated, new ListRelatorioFluxoCai
 router.get('/fluxo/caixa/mes/dates', isAuthenticated, new ListRelatorioFluxoMesDateController().handle); // Rota de para caixa do colaborador.
 
 router.post('/crediario', isAuthenticated, new CreateCrediarioController().handle);
+router.get('/detail/crediario', isAuthenticated, new DetailCrediarioController().handle);
 
 export { router };

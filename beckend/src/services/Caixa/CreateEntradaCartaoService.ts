@@ -11,18 +11,24 @@ interface EntradaCartaoRequest{
 
 class CreateEntradaCartaoService{
     async execute({ colaborador_id, valor_entrada, motivo, obs, cliente_paga_juros, caixa_id }: EntradaCartaoRequest){
-        const entradaCartao = await prismaClient.entradaCartao.create({
-            data: {
-                colaborador_id,
-                valor_entrada,
-                motivo,
-                obs,
-                cliente_paga_juros,
-                caixa_id,
-            }
-        });
+        try {
+            
+            const entradaCartao = await prismaClient.entradaCartao.create({
+                data: {
+                    colaborador_id,
+                    valor_entrada,
+                    motivo,
+                    obs,
+                    cliente_paga_juros,
+                    caixa_id,
+                }
+            });
+    
+            return entradaCartao;
 
-        return entradaCartao;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
