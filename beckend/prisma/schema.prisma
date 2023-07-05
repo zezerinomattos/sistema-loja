@@ -115,6 +115,7 @@ model Cliente {
   
   usuario Usuario @relation(fields: [usuario_id], references: [id])
   order Order[]
+  crediario Crediario[]
 
   @@map("clientes")
 
@@ -258,6 +259,8 @@ model Order{
 
   @@map("orders")
   items Item[]
+  crediario Crediario[]
+
   cliente_id String
   colaborador_id String
   caixa_id String
@@ -301,6 +304,7 @@ model Caixa{
   entradacaixa EntradaCaixa[]
   entradacartao EntradaCartao[]
   quebraCaixa QuebraCaixa[]
+  crediario Crediario[]
 
   @@map("caixas")
 
@@ -320,11 +324,13 @@ model RegistroCaixa{
 
   caixa Caixa @relation(fields: [caixa_id], references: [id])
   entradacartao EntradaCartao? @relation(fields: [entradacartao_id], references: [id])
+  crediario Crediario? @relation(fields: [crediario_id], references: [id])
 
   @@map("registrocaixas")
 
   caixa_id String
   entradacartao_id String?
+  crediario_id String?
 }
 
 model RetiradaCaixa{
@@ -414,4 +420,48 @@ model Holerite {
   @@map("holerite")
 
   colaboradorId String
+}
+
+model Crediario {
+  id String        @id @default(uuid())
+  valorTotal Float //Valor total a pagar
+  quantidadeParcelas Int //QTD de parcelas
+  valorParcela Float
+  dataVencimento DateTime[]
+  status String @default("ABERTO") // Pode ser um enum com valores como "pendente", "pago", "atrasado", etc.
+  taxas_juros Int? // Valor parcelado
+  prazos String?
+  obs String?
+
+  cliente Cliente @relation(fields: [cliente_id], references: [id])
+  order Order @relation(fields: [order_id], references: [id])
+  caixa Caixa @relation(fields: [caixa_id], references: [id])
+
+  parcelasCrediario ParcelaCrediario[]
+  registroCaixa RegistroCaixa[]
+
+  @@map("crediarios")
+
+  cliente_id String
+  order_id String
+  caixa_id String
+}
+
+model ParcelaCrediario {
+  id String @id @default(uuid())
+  status Boolean @default(true)
+  numeroParcela Int  //Número da parcela.
+  valorParcela  Float //Valor da parcela
+  dataVencimento DateTime //Data de vencimento da parcela.
+  dataPagamento DateTime? //Data em que a parcela foi efetivamente paga.
+  valorPago Float? //Valor pago na parcela
+  formaPagamento String? //Forma de pagamento utilizada para pagar a parcela
+  taxas_juros Int? //Taxa de juros por atrazar a parcela
+  obs String?
+  
+  crediario Crediario @relation(fields: [crediario_id], references: [id])
+
+  @@map("parcelas_crediario")
+
+  crediario_id String
 }

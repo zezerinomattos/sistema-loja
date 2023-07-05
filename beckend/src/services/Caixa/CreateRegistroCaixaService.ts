@@ -8,6 +8,7 @@ interface RegistroCaixaRequest{
     obs?: string;
     caixa_id: string;
     entradacartao_id?: string;
+    crediario_id?: string
 }
 
 class CreateRegistroCaixaService{
