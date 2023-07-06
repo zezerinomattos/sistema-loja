@@ -124,6 +124,9 @@ class CreateRegistroCaixaService{
                     },
                     data:{
                         bonificacao: comissaoColaborador,
+                        total_vendas_mes: {
+                            increment: valorOrder.valor_pagar,
+                        }
                     },
                     select:{
                         id: true,
@@ -202,6 +205,9 @@ class CreateRegistroCaixaService{
                     },
                     data:{
                         bonificacao: comissaoColaborador,
+                        total_vendas_mes: {
+                            increment: valorOrder.valor_pagar,
+                        }
                     },
                     select:{
                         id: true,
@@ -297,6 +303,9 @@ class CreateRegistroCaixaService{
                     },
                     data:{
                         bonificacao: comissaoColaborador,
+                        total_vendas_mes: {
+                            increment: valorOrder.valor_pagar,
+                        }
                     },
                     select:{
                         id: true,
