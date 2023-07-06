@@ -99,6 +99,7 @@ import { DetailContaController } from '../controllers/ContasPagar/DetailContaCon
 import { ListFullContaController } from '../controllers/ContasPagar/ListFullContaController';
 import { ListContasByDateController } from '../controllers/ContasPagar/ListContasByDateController';
 import { ListContasByStatusController } from '../controllers/ContasPagar/ListContasByStatusController';
+import { ListContasByCategoriaController } from '../controllers/ContasPagar/ListContasByCategoriaController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -219,6 +220,7 @@ router.get('/detail/conta', isAuthenticated, new DetailContaController().handle)
 router.get('/conta', isAuthenticated, new ListFullContaController().handle);
 router.get('/date/conta', isAuthenticated, new ListContasByDateController().handle);
 router.get('/status/conta', isAuthenticated, new ListContasByStatusController().handle);
+router.get('/categoria/conta', isAuthenticated, new ListContasByCategoriaController().handle);
 
 
 export { router };

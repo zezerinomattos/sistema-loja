@@ -488,7 +488,7 @@ model ContaAPagar {
   nome      String   // Nome da conta (exemplo: água, luz, internet, etc.)
   valor     Float    // Valor a ser pago
   dataVencimento DateTime // Data de vencimento da conta
-  categoria String   // Categoria da conta (exemplo: despesas fixas, compras, etc.)
+  categoria String   // Categoria da conta (exemplo: despesas fixas, despesasvariaveis, compras, etc.)
   status    String   // Status da conta (exemplo: pendente, pago, atrasado)
   observacao String? // Observações adicionais
 
