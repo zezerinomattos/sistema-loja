@@ -1,14 +1,18 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
+
+// MY IMPORTS
 import styles from '@/styles/Home.module.scss';
 
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
     <>
-      <h1>Hollo</h1>
+      <Head>
+        <title>Sistema - faça seu login</title>
+      </Head>
+      <div>
+        <h1>Hollo</h1>
+      </div>
     </>
-  )
+  );
 }
