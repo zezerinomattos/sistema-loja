@@ -94,6 +94,8 @@ import { ListCrediarioDateController } from '../controllers/Crediario/ListCredia
 import { ListParcelasAtrasatasFullController } from '../controllers/Crediario/ListParcelasAtrasatasFullController';
 import { ListParcelasAtrasadasDateController } from '../controllers/Crediario/ListParcelasAtrasadasDateController';
 
+import { CreateNewContaController } from '../controllers/ContasPagar/CreateNewContaController';
+
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
 
@@ -197,6 +199,7 @@ router.get('/fluxo/caixa/full', isAuthenticated, new ListRelatorioFluxoCaixaFull
 router.get('/fluxo/caixa/full/dates', isAuthenticated, new ListRelatorioFluxoCaixaFullDateController().handle);
 router.get('/fluxo/caixa/mes/dates', isAuthenticated, new ListRelatorioFluxoMesDateController().handle); // Rota de para caixa do colaborador.
 
+// -- ROTAS CREDIÁRIO --
 router.post('/crediario', isAuthenticated, new CreateCrediarioController().handle);
 router.get('/detail/crediario', isAuthenticated, new DetailCrediarioController().handle);
 router.put('/parcela', isAuthenticated, new EditParcelasCrediarioController().hadle);
@@ -205,5 +208,8 @@ router.get('/crediario', isAuthenticated, new ListCrediarioController().handle);
 router.get('/date/crediario', isAuthenticated, new ListCrediarioDateController().handle);
 router.get('/parcelas', isAuthenticated, new ListParcelasAtrasatasFullController().handle);
 router.get('/date/parcelas', isAuthenticated, new ListParcelasAtrasadasDateController().handle);
+
+// -- ROTAS CONTAS A PAGAR --
+router.post('/conta/pagar', isAuthenticated, new CreateNewContaController().handle);
 
 export { router };

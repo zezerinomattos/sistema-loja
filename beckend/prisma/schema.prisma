@@ -214,6 +214,7 @@ model Produto {
   representante_id String
 }
 
+// TABELA DE TAMANHO PRODUTO
 model ProdutoTamanhoEstoque {
   id String @id @default(uuid())
   tamanho String
@@ -228,6 +229,7 @@ model ProdutoTamanhoEstoque {
   @@map("produto_tamanhos_estoque")
 }
 
+// TABELA DE COR DE PRODUTO
 model ProdutoCor {
   id String @id @default(uuid())
   cor String
@@ -241,6 +243,7 @@ model ProdutoCor {
   produto_id String
 }
 
+// TABELA DE ORDER
 model Order{
   id String @id @default(uuid())
   status Boolean @default(false)
@@ -264,6 +267,7 @@ model Order{
   caixa_id String
 }
 
+// TABELA DE ITEM
 model Item{
   id String @id @default(uuid())
   qtd Int
@@ -284,6 +288,7 @@ model Item{
   tamanho_id String
 }
 
+// TABELA DE CAIXA
 model Caixa{
   id String @id @default(uuid())
   data_abertura DateTime @default(now())
@@ -309,6 +314,7 @@ model Caixa{
   colaborador_id String
 }
 
+// TABELA DE REGISTRO DE CAIXA
 model RegistroCaixa{
   id String @id @default(uuid())
   order_id String
@@ -331,6 +337,7 @@ model RegistroCaixa{
   crediario_id String?
 }
 
+// TABELA DE RETIRADA DE CAIXA
 model RetiradaCaixa{
   id String @id @default(uuid())
   colaborador_id String
@@ -346,6 +353,7 @@ model RetiradaCaixa{
   caixa_id String
 }
 
+// TABELA DE RNTRADA DE CAIXA
 model EntradaCaixa {
   id String @id @default(uuid())
   colaborador_id String
@@ -361,6 +369,7 @@ model EntradaCaixa {
   caixa_id String
 }
 
+// TABELA DE ENTRADA DE CARTAO
 model EntradaCartao {
   id String @id @default(uuid())
   status Boolean @default(true)
@@ -379,6 +388,7 @@ model EntradaCartao {
   caixa_id String
 }
 
+// TABELA DE QUEBRA DE CAIXA
 model QuebraCaixa {
   id String @id @default(uuid())
   data DateTime @default(now())
@@ -398,6 +408,7 @@ model QuebraCaixa {
   colaborador_id String
 }
 
+// TABELA DE HOLERITE
 model Holerite {
   id        String      @id @default(uuid())
   situacao Boolean
@@ -421,6 +432,7 @@ model Holerite {
   colaboradorId String
 }
 
+// TABELA DE CREDIARIO
 model Crediario {
   id String        @id @default(uuid())
   valorTotal Float //Valor total a pagar
@@ -448,6 +460,7 @@ model Crediario {
   caixa_id String
 }
 
+// TABELA DE PARCELA DE CREDIARIO
 model ParcelaCrediario {
   id String @id @default(uuid())
   status Boolean @default(true)
@@ -467,4 +480,18 @@ model ParcelaCrediario {
   @@map("parcelas_crediario")
 
   crediario_id String
+}
+
+// TABELA DE CONTAS A PAGAR DA LOJA EX: AGUA E LUZ
+model ContaAPagar {
+  id        String   @id @default(uuid())
+  nome      String   // Nome da conta (exemplo: água, luz, internet, etc.)
+  valor     Float    // Valor a ser pago
+  dataVencimento DateTime // Data de vencimento da conta
+  categoria String   // Categoria da conta (exemplo: despesas fixas, compras, etc.)
+  status    String   // Status da conta (exemplo: pendente, pago, atrasado)
+  observacao String? // Observações adicionais
+
+  @@map("contas_a_pagar")
+  
 }
