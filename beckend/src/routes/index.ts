@@ -90,6 +90,7 @@ import { DetailCrediarioController } from '../controllers/Crediario/DetailCredia
 import { EditParcelasCrediarioController } from '../controllers/Crediario/EditParcelasCrediarioController';
 import { ListParcelasAtrasadasController } from '../controllers/Crediario/ListParcelasAtrasadasController';
 import { ListCrediarioController } from '../controllers/Crediario/ListCrediarioController';
+import { ListCrediarioDateController } from '../controllers/Crediario/ListCrediarioDateController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -199,5 +200,6 @@ router.get('/detail/crediario', isAuthenticated, new DetailCrediarioController()
 router.put('/parcela', isAuthenticated, new EditParcelasCrediarioController().hadle);
 router.get('/atrasada/parcelas', isAuthenticated, new ListParcelasAtrasadasController().handle);
 router.get('/crediario', isAuthenticated, new ListCrediarioController().handle);
+router.get('/date/crediario', isAuthenticated, new ListCrediarioDateController().handle);
 
 export { router };

@@ -431,6 +431,8 @@ model Crediario {
   taxas_juros Int? // Valor parcelado
   prazos String?
   obs String?
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
 
   cliente Cliente @relation(fields: [cliente_id], references: [id])
   order Order @relation(fields: [order_id], references: [id])
@@ -457,6 +459,8 @@ model ParcelaCrediario {
   formaPagamento String? //Forma de pagamento utilizada para pagar a parcela
   taxas_juros Int? //Taxa de juros por atrazar a parcela
   obs String?
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
   
   crediario Crediario @relation(fields: [crediario_id], references: [id])
 
