@@ -29,9 +29,9 @@ class DetailColaboradorService{
                         salario_base: true,
                         complemento_salario: true,
                         bonificacao: true,
+                        total_vendas_mes: true,
                         quebra_caixa: true,
                         saldo_salario: true,
-                        limite_credito: true,
                         data_admissao: true,
                         data_demisao: true,
                         obs: true

@@ -31,7 +31,6 @@ interface ColaboradorRequest {
     bonificacao: number;
     quebra_caixa: number;
     saldo_salario: number;
-    limite_credito: number;
     data_admissao: Date;
     data_demisao: Date;
     obs: string;
@@ -39,7 +38,7 @@ interface ColaboradorRequest {
 
 class EditColaboradorService{
     async execute({ colaborador_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, 
-        situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, complemento_salario, bonificacao, quebra_caixa, saldo_salario, limite_credito, data_admissao, data_demisao, obs }: ColaboradorRequest){
+        situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, complemento_salario, bonificacao, quebra_caixa, saldo_salario, data_admissao, data_demisao, obs }: ColaboradorRequest){
 
          // Verificar se o colaborador existe
         const existingColaborador = await prismaClient.colaborador.findUnique({
@@ -72,7 +71,6 @@ class EditColaboradorService{
             bonificacao,
             quebra_caixa,
             saldo_salario,
-            limite_credito,
             data_admissao,
             data_demisao,
             obs,

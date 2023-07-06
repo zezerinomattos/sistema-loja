@@ -5,7 +5,7 @@ import { CreateColaboradorService } from '../../services/Colaborador/CreateColab
 class CreateColaboradorController {
     async handle(req: Request, res: Response){
         const { cpf, nome, nascimento, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, 
-            situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, complemento_salario, quebra_caixa, bonificacao, saldo_salario, limite_credito, data_admissao, data_demisao, senha, obs        
+            situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, complemento_salario, quebra_caixa, bonificacao, saldo_salario, data_admissao, data_demisao, senha, obs        
         } = req.body;
 
         const createColaboradorService = new CreateColaboradorService();
@@ -59,8 +59,7 @@ class CreateColaboradorController {
                 complemento_salario, 
                 quebra_caixa, 
                 bonificacao,
-                saldo_salario, 
-                limite_credito, 
+                saldo_salario,  
                 data_admissao, 
                 data_demisao, 
                 senha, 

@@ -4,7 +4,7 @@ import { CreateHoleriteService } from '../../services/Colaborador/CreateHolerite
 
 class CreateHoleriteController{
     async handle(req: Request, res: Response){
-        const { colaborador_id, mes, descontos } = req.body;
+        const { colaborador_id, mes, descontos, bonificacao_meta, meta_venda } = req.body;
 
         if(!mes){
             throw new Error('Informe o mês de referência');
@@ -18,7 +18,9 @@ class CreateHoleriteController{
         const holerite = await createHoleriteService.execute({
             colaborador_id, 
             mes: mesReferencia, 
-            descontos
+            descontos,
+            bonificacao_meta,
+            meta_venda,
         });
 
         return res.json(holerite);

@@ -68,13 +68,11 @@ model Colaborador {
   zona_eleitoral String
   secao_eleitoral String
   salario_base Float
-  //salario_liquido Float
   complemento_salario Int? // comissao em %
-  //adiantamento_salario Int?
   bonificacao Float? @default(0) // campo para armazenar a bonificação adicional comissão ou quebra de caixa
   quebra_caixa Float? @default(0)
+  total_vendas_mes Float? @default(0) //Acumular o valor de ventas do mes
   saldo_salario Float?
-  limite_credito Float? @default(0)
   data_admissao DateTime? @default(now())
   data_demisao DateTime?
   senha String
@@ -365,6 +363,7 @@ model EntradaCaixa {
 
 model EntradaCartao {
   id String @id @default(uuid())
+  status Boolean @default(true)
   colaborador_id String
   data DateTime @default(now())
   valor_entrada Float
