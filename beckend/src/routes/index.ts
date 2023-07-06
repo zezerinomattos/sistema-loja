@@ -95,6 +95,8 @@ import { ListParcelasAtrasatasFullController } from '../controllers/Crediario/Li
 import { ListParcelasAtrasadasDateController } from '../controllers/Crediario/ListParcelasAtrasadasDateController';
 
 import { CreateNewContaController } from '../controllers/ContasPagar/CreateNewContaController';
+import { DetailContaController } from '../controllers/ContasPagar/DetailContaController';
+import { ListFullContaController } from '../controllers/ContasPagar/ListFullContaController';
 
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import uploadConfig from '../config/multer';
@@ -211,5 +213,9 @@ router.get('/date/parcelas', isAuthenticated, new ListParcelasAtrasadasDateContr
 
 // -- ROTAS CONTAS A PAGAR --
 router.post('/conta/pagar', isAuthenticated, new CreateNewContaController().handle);
+router.get('/detail/conta', isAuthenticated, new DetailContaController().handle);
+router.get('/conta', isAuthenticated, new ListFullContaController().handle);
+
+
 
 export { router };
