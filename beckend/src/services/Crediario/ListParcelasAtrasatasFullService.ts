@@ -17,7 +17,7 @@ class ListParcelasAtrasatasFullService{
             valorCrediarioAtualizado += parcela.valorParcela;
         });
 
-        return{ parcelas, valorCrediarioAtualizado};
+        return{ parcelas, valorCrediarioAtualizado };
     }
 }
 
