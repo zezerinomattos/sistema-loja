@@ -32,6 +32,18 @@ class EditParcelasCrediarioService{
         if(!parcela.status){
             throw new Error('Parcela não está em aberto');
         }
+
+        // Se a parcela for a ultima fechamos o crediario
+        if(parcela.numeroParcela === parcela.crediario.quantidadeParcelas){
+            const crediario = await prismaClient.crediario.update({
+                where: {
+                    id: parcela.crediario.id,
+                },
+                data:{
+                    status: "PAGO",
+                },
+            });
+        }
       
         let valorParcelaAtualizado = parcela.valorParcela;
         const dataVencimentoParcela = new Date(parcela.dataVencimento);
