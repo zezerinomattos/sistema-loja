@@ -31,3 +31,11 @@ main.container div.login{
         font-size: 1.2rem;
     }
 }
+
+main.container div.login span{
+    color: var(--red-900);
+    margin-top: 2rem;
+    font-size: max(18px, 1.2vw);
+    font-family: 'Ubuntu', sans-serif;
+    text-shadow: 2px 2px 4px #2b2929;
+}

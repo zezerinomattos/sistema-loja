@@ -17,9 +17,16 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoaging] = useState(false);
+  const [message, setMessage] = useState('');
 
   async function handleLogin(event: FormEvent){
     event.preventDefault();
+
+    if(email || senha === ''){
+      setMessage('PREENCHA OS DADOS');
+    }
+
+    setLoaging(true);
 
     let data = {
       email,
@@ -27,6 +34,8 @@ export default function Home() {
     }
 
     await signIn(data);
+
+    setLoaging(false)
   }
 
   return (
@@ -41,11 +50,13 @@ export default function Home() {
         <div className={styles.login}>
 
           <form onSubmit={handleLogin}>
-            <Input placeholder='Digite seu email' type='text' value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <Input placeholder='Digite seu email' type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
             <Input placeholder='Digite sua senha' type='password' value={senha} onChange={(e) => setSenha(e.target.value)}/>
 
-            <Button type='submit' loading={false} >ENTRAR</Button>
+            <Button type='submit' loading={loading} >ENTRAR</Button>
           </form>
+
+          {message && <span>{message}</span>}
 
         </div>       
 
