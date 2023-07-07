@@ -1,0 +1,13 @@
+main.container{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main.container img{
+    max-width: 240px;
+    max-height: 260px;
+}
+

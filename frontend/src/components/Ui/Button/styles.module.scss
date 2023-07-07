@@ -1,0 +1,31 @@
+button.button{
+    max-width: 600px;
+    background-color: var(--red-900);
+    border: 0;
+    padding: 0.4rem;
+    color: var(--white);
+    border-radius: 0.5rem;
+    transition: filter 0.2s;
+
+    //Avimando o Loading do button
+    &[disabled]{
+        cursor: not-allowed;
+        svg{
+            animation: animate 2s infinite;
+        }
+    }
+
+    &:hover{
+        filter: brightness(0.7);
+    }
+}
+
+//Avimando o Loading do button
+@keyframes animate{
+    from{
+        transform: rotate(0);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}

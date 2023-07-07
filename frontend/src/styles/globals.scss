@@ -16,6 +16,7 @@
 
     --white-700: #F2F2F2;
     --dark-900: #0D0D0D;
+    --dark-700:#16161a;
     --gray-900: #404040;
     --gray-700: #8C8C8C;
     --gray-300: #D9D9D9;
@@ -25,6 +26,10 @@
 
 button{
     cursor: pointer;
+}
+
+body{
+    background-color: var(--dark-900);
 }
 
 a{
