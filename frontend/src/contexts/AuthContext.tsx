@@ -1,6 +1,8 @@
 import React, { createContext, ReactNode, useState} from 'react';
-import { destroyCookie } from 'nookies';
+import { destroyCookie, setCookie, parseCookies } from 'nookies';
 import Router from 'next/router';
+
+import { api } from '@/services/apiClient';
 
 type AuthContextData ={
     user: UserProps;
@@ -17,7 +19,7 @@ type UserProps ={
 
 type SignInProps = {
     email: string;
-    password: string;
+    senha: string;
 }
 
 type AuthProvaiderProps = {
@@ -29,7 +31,7 @@ export const AuthContext = createContext({} as AuthContextData)
 //FUNCAO PARA DESLOGAR
 export function signOut(){
     try {
-        destroyCookie(undefined, 'sistema.united')
+        destroyCookie(undefined, '@sistema.united')
         Router.push('/')
     } catch (error) {
         console.log('Erro ao deslogar: ' + error);
@@ -40,9 +42,34 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
     const [user, setUser] = useState<UserProps>({} as UserProps);
     const isAuthenticated = !!user;
 
-    async function signIn({ email, password}: SignInProps){
-        console.log(email);
-        console.log(password);
+    async function signIn({ email, senha}: SignInProps){
+        await api.post('/login', {
+            email,
+            senha
+        })
+        .then(response => {
+            const { id, nome, token } = response.data;
+
+            setCookie(undefined, '@sistema.united', token, {
+                maxAge: 60 * 60 * 24 * 30, //token inspira em um mes
+                path: '/'
+            })
+
+            setUser({
+                id,
+                nome,
+                email,
+            })
+
+            // Passando para as proximas requisições o mesmo token
+            api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+            // Redirecionando usuário para pagina de dashboard
+            Router.push('/dashboard')
+        })
+        .catch(error => {
+            console.log(`ERRO AO ACESSAR, ${error}`);
+        });
     }
 
     if(!user){

@@ -15,7 +15,7 @@ export default function Home() {
   const { signIn } = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
   const [loading, setLoaging] = useState(false);
 
   async function handleLogin(event: FormEvent){
@@ -23,7 +23,7 @@ export default function Home() {
 
     let data = {
       email,
-      password,
+      senha,
     }
 
     await signIn(data);
@@ -42,7 +42,7 @@ export default function Home() {
 
           <form onSubmit={handleLogin}>
             <Input placeholder='Digite seu email' type='text' value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <Input placeholder='Digite sua senha' type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <Input placeholder='Digite sua senha' type='password' value={senha} onChange={(e) => setSenha(e.target.value)}/>
 
             <Button type='submit' loading={false} >ENTRAR</Button>
           </form>
