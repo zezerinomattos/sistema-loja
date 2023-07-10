@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2 } from "react-icons/fc";
 
 import { useRouter } from 'next/router';
 
