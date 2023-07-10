@@ -38,6 +38,11 @@ div.container div.containerSuperior ul.ulSuperior{
             color: var(--green-700);
         }
     }
+
+    li.actived{
+        background-color: var(--gray-900);
+        color: var(--green-700);
+    }
 }
 
 // DIVE INFERIOR
@@ -80,14 +85,15 @@ div.containerInferior ul.paginas{
 
         span{
             max-width: 95;
-
-            strong{
-                font-size: 1rem;
-            }
         }
 
         &:hover{
             filter: brightness(0.6);
         }
+    }
+    
+    li.actived{
+        background-color: var(--gray-900);
+        color: var(--green-700);
     }
 }
