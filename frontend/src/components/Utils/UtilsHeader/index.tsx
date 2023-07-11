@@ -62,11 +62,6 @@ export function UtilsHeader( param: string ){
                         </Link>
                     </li>
 
-                    <li onClick={() => handleItemClick('Colaborador')} className={renderButton === 'Colaborador' ? styles.actived : ''}>
-                        <Link href="/"><FcBusinessman size={28}/>
-                            <span><strong>+</strong> COLABORADOR</span>
-                        </Link>
-                    </li>
                 </ul>
             );
             
