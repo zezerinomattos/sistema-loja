@@ -51,11 +51,22 @@ class CreateColaboradorService {
         //Verificando se tem cpf já está cadastrado na plataforma
         const colaboradorAlreadyExists = await prismaClient.usuario.findFirst({
             where: {
-                cpf: cpf
+                cpf: cpf,
             }
         });
         if(colaboradorAlreadyExists){
             throw new Error('Esse CPF já existe em nosso Banco de dados!');
+        }
+
+        // Verificando se o email já está cadastrado na plataforma
+        const emailAlreadyExists = await prismaClient.usuario.findFirst({
+            where: {
+            email: email,
+            },
+        });
+    
+        if (emailAlreadyExists) {
+            throw new Error('Esse email já está cadastrado em nosso Banco de dados!');
         }
 
         // Criptografando a senha

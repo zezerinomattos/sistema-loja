@@ -27,6 +27,7 @@ class CreateColaboradorController {
             const name = nome.toUpperCase();
             const password = senha.toUpperCase();
             const saveEmail = email.toLowerCase();
+            const saveObs = obs.toUpperCase()
 
             //--------------------------------------------------------
 
@@ -65,7 +66,7 @@ class CreateColaboradorController {
                 data_admissao, 
                 data_demisao, 
                 senha: password, 
-                obs 
+                obs: saveObs 
             });
             
             return res.json(colaborador);
