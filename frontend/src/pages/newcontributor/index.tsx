@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
 import { FiUpload } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
@@ -8,6 +9,8 @@ import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 
 import { AuthContext } from '@/contexts/AuthContext';
+
+import { apiCep } from '@/services/apiCep';
 
 export default function Register(){
     const { signUp } = useContext(AuthContext);
@@ -69,6 +72,33 @@ export default function Register(){
         }
     }
 
+    //Funcao para buscar endereço via cep usando uma API externa
+    async function handleCep(event: any){
+        if (event.keyCode === 13) { // Verifica o código da tecla "Enter"
+            
+            if(cep === ''){
+                toast.error('Digite um cep Valido');
+                setCep('');
+                return;
+            }
+
+            await apiCep.get(`/${cep}/json/`)
+                .then(response => {
+                    setLogradouro(response.data.logradouro);
+                    setBairro(response.data.bairro);
+                    setCidade(response.data.localidade);
+                    setUf(response.data.uf);
+
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+
+        }
+        
+    }
+
+    //FUNCAO PARA CRIAR COLABORADOR
     async function hadleRegiste(event: FormEvent){
         event.preventDefault();
 
@@ -88,13 +118,19 @@ export default function Register(){
 
             // Validação da idade mínima
             const nascimentoDate = new Date(nascimento);
-            const idadeMinima = 16; // Idade mínima de 16 anos
+            const idadeMinima = 14; // Idade mínima de 14 anos
 
             const hoje = new Date();
             const diffAnos = hoje.getFullYear() - nascimentoDate.getFullYear();
 
             if (diffAnos < idadeMinima) {
-                setMessage('A idade mínima é de 16 anos');
+                setMessage('A idade mínima é de 14 anos');
+                return;
+            }
+
+            //Validando senha segura
+            if(senha.length < 8 || !/[a-zA-Z]/.test(senha) || !/[^a-zA-Z0-9]/.test(senha)){
+                setMessage('A senha precisa ter pelo menos 8 caracteres, uma letra e um caractere especial');
                 return;
             }
 
@@ -232,7 +268,7 @@ export default function Register(){
                                 <Input placeholder='PIS' type='text' onChange={(e) => setPis(e.target.value)} value={pis}/>
                             </div>
 
-                            <Input placeholder='CEP' type='text' onChange={(e) => setCep(e.target.value)} value={cep}/>
+                            <Input placeholder='CEP' type='text' onChange={(e) => setCep(e.target.value)} value={cep} onKeyDown={handleCep}/>
 
                             <div className={styles.inputsBasicData}>
                                 
