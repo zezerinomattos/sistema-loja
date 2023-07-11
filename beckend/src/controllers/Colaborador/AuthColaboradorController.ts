@@ -9,9 +9,13 @@ class AuthColaboradorController{
 
         const authColaboradorService = new AuthColaboradorService();
 
+        // convertendo senha para upercase e evitar erros com o fronte que está com os inputs em caixa alta
+        const password = senha.toUpperCase();
+        const saveEmail = email.toLowerCase();
+
         const auth = await authColaboradorService.execute({ 
-            email,
-            senha 
+            email: saveEmail,
+            senha: password 
         });
 
         return res.json(auth);

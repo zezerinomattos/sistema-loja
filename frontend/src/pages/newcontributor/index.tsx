@@ -237,9 +237,9 @@ export default function Register(){
                                 </div>
                                 {/* <Input placeholder='SEXO' type='text' onChange={(e) => setSexo(e.target.value)} value={sexo}/> */}
                                 <select 
-                                    name="cargo" id="cargo" 
+                                    name="sexo" id="sexo" 
                                     className={styles.selectInput} 
-                                    value={cargo} onChange={(e) => setSexo(e.target.value)}
+                                    value={sexo} onChange={(e) => setSexo(e.target.value)}
                                 >
                                     <option value="" disabled>SEXO</option>
                                     <option value="MASCULINO">MASCULINO</option>

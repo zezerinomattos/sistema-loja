@@ -111,6 +111,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
         })
         .catch(error => {
             console.log(`ERRO AO ACESSAR, ${error}`);
+            toast.error('USUÁRIO OU SENHA ERRADA');
         });
     }
 

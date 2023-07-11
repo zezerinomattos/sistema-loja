@@ -24,15 +24,18 @@ class CreateColaboradorController {
             //const salario_base = parseFloat(req.body.salario_base);  
             const salario_base = parseFloat(req.body.salario_base.replace(',', '.'));         
             const complemento_salario = parseInt(req.body.complemento_salario);
+            const name = nome.toUpperCase();
+            const password = senha.toUpperCase();
+            const saveEmail = email.toLowerCase();
 
             //--------------------------------------------------------
 
             const colaborador = await createColaboradorService.execute({ 
                 cpf, 
-                nome, 
+                nome: name, 
                 nascimento, 
                 sexo, 
-                email, 
+                email: saveEmail, 
                 foto, 
                 cep, 
                 logradouro, 
@@ -61,7 +64,7 @@ class CreateColaboradorController {
                 saldo_salario,  
                 data_admissao, 
                 data_demisao, 
-                senha, 
+                senha: password, 
                 obs 
             });
             
