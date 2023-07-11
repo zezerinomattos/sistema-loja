@@ -121,16 +121,16 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
     // FUNCAO QUE CRIA COLABORADOR
     async function signUp(data: FormData){
         try {
+
             const response = await api.post('/colaborador', data);
             //console.log(response.data);
             toast.success('CADRASTRO REALIZADO COM SUCESSO');
+
         } catch (error: any) {
-            // console.log(error.response.data.erro)
-            // toast.error(`${error.response.data.erro}`)
 
             if (error.response && error.response.data && error.response.data.erro) {
                 const errorMessage = error.response.data.erro;
-                console.log(errorMessage);
+                console.log(error);
                 toast.error(errorMessage);
             } else {
                 const errorMessage = 'Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde.';
@@ -138,6 +138,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
                 toast.error(errorMessage);
             }
         }
+
     }
 
     return(

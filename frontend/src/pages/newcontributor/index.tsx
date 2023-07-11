@@ -80,9 +80,27 @@ export default function Register(){
                 setMessage('Preencha todos os campos!');
                 return;
             }
+
+            if(cpf.length !== 11){
+                setMessage('Informe um CPF valido');
+                return;
+            }
+
+            // Validação da idade mínima
+            const nascimentoDate = new Date(nascimento);
+            const idadeMinima = 16; // Idade mínima de 16 anos
+
+            const hoje = new Date();
+            const diffAnos = hoje.getFullYear() - nascimentoDate.getFullYear();
+
+            if (diffAnos < idadeMinima) {
+                setMessage('A idade mínima é de 16 anos');
+                return;
+            }
+
             setLoaging(true);
 
-            const nascimentoDate =  new Date(nascimento)  
+            //const nascimentoDate =  new Date(nascimento)  
             const salarioBase = parseFloat(salario_base.replace(',', '.'));
             const complementoSalario = parseInt(complemento_salario);
             
@@ -124,6 +142,41 @@ export default function Register(){
         } catch (error) {
             console.log(error);     
         }
+
+        //LIMPANDO OS CAMPOS DO FORM
+        setNome('');
+        setCpf('');
+        setNascimento('');
+        setSexo('');
+        setEmail('');
+        setAvatarUrl('');
+        setImageAvatar(null);
+        setCep('');
+        setLogradouro('');
+        setNumero('');
+        setComplemento('');
+        setBairro('');
+        setCidade('');
+        setUf('');
+        setPais('');
+        //setSituacao('');
+        setCargo('');
+        setCelular('');
+        setTelefone('');
+        setRg('');
+        setOrgaoEmisor('');
+        setCarteiraTrabalho('');
+        setSerie('');
+        setPis('');
+        setTituloEleitor('');
+        setZonaEleitoral('');
+        setSecaoEleitoral('');
+        setSalarioBase('');
+        setComplementoSalario('');
+        setSenha('');
+        setObs('');
+        setMessage('');
+
     }
 
     return(
@@ -158,7 +211,7 @@ export default function Register(){
                                     <option value="OUTRO">OUTRO</option>
                                 </select>
 
-                                <Input placeholder='EMAIL' type='text' onChange={(e) => setEmail(e.target.value)} value={email}/>
+                                <Input placeholder='EMAIL' type='email' onChange={(e) => setEmail(e.target.value)} value={email}/>
                             </div>
 
                             <div className={styles.inputsBasicData}>
