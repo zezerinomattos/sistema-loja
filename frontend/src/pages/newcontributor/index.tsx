@@ -122,7 +122,7 @@ export default function Register(){
             setLoaging(false);
 
         } catch (error) {
-            console.log(error);
+            console.log(error);     
         }
     }
 
@@ -146,7 +146,18 @@ export default function Register(){
                                     <Input placeholder='NASCIMENTO' type='date' id='nascimento' onChange={(e) => setNascimento(e.target.value)} value={nascimento}/>
                                     <label htmlFor="nascimento">DATA NACIMENTO</label>
                                 </div>
-                                <Input placeholder='SEXO' type='text' onChange={(e) => setSexo(e.target.value)} value={sexo}/>
+                                {/* <Input placeholder='SEXO' type='text' onChange={(e) => setSexo(e.target.value)} value={sexo}/> */}
+                                <select 
+                                    name="cargo" id="cargo" 
+                                    className={styles.selectInput} 
+                                    value={cargo} onChange={(e) => setSexo(e.target.value)}
+                                >
+                                    <option value="" disabled>SEXO</option>
+                                    <option value="MASCULINO">MASCULINO</option>
+                                    <option value="FEMININO">FEMININO</option>
+                                    <option value="OUTRO">OUTRO</option>
+                                </select>
+
                                 <Input placeholder='EMAIL' type='text' onChange={(e) => setEmail(e.target.value)} value={email}/>
                             </div>
 
@@ -193,7 +204,7 @@ export default function Register(){
                                     className={styles.selectInput} 
                                     value={cargo} onChange={(e) => setCargo(e.target.value)}
                                 >
-                                    <option value="" disabled>SELECIONE</option>
+                                    <option value="" disabled>CARGO</option>
                                     <option value="GERENTE">GERENTE</option>
                                     <option value="VENDEDOR">VENDEDOR(A)</option>
                                     <option value="CAIXA">CAIXA</option>
@@ -204,7 +215,7 @@ export default function Register(){
                             
                             <div className={styles.inputsBasicData}>
                                 <Input placeholder='SALARIO BASE' type='text' onChange={(e) => setSalarioBase(e.target.value)} value={salario_base}/>
-                                <Input placeholder='COMPLEMENTO - COMISSÃO' type='text' onChange={(e) => setComplementoSalario(e.target.value)} value={complemento_salario}/>
+                                <Input placeholder='COMP - COMISSÃO' type='number' onChange={(e) => setComplementoSalario(e.target.value)} value={complemento_salario}/>
                             </div>
 
                             <label className={styles.labelAvatar}>

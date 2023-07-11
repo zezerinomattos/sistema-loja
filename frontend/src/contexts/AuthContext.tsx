@@ -2,6 +2,8 @@ import React, { createContext, ReactNode, useState} from 'react';
 import { destroyCookie, setCookie, parseCookies } from 'nookies';
 import Router from 'next/router';
 
+import { toast } from 'react-toastify';
+
 import { api } from '@/services/apiClient';
 
 type AuthContextData ={
@@ -103,6 +105,9 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
 
             // Redirecionando usuário para pagina de dashboard
             Router.push('/dashboard')
+
+            // ALERT DE SUCESSO
+            toast.success('LOGADO COM SUCESSO');
         })
         .catch(error => {
             console.log(`ERRO AO ACESSAR, ${error}`);
@@ -113,92 +118,25 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
         return null;
     }
 
-    // async function signUp({
-    //     nome,
-    //     cpf,
-    //     nascimento,
-    //     sexo,
-    //     email,
-    //     file,
-    //     cep,
-    //     logradouro,
-    //     numero,
-    //     complemento,
-    //     bairro,
-    //     cidade,
-    //     uf,
-    //     pais,
-    //     situacao,
-    //     cargo,
-    //     celular,
-    //     telefone,
-    //     rg,
-    //     orgao_emissor, 
-    //     carteira_trabalho, 
-    //     serie,
-    //     pis,
-    //     titulo_eleitor, 
-    //     zona_eleitoral,
-    //     secao_eleitoral,
-    //     salario_base,
-    //     complemento_salario,
-    //     //quebra_caixa: number;
-    //     //bonificacao: number 
-    //     senha,
-    //     obs,
-
-    // }: SignUpProps){
-    //     try {
-
-    //         const response = await api.post('/colaborador', {
-    //             nome,
-    //             cpf,
-    //             nascimento,
-    //             sexo,
-    //             email,
-    //             file,
-    //             cep,
-    //             logradouro,
-    //             numero,
-    //             complemento,
-    //             bairro,
-    //             cidade,
-    //             uf,
-    //             pais,
-    //             situacao,
-    //             cargo,
-    //             celular,
-    //             telefone,
-    //             rg,
-    //             orgao_emissor, 
-    //             carteira_trabalho, 
-    //             serie,
-    //             pis,
-    //             titulo_eleitor, 
-    //             zona_eleitoral,
-    //             secao_eleitoral,
-    //             salario_base,
-    //             complemento_salario,
-    //             //quebra_caixa: number;
-    //             //bonificacao: number 
-    //             senha,
-    //             obs,
-    //         });
-
-    //         console.log(response.data)
-            
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-
-    // }
-
+    // FUNCAO QUE CRIA COLABORADOR
     async function signUp(data: FormData){
         try {
             const response = await api.post('/colaborador', data);
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
+            //console.log(response.data);
+            toast.success('CADRASTRO REALIZADO COM SUCESSO');
+        } catch (error: any) {
+            // console.log(error.response.data.erro)
+            // toast.error(`${error.response.data.erro}`)
+
+            if (error.response && error.response.data && error.response.data.erro) {
+                const errorMessage = error.response.data.erro;
+                console.log(errorMessage);
+                toast.error(errorMessage);
+            } else {
+                const errorMessage = 'Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde.';
+                console.log(error);
+                toast.error(errorMessage);
+            }
         }
     }
 
