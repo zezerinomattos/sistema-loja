@@ -65,6 +65,21 @@ form.formColaborador div.inputsBasicData{
     width: 100%;
 }
 
+form.formColaborador div.inputsBasicData div.inputNascimento{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    label{
+        color: var(--white);
+        font-family: 'Ubuntu', sans-serif;
+        margin-top: -10px;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px #3b3838;
+    }
+}
+
 form.formColaborador div.buttonForm{
     width: 100%;
     margin-bottom: 40px;
@@ -83,6 +98,7 @@ form.formColaborador label.labelAvatar{
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid var(--green-700);
     margin-bottom: 1rem;
     cursor: pointer;
     position: relative;
@@ -109,4 +125,23 @@ form.formColaborador label.labelAvatar img.previw{
     height: 100%;
     object-fit: cover;
     border: 0.5rem;
+}
+
+.selectInput{
+    height: 40px;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: var(--dark-700);
+    color: var(--white);
+    
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
+
+main.containerForm div.rigthContainer span{
+    color: var(--red-900);
+    margin-top: 2rem;
+    font-size: max(18px, 1.2vw);
+    font-family: 'Ubuntu', sans-serif;
+    text-shadow: 2px 2px 4px #2b2929;
 }

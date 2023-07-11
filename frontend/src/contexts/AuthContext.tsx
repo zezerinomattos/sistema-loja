@@ -8,6 +8,7 @@ type AuthContextData ={
     user: UserProps;
     isAuthenticated: boolean;
     signIn: (Credential: SignInProps) => Promise<void>;
+    signUp: (Credential: FormData) => Promise<void>;
     signOut:() => void;
 }
 
@@ -26,6 +27,41 @@ type AuthProvaiderProps = {
     children: ReactNode;
 }
 
+type SignUpProps = {
+    cpf: string;
+    nome: string;
+    nascimento: Date;
+    sexo: string;
+    email: string;
+    file: File;
+    cep: string;
+    logradouro: string
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cidade: string;
+    uf: string;
+    pais: string;
+    situacao: boolean;
+    cargo: string;
+    celular: string;
+    telefone: string;
+    rg: string;
+    orgao_emissor: string; 
+    carteira_trabalho: string;
+    serie: string;
+    pis: string;
+    titulo_eleitor: string; 
+    zona_eleitoral: string;
+    secao_eleitoral: string;
+    salario_base: number;
+    complemento_salario: number;
+    //quebra_caixa: number;
+    //bonificacao: number 
+    senha: string;
+    obs: string;
+}
+
 export const AuthContext = createContext({} as AuthContextData)
 
 //FUNCAO PARA DESLOGAR
@@ -42,6 +78,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
     const [user, setUser] = useState<UserProps>({} as UserProps);
     const isAuthenticated = !!user;
 
+    // FUNCAO PARA LOGA
     async function signIn({ email, senha}: SignInProps){
         await api.post('/login', {
             email,
@@ -76,8 +113,97 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
         return null;
     }
 
+    // async function signUp({
+    //     nome,
+    //     cpf,
+    //     nascimento,
+    //     sexo,
+    //     email,
+    //     file,
+    //     cep,
+    //     logradouro,
+    //     numero,
+    //     complemento,
+    //     bairro,
+    //     cidade,
+    //     uf,
+    //     pais,
+    //     situacao,
+    //     cargo,
+    //     celular,
+    //     telefone,
+    //     rg,
+    //     orgao_emissor, 
+    //     carteira_trabalho, 
+    //     serie,
+    //     pis,
+    //     titulo_eleitor, 
+    //     zona_eleitoral,
+    //     secao_eleitoral,
+    //     salario_base,
+    //     complemento_salario,
+    //     //quebra_caixa: number;
+    //     //bonificacao: number 
+    //     senha,
+    //     obs,
+
+    // }: SignUpProps){
+    //     try {
+
+    //         const response = await api.post('/colaborador', {
+    //             nome,
+    //             cpf,
+    //             nascimento,
+    //             sexo,
+    //             email,
+    //             file,
+    //             cep,
+    //             logradouro,
+    //             numero,
+    //             complemento,
+    //             bairro,
+    //             cidade,
+    //             uf,
+    //             pais,
+    //             situacao,
+    //             cargo,
+    //             celular,
+    //             telefone,
+    //             rg,
+    //             orgao_emissor, 
+    //             carteira_trabalho, 
+    //             serie,
+    //             pis,
+    //             titulo_eleitor, 
+    //             zona_eleitoral,
+    //             secao_eleitoral,
+    //             salario_base,
+    //             complemento_salario,
+    //             //quebra_caixa: number;
+    //             //bonificacao: number 
+    //             senha,
+    //             obs,
+    //         });
+
+    //         console.log(response.data)
+            
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+
+    // }
+
+    async function signUp(data: FormData){
+        try {
+            const response = await api.post('/colaborador', data);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut}}>
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp}}>
             {children}
         </AuthContext.Provider>
     )

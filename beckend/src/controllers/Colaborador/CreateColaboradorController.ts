@@ -15,16 +15,15 @@ class CreateColaboradorController {
         }else{
             const { originalname, filename: foto } = req.file;
 
+            //console.log(foto);
+
             //--------------------------------------------------------
             // apenas para pode cadastrar um colaborador com Insominia
             
-            // const situacao = JSON.parse(req.body.situacao);
-            // const salario_base = parseFloat(req.body.salario_base);
-            // const salario_liquido = parseFloat(req.body.salario_liquido);
-            // const complemento_salario = parseInt(req.body.complemento_salario);
-            // const adiantamento_salario = parseInt(req.body.adiantamento_salario);
-            // const saldo_salario = parseFloat(req.body.saldo_salario);
-            // const limite_credito = parseFloat(req.body.limite_credito);
+            const situacao = JSON.parse(req.body.situacao);
+            //const salario_base = parseFloat(req.body.salario_base);  
+            const salario_base = parseFloat(req.body.salario_base.replace(',', '.'));         
+            const complemento_salario = parseInt(req.body.complemento_salario);
 
             //--------------------------------------------------------
 

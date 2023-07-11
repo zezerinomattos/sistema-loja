@@ -37,6 +37,10 @@ a{
     text-decoration: none;
 }
 
+input, textarea{
+    text-transform: uppercase;
+}
+
 h1, h2, h3{
     color: var(--dark-900);
     font-family: 'Roboto', sans-serif
