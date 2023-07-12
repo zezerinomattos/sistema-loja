@@ -58,6 +58,9 @@ export default function Register(){
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
 
+    const [colaborador_id, setColaborador_id] = useState(user.id);
+    const [colaborador_cargo, setColaborador_cargo] = useState(user.cargo);
+
     // Funcao para salvarmos imagem
     function handleFile(e: ChangeEvent<HTMLInputElement>){
         if(!e.target.files){
@@ -96,7 +99,6 @@ export default function Register(){
                 .catch(error => {
                     console.log(error);
                 })
-
         }
         
     }
@@ -173,6 +175,8 @@ export default function Register(){
             data.append('complemento_salario', complemento_salario);
             data.append('senha', senha);
             data.append('obs', obs);
+            data.append('colaborador_id', colaborador_id);
+            data.append('colaborador_cargo', colaborador_cargo);
 
             await signUp(data);
 

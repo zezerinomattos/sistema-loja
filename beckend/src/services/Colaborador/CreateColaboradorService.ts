@@ -67,7 +67,8 @@ class CreateColaboradorService {
             },
         });
 
-        if(colaborador_cargo !== 'ADMIM' && colaborador_cargo !== 'GERENTE') {
+        // Verificando se é um gerente ou administrador para poder criar um colaborador
+        if(colaborador_cargo !== 'GERENTE' && colaborador_cargo !== 'ADMIM') {
             throw new Error('Você não tem permissão para criar um colaborador!');
         }
     
