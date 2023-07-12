@@ -18,6 +18,9 @@ type UserProps ={
     id: string,
     nome: string;
     email: string;
+    cargo: string;
+    foto: string;
+    url: string;
 }
 
 type SignInProps = {
@@ -98,6 +101,9 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
                 id,
                 nome,
                 email,
+                cargo: response.data.cargo,
+                foto: response.data.foto,
+                url: response.data.url
             })
 
             // Passando para as proximas requisições o mesmo token
