@@ -22,6 +22,8 @@ export default function dashboard(){
                     <div className={styles.leftContainer}>
                         <div className={styles.logoEmpresa}>
                             <Image src={logoEmpresa} alt='Logo da empresa'  width={160} height={150}/>
+                            <h5>ATENDIMENTO</h5>
+                            <h3>09:00 AS 19:00</h3>
                         </div>
 
                         <div className={styles.dadosUser}>

@@ -24,7 +24,7 @@ export function UtilsHeader( param: string ){
 
                     <li>
                         <Link href="/"><FcDiploma2 size={28}/></Link>
-                        <span>IMPREIMIR</span>
+                        <span>IMPRIMIR</span>
                     </li>
 
                     <li>
