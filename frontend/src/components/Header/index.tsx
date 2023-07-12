@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -7,8 +7,14 @@ import { useRouter } from 'next/router';
 import styles from './styles.module.scss';
 import { UtilsHeader } from '../Utils/UtilsHeader';
 
+import { AuthContext } from '@/contexts/AuthContext';
+
 
 export function Header(){
+    const { user } = useContext(AuthContext);
+    const isGerente = user.cargo === 'GERENTE';
+    const isAdmim = user.cargo === 'ADMIM';
+
     const router = useRouter();
     const [activeLink, setActiveLink] = useState('')
 
@@ -63,7 +69,7 @@ export function Header(){
             <div className={styles.containerSuperior}>
                 <ul className={styles.ulSuperior}>
                     <li onClick={() => handleItemClick('arquivo')} className={renderPage === 'arquivo' ? styles.actived : ''} >ARQUIVO</li>
-                    <li onClick={() => handleItemClick('colaborador')} className={renderPage === 'colaborador' ? styles.actived : ''} >COLABORADOR</li>
+                    <li style={{pointerEvents: isGerente || isAdmim ? 'auto' : 'none'}} onClick={() => handleItemClick('colaborador')} className={renderPage === 'colaborador' ? styles.actived : ''} >COLABORADOR</li>
                     <li onClick={() => handleItemClick('cliente')} className={renderPage === 'cliente' ? styles.actived : ''} >CLIENTE</li>
                     <li onClick={() => handleItemClick('produto')} className={renderPage === 'produto' ? styles.actived : ''} >PRODUTOS</li>
                     <li onClick={() => handleItemClick('representante')} className={renderPage === 'representante' ? styles.actived : ''} >REPRESENTATES</li>

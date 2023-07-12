@@ -38,11 +38,13 @@ interface ColaboradorRequest {
     data_demisao: Date;
     senha: string;
     obs: string;
+    colaborador_id?:string;
+    colaborador_cargo?: string;
 }
 
 class CreateColaboradorService {
     async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, 
-        situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, complemento_salario, bonificacao, quebra_caixa, saldo_salario, data_admissao, data_demisao, senha, obs }: ColaboradorRequest){
+        situacao, cargo, celular, telefone, rg, orgao_emissor, carteira_trabalho, serie, pis, titulo_eleitor, zona_eleitoral, secao_eleitoral, salario_base, complemento_salario, bonificacao, quebra_caixa, saldo_salario, data_admissao, data_demisao, senha, obs, colaborador_id, colaborador_cargo }: ColaboradorRequest){
 
         //Verificando se tem cpf digitado
         if(!cpf || cpf.length !== 11){
@@ -61,9 +63,13 @@ class CreateColaboradorService {
         // Verificando se o email já está cadastrado na plataforma
         const emailAlreadyExists = await prismaClient.usuario.findFirst({
             where: {
-            email: email,
+                email: email,
             },
         });
+
+        if(colaborador_cargo !== 'ADMIM' && colaborador_cargo !== 'GERENTE') {
+            throw new Error('Você não tem permissão para criar um colaborador!');
+        }
     
         if (emailAlreadyExists) {
             throw new Error('Esse email já está cadastrado em nosso Banco de dados!');
@@ -127,6 +133,7 @@ class CreateColaboradorService {
                 senha: passwordHash,
                 obs: obs,
                 usuario_id: usuario.id,
+                colaborador_id: colaborador_id,
             },
         });
         

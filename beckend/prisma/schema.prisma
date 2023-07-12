@@ -89,6 +89,7 @@ model Colaborador {
   @@map("colaboradores")
 
   usuario_id String
+  colaborador_id String?
 }
 
 // TABELA DE CLIENTES
