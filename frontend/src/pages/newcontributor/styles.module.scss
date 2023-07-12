@@ -115,6 +115,14 @@ form.formColaborador{
 
     box-shadow: 2px 2px 4px var(--white);
     overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        width: 5px; /* Largura da barra de rolagem */
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--dark-900); /* Cor de fundo da barra de rolagem */
+    }
 }
 
 form.formColaborador input.inputName{   
