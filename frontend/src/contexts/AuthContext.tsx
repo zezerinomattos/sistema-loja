@@ -1,14 +1,15 @@
-import React, { createContext, ReactNode, useState} from 'react';
+import React, { createContext, ReactNode, useState, useEffect} from 'react';
 import { destroyCookie, setCookie, parseCookies } from 'nookies';
 import Router from 'next/router';
 
 import { toast } from 'react-toastify';
 
-import { api } from '@/services/apiClient';
+import { api } from '../services/apiClient';
 
 type AuthContextData ={
     user: UserProps;
     isAuthenticated: boolean;
+    
     signIn: (Credential: SignInProps) => Promise<void>;
     signUp: (Credential: FormData) => Promise<void>;
     signOut:() => void;
@@ -72,7 +73,7 @@ export const AuthContext = createContext({} as AuthContextData)
 //FUNCAO PARA DESLOGAR
 export function signOut(){
     try {
-        destroyCookie(undefined, '@sistema.united')
+        destroyCookie(undefined, '@sistemaunited')
         Router.push('/')
     } catch (error) {
         console.log('Erro ao deslogar: ' + error);
@@ -83,42 +84,73 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
     const [user, setUser] = useState<UserProps>({} as UserProps);
     const isAuthenticated = !!user;
 
+    useEffect(() => {
+        //Tentar pegar algo no cookie
+        const { '@sistemaunited': token } = parseCookies();
+
+        if(token){
+            api.get('/me').then(response => {
+                const { id, nome, email } = response.data;
+
+                //console.log(response.data.nome, token);
+                setUser({
+                    id,
+                    nome,
+                    email,
+                    cargo: response.data.colaborador[0].cargo,
+                    foto: response.data.foto,
+                    url: 'http://localhost:3333/files/',
+                });
+
+                console.log(response.data.cargo)
+            })
+            .catch(() => {
+                // Se erro deslogue o user
+                signOut();
+            });
+        }
+
+    }, [])
+
     // FUNCAO PARA LOGA
     async function signIn({ email, senha}: SignInProps){
-        await api.post('/login', {
-            email,
-            senha
-        })
-        .then(response => {
-            const { id, nome, token } = response.data;
 
-            setCookie(undefined, '@sistema.united', token, {
-                maxAge: 60 * 60 * 24 * 30, //token inspira em um mes
-                path: '/'
+        try {
+            const response = await api.post('/login', {
+                email,
+                senha
+            })
+            //console.log(response.data);
+            const { id, nome, token, cargo, foto, url } = response.data;
+
+            setCookie(undefined, '@sistemaunited', token, {
+                maxAge: 60 * 60 * 24 * 30, //O token expira em 1 mes
+                path: "/" //Qualquer caminho era acesso a os cookies
             })
 
             setUser({
                 id,
                 nome,
                 email,
-                cargo: response.data.cargo,
-                foto: response.data.foto,
-                url: response.data.url
+                cargo,
+                foto,
+                url,
             })
 
-            // Passando para as proximas requisições o mesmo token
+            //PASSAR PARA PROXIMAS REQUISIÇÕES O NOSSO TOKEN
             api.defaults.headers['Authorization'] = `Bearer ${token}`
 
-            // Redirecionando usuário para pagina de dashboard
-            Router.push('/dashboard')
+            // Alerta personalizado.
+            toast.success('LOGADO COM SUCESSO!');
 
-            // ALERT DE SUCESSO
-            toast.success('LOGADO COM SUCESSO');
-        })
-        .catch(error => {
-            console.log(`ERRO AO ACESSAR, ${error}`);
-            toast.error('USUÁRIO OU SENHA ERRADA');
-        });
+            //REDIRECIONAR O USER PARA A PAGINA DE DASHBOARD (ULTIMOS PEDIDOS)
+            Router.push('/dashboard')
+            
+
+        } catch (err) {
+            toast.error('ERRO AO ACESSAR!');
+            console.log('ERRO AO ACESSAR', err);
+        }
     }
 
     if(!user){

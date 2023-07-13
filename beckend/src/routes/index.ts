@@ -109,7 +109,7 @@ const router = Router();
 const upload = multer(uploadConfig.upload("./tmp"));
 
 // -- ROTAS COLABORADOR --
-router.post('/colaborador', upload.single('file'), new CreateColaboradorController().handle);
+router.post('/colaborador', isAuthenticated, upload.single('file'), new CreateColaboradorController().handle);
 router.get('/colaborador', isAuthenticated, new ListColaboradorController().handle);
 router.get('/colaborador/detail', isAuthenticated, new DetailColaboradorController().handle);
 router.put('/colaborador/edit', isAuthenticated, upload.single('file'), new EditColaboradorController().handle);

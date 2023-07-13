@@ -1,5 +1,6 @@
-import React, { useContext  } from 'react';
+import React, { useContext, useEffect, useState  } from 'react';
 import Image from 'next/image';
+import { FaSpinner } from 'react-icons/fa';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
@@ -7,12 +8,21 @@ import { Header } from '@/components/Header';
 
 import logoEmpresa from '../../../public/logo-Nanda.png';
 
-import { AuthContext } from '@/contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
+import { canSSRAuth } from '../../components/Utils/serverSideProps/canSSRAuth';
 
 export default function dashboard(){
     const { user } = useContext(AuthContext);
+    const [carregando, setCarregando] = useState(true);
 
-    const urlImage = 'http://localhost:3333/files/'
+    useEffect(() => {
+        //Escondendo o loading quando ele montar completamente o componente
+        setCarregando(false);
+    }, [])
+
+    if (carregando) {
+        return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
+    }
 
     return(
         <div className={styles.container}>
@@ -27,7 +37,7 @@ export default function dashboard(){
                         </div>
 
                         <div className={styles.dadosUser}>
-                            {user.foto && user.nome && user.email && user.cargo && user.url && user.id && (
+                            {user.id && (
                                 <div>
                                     <Image src={user.url + '/' + user.foto} alt='Logo da empresa' width={80} height={80} />
                                     <h3>{user.nome}</h3>
@@ -46,3 +56,11 @@ export default function dashboard(){
         </div>
     );
 }
+
+// Verificando pelo lado do servidor
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+
+    return{
+      props: {}
+    }
+  });

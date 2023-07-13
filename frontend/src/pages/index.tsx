@@ -2,9 +2,12 @@ import React, { useContext, FormEvent, useState} from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
+//import { GetServerSideProps } from 'next';
+import { canSSRGuest } from '../components/Utils/serverSideProps/canSSRGuest';
+
 // MY IMPORTS
 import styles from '@/styles/Home.module.scss';
-import { AuthContext } from '@/contexts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 
 import logoImg from '../../public/Logo-united-sem-fundo.png';
 
@@ -64,3 +67,11 @@ export default function Home() {
     </>
   );
 }
+
+// Verificando pelo lado do servidor
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+
+  return{
+    props: {}
+  }
+});
