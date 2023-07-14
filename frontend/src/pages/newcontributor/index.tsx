@@ -58,9 +58,6 @@ export default function Register(){
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
 
-    const [colaborador_id, setColaborador_id] = useState(user.id);
-    const [colaborador_cargo, setColaborador_cargo] = useState(user.cargo);
-
     const [carregando, setCarregando] = useState(true);
 
     // Funcao para salvarmos imagem
@@ -108,6 +105,8 @@ export default function Register(){
     //FUNCAO PARA CRIAR COLABORADOR
     async function hadleRegiste(event: FormEvent){
         event.preventDefault();
+
+        console.log(user.cargo);
 
         try {
             const data = new FormData();
@@ -178,8 +177,8 @@ export default function Register(){
             data.append('complemento_salario', complemento_salario || '0');
             data.append('senha', senha);
             data.append('obs', obs);
-            data.append('colaborador_id', colaborador_id);
-            data.append('colaborador_cargo', colaborador_cargo);
+            data.append('colaborador_id', user.id);
+            data.append('colaborador_cargo', user.cargo);
 
             await signUp(data);
 
