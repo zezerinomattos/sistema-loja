@@ -11,7 +11,7 @@ import { AuthContext } from '@/contexts/AuthContext';
 
 
 export function Header(){
-    const { user } = useContext(AuthContext);
+    const { user, signOut } = useContext(AuthContext);
     const isGerente = user.cargo === 'GERENTE';
     const isAdmim = user.cargo === 'ADMIM';
 
@@ -78,7 +78,7 @@ export function Header(){
                     <li onClick={() => handleItemClick('caixa')} className={renderPage === 'caixa' ? styles.actived : ''} >CAIXA</li>
                     <li onClick={() => handleItemClick('financeiro')} className={renderPage === 'financeiro' ? styles.actived : ''} >FINANCEIRO</li>
                     <li onClick={() => handleItemClick('crediario')} className={renderPage === 'crediario' ? styles.actived : ''} >CREDIÁRIO</li>
-                    <li >SAIR</li>
+                    <li onClick={signOut}>SAIR</li>
                 </ul>
             </div>
 
