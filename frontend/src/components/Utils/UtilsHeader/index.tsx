@@ -92,7 +92,6 @@ export function UtilsHeader( param: string ){
                         </li>
 
                         <li onClick={() => setIsModalOpen(true)}>
-                            {/* <Link href="/"><FcKey size={28}/></Link> */}
                             <FcKey size={28}/>
                             <span>BLOQUEAR</span>
                         </li>
@@ -115,7 +114,7 @@ export function UtilsHeader( param: string ){
             return(
                 <ul className={styles.paginas}>
                     <li onClick={() => handleItemClick('newColaborador')} className={renderButton === 'newColaborador' ? styles.actived : ''} >
-                        <Link href="/newcontributor"><FcBusinessman size={28}/>
+                        <Link href="/newcollaborator"><FcBusinessman size={28}/>
                             <span>NOVO <br/> COLABORADOR</span>
                         </Link>
                     </li>

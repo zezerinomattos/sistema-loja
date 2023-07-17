@@ -42,9 +42,9 @@ export function Header(){
                 break;
 
             //Colaborador
-            case 'newcontributor':
+            case 'newcollaborator':
                 setRenderPage('colaborador');
-                setTest('newcontributor');
+                setTest('newcollaborator');
                 break;
 
             case 'listcontributor':
