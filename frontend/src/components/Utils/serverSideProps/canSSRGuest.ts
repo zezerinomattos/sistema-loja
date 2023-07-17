@@ -13,7 +13,7 @@ import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult
 import { parseCookies } from 'nookies';
 
 // FUNÇÃO PARA PAGINAS QUE SÓ PODE SER ACESSADA POR USUÁRIO NAO LOGADO
-export function canSSRGuest<P>(fn: GetServerSideProps <P>){
+export function canSSRGuest<P extends { [key: string]: any }>(fn: GetServerSideProps <P>){
     return async(ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult <P> > => {
         
         const cookies = parseCookies(ctx);
