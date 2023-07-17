@@ -13,6 +13,7 @@ type AuthContextData ={
     signIn: (Credential: SignInProps) => Promise<void>;
     signUp: (Credential: FormData) => Promise<void>;
     signOut:() => void;
+    blockIn: (Credential: SignInProps) => Promise<boolean>;
 }
 
 type UserProps ={
@@ -84,6 +85,8 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
     const [user, setUser] = useState<UserProps>({} as UserProps);
     const isAuthenticated = !!user;
 
+    const [isBlock, setIsBlock] = useState(false);
+
     useEffect(() => {
         //Tentar pegar algo no cookie
         const { '@sistemaunited': token } = parseCookies();
@@ -153,6 +156,23 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
         }
     }
 
+    // FUNCAO PARA DESBLOQUEAR
+    async function blockIn({ email, senha }: SignInProps): Promise<boolean> {
+        try {
+          await api.post('/login', {
+            email,
+            senha,
+          });     
+          toast.success('LOGADO COM SUCESSO!');
+          return true; // Retorna true para indicar que o login foi bem-sucedido
+          
+        } catch (error) {
+          console.log('ERRO AO ACESSAR', error);
+      
+          return false; // Retorna false para indicar que o login falhou
+        }
+    }
+
     if(!user){
         return null;
     }
@@ -181,7 +201,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
     }
 
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp}}>
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp, blockIn }}>
             {children}
         </AuthContext.Provider>
     )

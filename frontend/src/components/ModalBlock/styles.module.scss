@@ -1,0 +1,50 @@
+div.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    div.title{
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h1{
+        font-family: 'Ubuntu', sans-serif;
+        font-size: max(22px, 2.5vw);
+        color: var(--red-900);
+        margin: 20px 0;
+        text-shadow: 2px 2px 4px var(--dark-900);
+        margin-right: 20px;
+    }
+
+    span{
+        font-family: 'Ubuntu', sans-serif;
+        font-size: max(18px, 1.3vw);
+        color: var(--dark-700);
+        text-shadow: 2px 2px 4px var(--dark-900);
+        margin-bottom: 20px;
+        max-width: 70%;
+        text-align: center;
+    }
+
+    form{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        label{
+            font-family: 'Ubuntu', sans-serif;
+            font-size: max(18px, 1.4vw);
+            color: var(--blue-700);
+            text-shadow: 1px 1px 2px var(--dark-900);
+            margin-bottom: 5px;
+            max-width: 70%;
+            text-align: center;
+        }
+    }
+}

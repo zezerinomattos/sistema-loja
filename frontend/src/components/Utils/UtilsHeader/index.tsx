@@ -1,42 +1,112 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
 import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode } from "react-icons/fc";
 
+import Modal from 'react-modal';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+
 // MY IMPORTS
 import styles from '../../Header/styles.module.scss';
+import { ModalBlock } from '../../ModalBlock';
+
+import { AuthContext } from '../../../contexts/AuthContext';
 
 export function UtilsHeader( param: string ){
+    const { user, blockIn } = useContext(AuthContext);
+    const router = useRouter();
 
     const [renderButton, setRenderButton] = useState('');
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    const [loading, setLoaging] = useState(false);
 
     function handleItemClick(page: string) {
         setRenderButton(page);
     } 
 
+    // FECHAR MODAL
+    async function handleCloseModal(password: string){
+
+        if(!user.email || !password){          
+            toast.error('PREENCHA OS DADOS');
+            return;
+        }
+
+        setLoaging(true);
+
+        let data = {
+            email: user.email,
+            senha: password,
+        }
+
+        const isBlock = await blockIn(data);
+
+        if (isBlock) {
+            setIsModalOpen(false);
+        } else {
+            toast.error('ERRO AO TENTAR DESBLOQUEAR!');
+        }
+
+        //setIsModalOpen(false);
+
+        setLoaging(false);
+        
+    }
+
+    useEffect(() => {
+        // Verifica se o modal está aberto no Local Storage
+        const isModalOpen = localStorage.getItem('isModalOpen');
+    
+        if (isModalOpen === 'true') {
+          setIsModalOpen(true);
+        }
+      }, []);
+    
+      useEffect(() => {
+        // Salva o estado do modal no Local Storage sempre que ele for alterado
+        localStorage.setItem('isModalOpen', isModalOpen.toString());
+
+    }, [isModalOpen]);
+
     switch (param) {
         case 'arquivo':
             return(
-                <ul className={styles.paginas}>
-                    <li>
-                        <Link href="/"><FcBookmark size={28}/></Link>
-                        <span>SALVAR</span>
-                    </li>
+                <>
+                    <ul className={styles.paginas}>
+                        <li>
+                            <Link href="/"><FcBookmark size={28}/></Link>
+                            <span>SALVAR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcDiploma2 size={28}/></Link>
-                        <span>IMPRIMIR</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcDiploma2 size={28}/></Link>
+                            <span>IMPRIMIR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcEngineering size={28}/></Link>
-                        <span>CONFIGURAÇÕES</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcEngineering size={28}/></Link>
+                            <span>CONFIGURAÇÕES</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcKey size={28}/></Link>
-                        <span>BLOQUEAR</span>
-                    </li>
-                </ul>
+                        <li onClick={() => setIsModalOpen(true)}>
+                            {/* <Link href="/"><FcKey size={28}/></Link> */}
+                            <FcKey size={28}/>
+                            <span>BLOQUEAR</span>
+                        </li>
+                    </ul>
+                    {
+                        isModalOpen && 
+                            <ModalBlock 
+                                isOpen={isModalOpen}
+                                onRequestClose={handleCloseModal}
+                                loading={loading}
+                                email={user.email}
+                            />
+                    }
+                </>
             );
 
             break;
