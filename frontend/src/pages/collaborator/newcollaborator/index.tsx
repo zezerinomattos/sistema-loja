@@ -10,7 +10,7 @@ import { Header } from '@/components/Header';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 
-import logoEmpresa from '../../../public/logo-Nanda.png';
+import logoEmpresa from '../../../../public/logo-Nanda.png';
 
 import { AuthContext } from '@/contexts/AuthContext';
 

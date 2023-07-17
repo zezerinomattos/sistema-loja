@@ -42,16 +42,16 @@ export function Header(){
                 break;
 
             //Colaborador
-            case 'newcollaborator':
+            case 'collaborator/newcollaborator':
                 setRenderPage('colaborador');
                 setTest('newcollaborator');
                 break;
 
-            case 'listcontributor':
+            case 'collaborator/listcollaborator':
                 setRenderPage('colaborador');
                 break;
 
-            case 'detailcontributor':
+            case 'collaborator/detailcollaborator':
                 setRenderPage('colaborador');
                 break;
         

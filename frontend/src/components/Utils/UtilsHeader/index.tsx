@@ -114,13 +114,13 @@ export function UtilsHeader( param: string ){
             return(
                 <ul className={styles.paginas}>
                     <li onClick={() => handleItemClick('newColaborador')} className={renderButton === 'newColaborador' ? styles.actived : ''} >
-                        <Link href="/newcollaborator"><FcBusinessman size={28}/>
+                        <Link href="/collaborator/newcollaborator"><FcBusinessman size={28}/>
                             <span>NOVO <br/> COLABORADOR</span>
                         </Link>
                     </li>
 
                     <li onClick={() => handleItemClick('lisColaborador')} className={renderButton === 'lisColaborador' ? styles.actived : ''}>
-                        <Link href="/"><FcConferenceCall size={28}/>
+                        <Link href="/collaborator/listcollaborator"><FcConferenceCall size={28}/>
                             <span>LISTA <br/> COLABORADOR</span>
                         </Link>
                     </li>
