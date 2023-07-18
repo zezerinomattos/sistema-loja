@@ -30,6 +30,14 @@ export function ModalBlock({ isOpen, onRequestClose, loading, email }: ModalBloc
 
     const [password, setPassword] = useState('');
 
+    //DESABILITANDO O ENTER PARA QUE O USER PRESSIONE O BOTAO
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        // Verifica se a tecla pressionada é a tecla Enter
+        if (event.key === 'Enter') {
+          event.preventDefault(); // Impede a ação padrão do evento (no caso, submit do formulário)
+        }
+    };
+
     return(
         <Modal 
             isOpen={isOpen} 
@@ -46,7 +54,7 @@ export function ModalBlock({ isOpen, onRequestClose, loading, email }: ModalBloc
 
                 <form >
                     <label>{email}</label>
-                    <Input type='password' placeholder='senha' onChange={(e) => setPassword(e.target.value)} />
+                    <Input type='password' placeholder='senha' onChange={(e) => setPassword(e.target.value)} onKeyDown={handleKeyDown} />
 
                     <Button onClick={() => onRequestClose(password)} type='button' loading={loading} style={{padding: '10px 20px', boxShadow: '2px 2px 2px #0D0D0D'} } >DESBLOQUEAR</Button>
                 </form>

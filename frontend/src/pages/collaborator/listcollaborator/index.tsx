@@ -108,7 +108,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
     const apiClient = setupAPIClient(ctx);
     const response = await apiClient.get('colaborador');
 
-    console.log(response.data)
+    //console.log(response.data)
 
     return{
         props: {
