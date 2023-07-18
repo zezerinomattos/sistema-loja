@@ -71,6 +71,7 @@ export default function ListCollaborator({ collaborator }: ListProps){
         return () => clearTimeout(delayDebounceFn);
     }, [listName]);
 
+
     return(
         <div className={styles.container}>
             <Header />
@@ -129,7 +130,8 @@ export default function ListCollaborator({ collaborator }: ListProps){
 
 // Verificando pelo lado do servidor
 export const getServerSideProps = canSSRAuth(async (ctx) => {
-
+    
+    // @ts-ignore
     const apiClient = setupAPIClient(ctx);
     const response = await apiClient.get('colaborador');
 

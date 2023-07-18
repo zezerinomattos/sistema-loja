@@ -70,8 +70,6 @@ div.containerInferior ul.paginas{
         font-family: 'Ubuntu', sans-serif;
         font-size: 0.6rem;
         padding: 0.5rem;
-        // border-left: 0.1rem solid var(--gray-300);
-        // border-right: 0.1rem solid var(--gray-300);
         box-shadow: 1px 1px 1px 1px var(--gray-300);
 
         display: flex;
@@ -89,6 +87,14 @@ div.containerInferior ul.paginas{
 
         &:hover{
             filter: brightness(0.6);
+        }
+
+        a{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
     }
     

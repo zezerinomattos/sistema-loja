@@ -19,8 +19,6 @@ export function UtilsHeader( param: string ){
     const [renderButton, setRenderButton] = useState('');
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
     const [loading, setLoaging] = useState(false);
 
     function handleItemClick(page: string) {
@@ -114,20 +112,23 @@ export function UtilsHeader( param: string ){
             return(
                 <ul className={styles.paginas}>
                     <li onClick={() => handleItemClick('newColaborador')} className={renderButton === 'newColaborador' ? styles.actived : ''} >
-                        <Link href="/collaborator/newcollaborator"><FcBusinessman size={28}/>
+                        <Link href="/collaborator/newcollaborator">
+                            <FcBusinessman size={28}/>
                             <span>NOVO <br/> COLABORADOR</span>
                         </Link>
                     </li>
 
                     <li onClick={() => handleItemClick('lisColaborador')} className={renderButton === 'lisColaborador' ? styles.actived : ''}>
-                        <Link href="/collaborator/listcollaborator"><FcConferenceCall size={28}/>
+                        <Link href="/collaborator/listcollaborator">
+                            <FcConferenceCall size={28}/>
                             <span>LISTA <br/> COLABORADOR</span>
                         </Link>
                     </li>
 
                     <li onClick={() => handleItemClick('detalheColaborador')} className={renderButton === 'detalheColaborador' ? styles.actived : ''}>
-                        <Link href="/"><FcPortraitMode size={28}/>
-                            <span>DETALHE COLABORADOR</span>
+                        <Link href="/collaborator/detailcollaborator">
+                            <FcPortraitMode size={28}/>
+                            <span>DETALHES COLABORADOR</span>
                         </Link>
                     </li>
 
