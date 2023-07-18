@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState  } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { CiSearch } from "react-icons/ci";
@@ -27,8 +28,12 @@ interface ListProps{
     collaborator: CollaboratorProps[];
 }
 
+type CollaboratorIDProps ={
+    id: string;
+}
+
 export default function ListCollaborator({ collaborator }: ListProps){
-    const { user } = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
 
     const [collaboratorList, setCollaboratorList] = useState(collaborator || []);
 
@@ -70,7 +75,6 @@ export default function ListCollaborator({ collaborator }: ListProps){
 
         return () => clearTimeout(delayDebounceFn);
     }, [listName]);
-
 
     return(
         <div className={styles.container}>

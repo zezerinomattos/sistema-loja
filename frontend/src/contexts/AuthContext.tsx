@@ -14,6 +14,7 @@ type AuthContextData ={
     signUp: (Credential: FormData) => Promise<void>;
     signOut:() => void;
     blockIn: (Credential: SignInProps) => Promise<boolean>;
+
 }
 
 type UserProps ={
@@ -199,7 +200,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
         }
 
     }
-
+ 
     return(
         <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp, blockIn }}>
             {children}

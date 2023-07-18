@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, ChangeEvent, FormEvent} from 'r
 import Image from 'next/image';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
+import { FcSearch } from "react-icons/fc";
 import { toast } from 'react-toastify';
 
 
@@ -58,6 +59,8 @@ export default function DetailCollaborator(){
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
 
+    const [listId, setListId] = useState('');
+
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
         setCarregando(false);
@@ -110,7 +113,6 @@ export default function DetailCollaborator(){
     }
 
 
-
     return(
         <div className={styles.container}>
                 <Header />
@@ -136,7 +138,15 @@ export default function DetailCollaborator(){
                     </div>
 
                     <div className={styles.rigthContainer}>
-                        <h1>DETALHE DO COLABORADOR</h1>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button  className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
+                        </div>
                         
                         <form className={styles.formColaborador} >
                             <Input placeholder='NOME COMPLETO' type='text' className={styles.inputName} onChange={(e) => setNome(e.target.value)} value={nome}/>

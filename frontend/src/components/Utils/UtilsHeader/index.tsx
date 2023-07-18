@@ -125,10 +125,10 @@ export function UtilsHeader( param: string ){
                         </Link>
                     </li>
 
-                    <li onClick={() => handleItemClick('detalheColaborador')} className={renderButton === 'detalheColaborador' ? styles.actived : ''}>
-                        <Link href="/collaborator/detailcollaborator">
+                    <li onClick={() => handleItemClick('editcollaborator')} className={renderButton === 'editcollaborator' ? styles.actived : ''}>
+                        <Link href="/collaborator/editcollaborator">
                             <FcPortraitMode size={28}/>
-                            <span>DETALHES COLABORADOR</span>
+                            <span>EDITAR COLABORADOR</span>
                         </Link>
                     </li>
 

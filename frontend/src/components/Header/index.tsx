@@ -51,7 +51,7 @@ export function Header(){
                 setRenderPage('colaborador');
                 break;
 
-            case 'collaborator/detailcollaborator':
+            case 'collaborator/editcollaborator':
                 setRenderPage('colaborador');
                 break;
         

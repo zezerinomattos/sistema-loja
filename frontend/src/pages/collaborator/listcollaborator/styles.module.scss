@@ -136,13 +136,14 @@ div.rigthContainer div.filterContainer{
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 div.filterContainer div.filter{
     display: flex;
     flex-flow: row;
     justify-content: center;
+    height: 40px;
 }
 
 div.filterContainer div.filter button.buttonBuscar{
