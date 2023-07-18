@@ -29,20 +29,48 @@ interface ListProps{
 
 export default function ListCollaborator({ collaborator }: ListProps){
     const { user } = useContext(AuthContext);
-    const [carregando, setCarregando] = useState(true);
 
     const [collaboratorList, setCollaboratorList] = useState(collaborator || []);
 
-    useEffect(() => {
-        //Escondendo o loading quando ele montar completamente o componente
-        setCarregando(false);
-    }, []);
+    const [listId, setListId] = useState('');
+    const [listName, setListName] = useState('');
 
-    if (carregando) {
-        return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
+    // FUNCAO FILTRO 
+    function filterCollaborator(){
+        //FILTRANDO SE TEM ID
+        if(listId){
+            const filteredCollaborators = collaborator.filter((colab) => colab.usuario.id.includes(listId));
+            setCollaboratorList(filteredCollaborators);
+        }
+
+        //FILTRANDO PELO NOME
+        if(!listId && listName){
+            const filteredCollaborators = collaborator.filter((colab) => colab.usuario.nome.includes(listName));
+            setCollaboratorList(filteredCollaborators);
+        }
+
+        //FILTRANDO TODOS
+        if(!listName && !listId){
+            clearFilter();
+        }
     }
 
-    
+    // FUNÇÃO LIMPAR FILTRO
+    function clearFilter() {
+        setCollaboratorList(collaborator);
+        setListId('');
+        setListName('');
+    }
+
+    // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            filterCollaborator();
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [listName]);
+
     return(
         <div className={styles.container}>
             <Header />
@@ -70,18 +98,15 @@ export default function ListCollaborator({ collaborator }: ListProps){
                 <div className={styles.rigthContainer}>
                     <div className={styles.filterContainer}>
                         <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO'/>
-                            <label><FcSearch size={28} /></label>
+                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)}/>
                         </div>
 
                         <div className={styles.filter}>
-                            <Input placeholder='NOME'/>
-                            <label><FcSearch size={28} /></label>
+                            <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
                         </div>
 
                         <div className={styles.filter}>
-                            <Input placeholder='TODOS'/>
-                            <label><FcSearch size={28} /></label>
+                            <button onClick={filterCollaborator} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                         </div>
                     </div>
 
