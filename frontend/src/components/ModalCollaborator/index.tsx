@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import Image from 'next/image';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
@@ -14,6 +15,9 @@ interface ModalProps{
 }
 
 export function ModalCollaborator({ isOpen, onRequestClose, colaborador }: ModalProps){
+
+    const url = 'http://localhost:3333/files/';
+
     const customStyles = {
         content: {
           top: '50%',
@@ -36,13 +40,14 @@ export function ModalCollaborator({ isOpen, onRequestClose, colaborador }: Modal
                             <div className={styles.inputsBasicData}>
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">CÓDIGO</label>
-                                    <Input value={colab.id} disabled style={{width: '400px'}}/>
+                                    <Input value={colab.id} disabled style={{width: '400px', textTransform: 'none'}} />
                                 </div>
 
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">NOME</label>
                                     <Input value={colab.nome} disabled style={{width: '400px'}}/>
                                 </div>
+
                             </div>
 
                             <div className={styles.inputsBasicData}>
@@ -169,14 +174,40 @@ export function ModalCollaborator({ isOpen, onRequestClose, colaborador }: Modal
 
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">SALARIO BASE</label>
-                                    <Input value={Array.isArray(colab.colaborador) ? colab.colaborador[0]?.cargo : ''} disabled style={{width: '150px'}}/>
+                                    <Input value={`R$ ${Array.isArray(colab.colaborador) ? colab.colaborador[0]?.salario_base : ''}`} disabled style={{width: '150px'}}/>
                                 </div>
 
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">COMISSÃO</label>
-                                    <Input value={Array.isArray(colab.colaborador) ? colab.colaborador[0]?.cargo : ''} disabled style={{width: '150px'}}/>
+                                    <Input value={`R$ ${Array.isArray(colab.colaborador) ? colab.colaborador[0]?.complemento_salario : ''}`} disabled style={{width: '150px'}}/>
                                 </div>
 
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">QUEBRA CAIXA</label>
+                                    <Input value={`R$ ${Array.isArray(colab.colaborador) ? colab.colaborador[0]?.quebra_caixa : ''}`} disabled style={{width: '150px'}}/>
+                                </div>
+
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">TOTAL VENDAS MÊS</label>
+                                    <Input value={`R$ ${Array.isArray(colab.colaborador) ? colab.colaborador[0]?.total_vendas_mes : ''}`} disabled style={{width: '150px'}}/>
+                                </div>
+
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">ADMISSÃO</label>
+                                    <Input value={new Date(Array.isArray(colab.colaborador) ? colab.colaborador[0]?.data_admissao : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
+                                </div>
+
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">DEMISSÃO</label>
+                                    <Input value={new Date(Array.isArray(colab.colaborador) ? colab.colaborador[0]?.data_demisao : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
+                                </div>
+
+                            </div>
+
+                            <div className={styles.inputLabel}>
+                                <div className={styles.foto}>
+                                    <Image src={url + '/' + colab.foto} alt='Logo da empresa' width={100} height={100} />
+                                </div>
                             </div>
 
                             <div className={styles.inputLabel}>
@@ -191,5 +222,3 @@ export function ModalCollaborator({ isOpen, onRequestClose, colaborador }: Modal
         </Modal>
     )
 }
-
-//Horario: {new Date(order[0].created_at).toLocaleTimeString("pt-BR", {hour: "2-digit", minute: "2-digit"})}

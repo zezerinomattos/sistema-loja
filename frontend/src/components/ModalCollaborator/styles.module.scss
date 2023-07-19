@@ -50,3 +50,19 @@ div.inputLabel{
         font-size: max(14px, 1.1vw);
     }
 }
+
+div.foto{
+    max-width: 110px;
+    max-height: 110px;
+    border: 1px solid var(--white);
+    border-radius: 0.6rem;
+    margin-bottom: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img{
+        border-radius: 0.6rem;
+    }
+}
