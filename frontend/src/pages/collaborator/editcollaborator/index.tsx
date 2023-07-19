@@ -247,3 +247,11 @@ export default function DetailCollaborator(){
         </div>
     );
 }
+
+// Verificando pelo lado do servidor
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+
+    return{
+      props: {}
+    }
+});

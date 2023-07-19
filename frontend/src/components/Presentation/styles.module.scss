@@ -19,6 +19,10 @@ div.leftContainer div.logoEmpresa{
     align-items: center;
     justify-content: center;
 
+    img{
+        cursor: pointer;
+    }
+
     h5{
         color: var(--white);
         box-shadow: 2px 2px 4px var(--gray-900);

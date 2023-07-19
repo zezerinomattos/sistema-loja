@@ -14,6 +14,7 @@ import { Button } from '@/components/Ui/Button';
 import logoEmpresa from '../../../../public/logo-Nanda.png';
 
 import { AuthContext } from '@/contexts/AuthContext';
+import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 
 import { apiCep } from '@/services/apiCep';
 
@@ -365,3 +366,11 @@ export default function Register(){
         </>
     );
 }
+
+// Verificando pelo lado do servidor
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+
+    return{
+      props: {}
+    }
+});
