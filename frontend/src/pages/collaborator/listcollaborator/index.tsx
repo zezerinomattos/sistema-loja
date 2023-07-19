@@ -10,12 +10,14 @@ import styles from './styles.module.scss';
 import { Header } from '../../../components/Header';
 import { Presentation } from '../../../components/Presentation';
 import { Input } from '../../../components/Ui/Input';
+import { ModalCollaborator } from '../../../components/ModalCollaborator';
 
 import logoEmpresa from '../../../../public/logo-Nanda.png';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 import { setupAPIClient } from '../../../services/api';
+import { api } from '../../../services/apiClient';
 
 type CollaboratorProps = {
     situacao: boolean;
@@ -29,8 +31,53 @@ interface ListProps{
     collaborator: CollaboratorProps[];
 }
 
-type CollaboratorIDProps ={
+export type CollaboratorDetailProps = {
     id: string;
+    cpf: string;
+    nome: string;
+    nascimento: Date;
+    sexo: string;
+    email: string;
+    foto: string;
+    created_at: Date;
+    updated_at: Date;
+    endereco_id: string;
+    colaborador: {
+        situacao: string;
+        cargo: string;
+        celular: string;
+        telefone: string;
+        rg: string;
+        orgao_emissor: string;
+        carteira_trabalho: string;
+        serie: string;
+        pis: string;
+        titulo_eleitor: string;
+        zona_eleitoral: string;
+        secao_eleitoral: string;
+        salario_base: number;
+        complemento_salario: number;
+        bonificacao: number;
+        total_vendas_mes: number;
+        quebra_caixa: number;
+        saldo_salario: number;
+        data_admissao: Date;
+        data_demisao: Date;
+        obs: string;
+    }
+    endereco: {
+        id: string;
+        cep: string;
+        logradouro: string;
+        numero: string;
+        complemento: string;
+        bairro: string;
+        cidade: string;
+        uf: string;
+        pais: string;
+        created_at: Date;
+        updated_at: Date;
+    }
 }
 
 export default function ListCollaborator({ collaborator }: ListProps){
@@ -40,6 +87,27 @@ export default function ListCollaborator({ collaborator }: ListProps){
 
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
+
+    const [modalCollaborator, setModalCollaborator] = useState<CollaboratorDetailProps[]>()
+    const [modalVisible, setModalVisible] = useState(false)
+
+    //FUNCAO PARA DETALHAR COLABORADOR SELECIONADO
+    async function handleOpenModalView(id: string){
+        await api.get('/colaborador/detail', {
+            params: {
+                colaborador_id: id,
+            }
+        })
+        .then(response => {
+            setModalCollaborator(response.data);
+            setModalVisible(true);
+        })
+    }
+
+    // FUNCAO FECHAR MODAL
+    function handleCloseModal(){
+        setModalVisible(false);
+    }
 
     // FUNCAO FILTRO 
     function filterCollaborator(){
@@ -104,7 +172,7 @@ export default function ListCollaborator({ collaborator }: ListProps){
                             {collaboratorList.map(colab => (
                                 <li key={colab.usuario.id}>
                                     <span>{colab.usuario.id}</span>
-                                    <span className={styles.nameDetail}>{colab.usuario.nome}</span>
+                                    <span onClick={() => handleOpenModalView(colab.usuario.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
                                     <span>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
                                 </li>
                             ))}
@@ -112,6 +180,17 @@ export default function ListCollaborator({ collaborator }: ListProps){
                     </article>
                 </div>
             </main>
+
+            {
+                modalVisible && modalCollaborator && modalCollaborator.length > 0 && (
+                    <ModalCollaborator 
+                        isOpen={modalVisible}
+                        onRequestClose={handleCloseModal}
+                        colaborador={modalCollaborator}
+                    />
+                )
+            }
+
         </div>
     );
 }
