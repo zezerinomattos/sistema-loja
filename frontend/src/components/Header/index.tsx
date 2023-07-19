@@ -9,8 +9,12 @@ import { UtilsHeader } from '../Utils/UtilsHeader';
 
 import { AuthContext } from '@/contexts/AuthContext';
 
+interface HeaderProps{
+    title: string
+}
 
-export function Header(){
+
+export function Header({title}: HeaderProps){
     const { user, signOut } = useContext(AuthContext);
     const isGerente = user.cargo === 'GERENTE';
     const isAdmim = user.cargo === 'ADMIM';
@@ -21,6 +25,8 @@ export function Header(){
     const [renderPage, setRenderPage] = useState('');
 
     const [teste, setTest] = useState('');
+
+    const [titleHeader, setTitleHeader] = useState(title || '');
 
     function handleItemClick(page: string) {
         setRenderPage(page);
@@ -84,7 +90,7 @@ export function Header(){
 
             <div className={styles.containerInferior}>
                 {
-                    UtilsHeader(renderPage)
+                    UtilsHeader(renderPage, titleHeader)
                 }
             </div>
         </div>

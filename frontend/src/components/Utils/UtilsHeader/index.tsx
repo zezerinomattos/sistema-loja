@@ -12,7 +12,7 @@ import { ModalBlock } from '../../ModalBlock';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 
-export function UtilsHeader( param: string ){
+export function UtilsHeader( param: string, title: string ){
     const { user, blockIn } = useContext(AuthContext);
     const router = useRouter();
 
@@ -94,6 +94,9 @@ export function UtilsHeader( param: string ){
                             <span>BLOQUEAR</span>
                         </li>
                     </ul>
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
                     {
                         isModalOpen && 
                             <ModalBlock 
@@ -110,108 +113,133 @@ export function UtilsHeader( param: string ){
 
         case 'colaborador':
             return(
-                <ul className={styles.paginas}>
-                    <li onClick={() => handleItemClick('newColaborador')} className={renderButton === 'newColaborador' ? styles.actived : ''} >
-                        <Link href="/collaborator/newcollaborator">
-                            <FcBusinessman size={28}/>
-                            <span>NOVO <br/> COLABORADOR</span>
-                        </Link>
-                    </li>
+                <>
+                    <ul className={styles.paginas}>
+                        <li onClick={() => handleItemClick('newColaborador')} className={renderButton === 'newColaborador' ? styles.actived : ''} >
+                            <Link href="/collaborator/newcollaborator">
+                                <FcBusinessman size={28}/>
+                                <span>NOVO <br/> COLABORADOR</span>
+                            </Link>
+                        </li>
 
-                    <li onClick={() => handleItemClick('lisColaborador')} className={renderButton === 'lisColaborador' ? styles.actived : ''}>
-                        <Link href="/collaborator/listcollaborator">
-                            <FcConferenceCall size={28}/>
-                            <span>LISTA <br/> COLABORADOR</span>
-                        </Link>
-                    </li>
+                        <li onClick={() => handleItemClick('lisColaborador')} className={renderButton === 'lisColaborador' ? styles.actived : ''}>
+                            <Link href="/collaborator/listcollaborator">
+                                <FcConferenceCall size={28}/>
+                                <span>LISTA <br/> COLABORADOR</span>
+                            </Link>
+                        </li>
 
-                    <li onClick={() => handleItemClick('editcollaborator')} className={renderButton === 'editcollaborator' ? styles.actived : ''}>
-                        <Link href="/collaborator/editcollaborator">
-                            <FcPortraitMode size={28}/>
-                            <span>EDITAR COLABORADOR</span>
-                        </Link>
-                    </li>
+                        <li onClick={() => handleItemClick('editcollaborator')} className={renderButton === 'editcollaborator' ? styles.actived : ''}>
+                            <Link href="/collaborator/editcollaborator">
+                                <FcPortraitMode size={28}/>
+                                <span>EDITAR COLABORADOR</span>
+                            </Link>
+                        </li>
 
-                </ul>
+                    </ul>
+
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
+                </>
+                
             );
             
             break;
 
         case 'cliente':
             return(
-                <ul className={styles.paginas}>
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                <>
+                    <ul className={styles.paginas}>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
-                </ul>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
+                    </ul>
+
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
+                </>
             );
             break;
         
         case 'produto':
             return(
-                <ul className={styles.paginas}>
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                <>
+                    <ul className={styles.paginas}>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
-                </ul>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
+                    </ul>
+
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
+                </>
             );
             break;
 
         case 'representante':
             return(
-                <ul className={styles.paginas}>
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                <>
+                    <ul className={styles.paginas}>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
 
-                    <li>
-                        <Link href="/"><FcBusinessman size={28}/></Link>
-                        <span><strong>+</strong> COLABORADOR</span>
-                    </li>
-                </ul>
+                        <li>
+                            <Link href="/"><FcBusinessman size={28}/></Link>
+                            <span><strong>+</strong> COLABORADOR</span>
+                        </li>
+                    </ul>
+
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
+                </>
             );
             break;
 

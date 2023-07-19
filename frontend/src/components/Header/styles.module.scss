@@ -103,3 +103,15 @@ div.containerInferior ul.paginas{
         color: var(--green-700);
     }
 }
+
+div.title{
+    max-width: 90%;
+    margin: auto;
+
+    h1{
+        color: var(--white);
+        font-size: 24px;
+        font-family: 'Roboto', sans-serif;
+        text-shadow: 2px 2px 4px var(--gray-900);
+    }
+}
