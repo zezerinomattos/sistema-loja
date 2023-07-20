@@ -25,13 +25,21 @@ class EditColaboradorController{
             // const saldo_salario = parseFloat(req.body.saldo_salario);
             // const limite_credito = parseFloat(req.body.limite_credito);
 
+            const situacao = JSON.parse(req.body.situacao);
+            const salario_base = parseFloat(req.body.salario_base.replace(',', '.'));         
+            const complemento_salario = parseInt(req.body.complemento_salario);
+            const name = nome.toUpperCase();
+            const saveEmail = email.toLowerCase();
+            const saveObs = obs.toUpperCase()
+            const quebra_caixa = parseFloat(req.body.quebra_caixa.replace(',', '.'));  
+
             //--------------------------------------------------------
 
             const colaborador = await editColaboradorService.execute({
                 colaborador_id, 
-                nome,  
+                nome: name,  
                 sexo, 
-                email, 
+                email: saveEmail, 
                 foto, 
                 cep, 
                 logradouro, 
@@ -60,7 +68,7 @@ class EditColaboradorController{
                 saldo_salario, 
                 data_admissao, 
                 data_demisao, 
-                obs 
+                obs: saveObs
             });
 
             return res.json(colaborador);

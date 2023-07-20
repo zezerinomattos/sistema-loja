@@ -14,7 +14,7 @@ type AuthContextData ={
     signUp: (Credential: FormData) => Promise<void>;
     signOut:() => void;
     blockIn: (Credential: SignInProps) => Promise<boolean>;
-
+    toEdit: (Credential: FormData) => Promise<void>;
 }
 
 type UserProps ={
@@ -200,9 +200,30 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
         }
 
     }
+
+    async function toEdit(data: FormData){
+        try {
+
+            const response = await api.put('/colaborador/edit', data);
+            //console.log(response.data);
+            toast.success('CADRASTRO ATUALIZADO COM SUCESSO');
+
+        } catch (error: any) {
+
+            if (error.response && error.response.data && error.response.data.erro) {
+                const errorMessage = error.response.data.erro;
+                console.log(error);
+                toast.error(errorMessage);
+            } else {
+                const errorMessage = 'Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde.';
+                console.log(error);
+                toast.error(errorMessage);
+            }
+        }
+    }
  
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp, blockIn }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp, blockIn, toEdit }}>
             {children}
         </AuthContext.Provider>
     )

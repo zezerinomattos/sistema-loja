@@ -19,14 +19,16 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 import { apiCep } from '@/services/apiCep';
 
+import { api } from '../../../services/apiClient';
+
 export default function DetailCollaborator(){
-    const { user } = useContext(AuthContext);
+    const { user, toEdit } = useContext(AuthContext);
+
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
+    const [message, setMessage] = useState('');
 
     const [nome, setNome] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [nascimento, setNascimento] = useState('');
     const [sexo, setSexo] = useState('');
     const [email, setEmail] = useState('');
     const [cep, setCep] = useState('');
@@ -38,7 +40,7 @@ export default function DetailCollaborator(){
     const [uf, setUf] = useState('');
 
     const [pais, setPais] = useState('');
-    const [situacao, setSituacao] = useState(true);
+    const [situacao, setSituacao] = useState('');
     const [celular, setCelular] = useState('');
     const [telefone, setTelefone] = useState('');
     const [rg, setRg] = useState('');
@@ -52,15 +54,15 @@ export default function DetailCollaborator(){
     const [secao_eleitoral, setSecaoEleitoral] = useState('');
     const [salario_base, setSalarioBase] = useState('');
     const [complemento_salario, setComplementoSalario] = useState('');
-
-    const [senha, setSenha] = useState('');
+    const [quebra_caixa, setQuebracaixa] = useState('');
     const [obs, setObs] = useState('');
 
     const [cargo, setCargo] = useState('');
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
+    const url = 'http://localhost:3333/files/';
 
-    const [listId, setListId] = useState('');
+    const [colaboradorId, setColaboradorId] = useState('');
 
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
@@ -113,6 +115,153 @@ export default function DetailCollaborator(){
         
     }
 
+    //FUNCAO PARA CRIAR COLABORADOR
+    async function hadleEdit(event: FormEvent){
+        event.preventDefault();
+
+        console.log(user.cargo);
+
+        try {
+            const data = new FormData();
+
+            //Verificações
+            if(!colaboradorId ){
+                setMessage('Iforme o código do colaborador!');
+                return;
+            }
+
+            if(!nome || !sexo || !email || !cep || !logradouro || !numero || !bairro || !cidade || !uf || !pais || !situacao || !celular || !telefone || !rg || !orgao_emissor || !carteira_trabalho ||!serie || !pais || !titulo_eleitor || !zona_eleitoral||!secao_eleitoral  || !cargo || !imageAvatar){             
+                setMessage('Preencha todos os campos!');
+                return;
+            }
+
+            setLoaging(true);
+
+            // //const nascimentoDate =  new Date(nascimento)  
+            // const salarioBase = parseFloat(salario_base.replace(',', '.'));
+            // const complementoSalario = parseInt(complemento_salario);
+            // const quebraCaixa = parseFloat(quebra_caixa.replace(',', '.'));
+            
+            data.append('colaborador_id', colaboradorId);
+            data.append('nome', nome);
+            data.append('sexo', sexo);
+            data.append('email', email);
+            data.append('file', imageAvatar);
+            data.append('cep', cep);
+            data.append('logradouro', logradouro);
+            data.append('numero', numero);
+            data.append('complemento', complemento);
+            data.append('bairro', bairro);
+            data.append('cidade', cidade);
+            data.append('uf', uf);
+            data.append('pais', pais);
+            data.append('situacao', situacao.toString());
+            data.append('cargo', cargo);
+            data.append('celular', celular);
+            data.append('telefone', telefone);
+            data.append('rg', rg);
+            data.append('orgao_emissor', orgao_emissor);
+            data.append('carteira_trabalho', carteira_trabalho);
+            data.append('serie', serie);
+            data.append('pis', pis);
+            data.append('titulo_eleitor', titulo_eleitor);
+            data.append('zona_eleitoral', zona_eleitoral);
+            data.append('secao_eleitoral', secao_eleitoral);
+            data.append('salario_base', salario_base);
+            data.append('complemento_salario', complemento_salario || '0');
+            data.append('quebra_caixa', quebra_caixa),
+            data.append('obs', obs);
+            data.append('colaborador_id', user.id);
+            data.append('colaborador_cargo', user.cargo);
+
+            await toEdit(data);
+
+            setLoaging(false);
+
+        } catch (error) {
+            console.log(error);     
+        }
+
+        //LIMPANDO OS CAMPOS DO FORM
+        setColaboradorId('');
+        setNome('');
+        setSexo('');
+        setEmail('');
+        setAvatarUrl('');
+        setImageAvatar(null);
+        setCep('');
+        setLogradouro('');
+        setNumero('');
+        setComplemento('');
+        setBairro('');
+        setCidade('');
+        setUf('');
+        setPais('');
+        //setSituacao('');
+        setCargo('');
+        setCelular('');
+        setTelefone('');
+        setRg('');
+        setOrgaoEmisor('');
+        setCarteiraTrabalho('');
+        setSerie('');
+        setPis('');
+        setTituloEleitor('');
+        setZonaEleitoral('');
+        setSecaoEleitoral('');
+        setSalarioBase('');
+        setComplementoSalario('');
+        setQuebracaixa('');
+        setObs('');
+        setMessage('');
+
+    }
+
+    //FUNCAO PARA BUSCAR O COLABORADOR
+    async function handleFilter(){
+        if(!colaboradorId){
+            setMessage('Iforme o código do colaborador!');
+            return;
+        }
+
+        await api.get('/colaborador/detail', {
+            params: {
+                colaborador_id: colaboradorId,
+            }
+        })
+        .then(response => {
+            console.log(response.data[0]?.nome)
+            setNome(response.data[0]?.nome);
+            setSexo(response.data[0]?.sexo);
+            setEmail(response.data[0]?.email);
+            setRg(response.data[0]?.colaborador[0]?.rg);
+            setOrgaoEmisor(response.data[0]?.colaborador[0]?.orgao_emissor);
+            setTituloEleitor(response.data[0]?.colaborador[0]?.titulo_eleitor);
+            setZonaEleitoral(response.data[0]?.colaborador[0]?.zona_eleitoral);
+            setSecaoEleitoral(response.data[0]?.colaborador[0]?.secao_eleitoral);
+            setCarteiraTrabalho(response.data[0]?.colaborador[0]?.carteira_trabalho);
+            setSerie(response.data[0]?.colaborador[0]?.serie);
+            setPis(response.data[0]?.colaborador[0]?.pis);
+            setCep(response.data[0]?.endereco?.cep);
+            setLogradouro(response.data[0]?.endereco?.logradouro);
+            setNumero(response.data[0]?.endereco?.numero);
+            setComplemento(response.data[0]?.endereco?.complemento);
+            setBairro(response.data[0]?.endereco?.bairro);
+            setCidade(response.data[0]?.endereco?.cidade);
+            setUf(response.data[0]?.endereco?.uf);
+            setPais(response.data[0]?.endereco?.pais);
+            setCelular(response.data[0]?.colaborador[0]?.celular);
+            setTelefone(response.data[0]?.colaborador[0]?.telefone);
+            setSituacao(response.data[0]?.colaborador[0]?.situacao);
+            setCargo(response.data[0]?.colaborador[0]?.cargo);
+            setSalarioBase(response.data[0]?.colaborador[0]?.salario_base);
+            setComplementoSalario(response.data[0]?.colaborador[0]?.complemento_salario);
+            setQuebracaixa(response.data[0]?.colaborador[0]?.quebra_caixa);
+            setAvatarUrl(url + '/' + response.data[0]?.foto);
+            setObs(response.data[0]?.colaborador[0]?.obs);
+            
+        })
+    }
 
     return(
         <div className={styles.container}>
@@ -124,11 +273,11 @@ export default function DetailCollaborator(){
                     <div className={styles.rigthContainer}>
                         <div className={styles.filterContainer}>
                             <div className={styles.filter}>
-                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)}/>
+                                <Input placeholder='CÓDIGO' value={colaboradorId} onChange={(e) => setColaboradorId(e.target.value)} style={{width:'350px'}}/>
                             </div>
 
                             <div className={styles.filter}>
-                                <button  className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                                <button onClick={handleFilter} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                             </div>
                         </div>
                         
@@ -136,11 +285,7 @@ export default function DetailCollaborator(){
                             <Input placeholder='NOME COMPLETO' type='text' className={styles.inputName} onChange={(e) => setNome(e.target.value)} value={nome}/>
 
                             <div className={styles.inputsBasicData}>                               
-                                <div className={styles.inputNascimento}>
-                                    <Input placeholder='NASCIMENTO' type='date' id='nascimento' onChange={(e) => setNascimento(e.target.value)} value={nascimento}/>
-                                    <label htmlFor="nascimento">DATA NACIMENTO</label>
-                                </div>
-                                {/* <Input placeholder='SEXO' type='text' onChange={(e) => setSexo(e.target.value)} value={sexo}/> */}
+
                                 <select 
                                     name="sexo" id="sexo" 
                                     className={styles.selectInput} 
@@ -156,7 +301,6 @@ export default function DetailCollaborator(){
                             </div>
 
                             <div className={styles.inputsBasicData}>
-                                <Input placeholder='CPF' type='text' onChange={(e) => setCpf(e.target.value)} value={cpf}/>
                                 <Input placeholder='RG' type='text' onChange={(e) => setRg(e.target.value)} value={rg}/>
                                 <Input placeholder='ORGÃO EMISSOR' type='text' onChange={(e) => setOrgaoEmisor(e.target.value)} value={orgao_emissor}/>
                             </div>
@@ -192,7 +336,16 @@ export default function DetailCollaborator(){
                             </div>
                             
                             <div className={styles.inputsBasicData}>
-                                <Input placeholder='SITUAÇÃO' type='text' disabled />
+                                <select 
+                                    name="situacao" id="situacao" 
+                                    className={styles.selectInput} 
+                                    value={situacao} onChange={(e) => setSituacao(e.target.value)}
+                                >
+                                    <option value="" disabled>SITUAÇÃO</option>
+                                    <option value="true">ATIVO</option>
+                                    <option value="false">INATIVO</option>
+                                </select>
+                                
                                 <select 
                                     name="cargo" id="cargo" 
                                     className={styles.selectInput} 
@@ -203,7 +356,6 @@ export default function DetailCollaborator(){
                                     <option value="VENDEDOR">VENDEDOR(A)</option>
                                     <option value="CAIXA">CAIXA</option>
                                 </select>
-                                <Input placeholder='SENHA' type='text' onChange={(e) => setSenha(e.target.value)} value={senha}/>
                             </div>
 
                             
@@ -211,8 +363,10 @@ export default function DetailCollaborator(){
                                 <Input placeholder='SALARIO BASE' type='text' onChange={(e) => setSalarioBase(e.target.value)} value={salario_base}/>
                                 {
                                     cargo === 'CAIXA' ? 
-                                        <Input placeholder='COMP - COMISSÃO' type='number' onChange={(e) => setComplementoSalario(e.target.value)} value={complemento_salario} disabled/>
+                                        <Input placeholder='QUEBRA DE CAIXA' type='number' onChange={(e) => setQuebracaixa(e.target.value)} value={quebra_caixa} />
+                                        
                                     :   <Input placeholder='COMP - COMISSÃO' type='number' onChange={(e) => setComplementoSalario(e.target.value)} value={complemento_salario}/>
+                                    
                                 }
                                 
                             </div>
@@ -237,11 +391,11 @@ export default function DetailCollaborator(){
                             <TextArea placeholder='OBS' onChange={(e) => setObs(e.target.value)} value={obs}/>
 
                             <div className={styles.buttonForm}>
-                                <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
+                                <Button onClick={hadleEdit} type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
                             </div>
                             
                         </form>
-
+                        {message && <span>{message}</span>}
                     </div>
                 </main>
         </div>
