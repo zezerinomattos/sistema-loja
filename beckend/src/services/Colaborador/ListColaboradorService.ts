@@ -6,6 +6,7 @@ class ListColaboradorService{
         const colaborador = await prismaClient.colaborador.findMany({
             // VOU PEDIR PARA ELE TRAZER APENAS ID, NAME E SITUACAO
             select: {
+              id: true,
               situacao: true,
               usuario: {
                 select: {

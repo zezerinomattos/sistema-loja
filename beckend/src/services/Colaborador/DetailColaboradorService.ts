@@ -9,11 +9,17 @@ class DetailColaboradorService{
 
         const colaborador = await prismaClient.usuario.findMany({
             where: {
-                id: colaborador_id
+                //id: colaborador_id
+                colaborador:{
+                    some: {
+                        id: colaborador_id
+                    }
+                }
             },
             include: {
                 colaborador: {
                     select:{
+                        id: true,
                         situacao: true,
                         cargo: true,
                         celular: true,

@@ -5,7 +5,7 @@ interface ColaboradorRequest {
     nome: string;
     sexo: string;
     email: string;
-    foto: string;
+    foto?: string;
     cep: string;
     logradouro: string;
     numero: string;
@@ -76,15 +76,15 @@ class EditColaboradorService{
             obs,
             },
         });
-    
+
         // Atualizar os dados do usuário relacionado
         const updatedUsuario = await prismaClient.usuario.update({
             where: { id: existingColaborador.usuario_id },
             data: {
-            nome,
-            sexo,
-            email,
-            foto,
+                nome,
+                sexo,
+                email,
+                foto: foto !== null ? foto : existingColaborador.usuario.foto,
             },
         });
     

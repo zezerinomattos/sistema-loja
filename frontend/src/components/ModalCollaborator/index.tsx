@@ -36,11 +36,11 @@ export function ModalCollaborator({ isOpen, onRequestClose, colaborador }: Modal
                 <h1>DETALHES COLABORADOR</h1>
                 {
                     colaborador.map(colab => (
-                        <form key={colab.id} className={styles.form}>
+                        <form key={Array.isArray(colab.colaborador) ? colab.colaborador[0]?.id : ''} className={styles.form}>
                             <div className={styles.inputsBasicData}>
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">CÓDIGO</label>
-                                    <Input value={colab.id} disabled style={{width: '400px', textTransform: 'none'}} />
+                                    <Input value={Array.isArray(colab.colaborador) ? colab.colaborador[0]?.id : ''} disabled style={{width: '400px', textTransform: 'none'}} />
                                 </div>
 
                                 <div className={styles.inputLabel}>

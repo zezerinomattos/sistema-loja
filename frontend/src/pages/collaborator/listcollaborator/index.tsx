@@ -20,6 +20,7 @@ import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
 type CollaboratorProps = {
+    id: string;
     situacao: boolean;
     usuario: {
         id: string;
@@ -43,6 +44,7 @@ export type CollaboratorDetailProps = {
     updated_at: Date;
     endereco_id: string;
     colaborador: {
+        id: string;
         situacao: string;
         cargo: string;
         celular: string;
@@ -171,8 +173,8 @@ export default function ListCollaborator({ collaborator }: ListProps){
                         <ol className={styles.list}>
                             {collaboratorList.map(colab => (
                                 <li key={colab.usuario.id}>
-                                    <span>{colab.usuario.id}</span>
-                                    <span onClick={() => handleOpenModalView(colab.usuario.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
+                                    <span>{colab.id}</span>
+                                    <span onClick={() => handleOpenModalView(colab.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
                                     <span>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
                                 </li>
                             ))}

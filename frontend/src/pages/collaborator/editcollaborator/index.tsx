@@ -119,8 +119,6 @@ export default function DetailCollaborator(){
     async function hadleEdit(event: FormEvent){
         event.preventDefault();
 
-        console.log(user.cargo);
-
         try {
             const data = new FormData();
 
@@ -130,23 +128,20 @@ export default function DetailCollaborator(){
                 return;
             }
 
-            if(!nome || !sexo || !email || !cep || !logradouro || !numero || !bairro || !cidade || !uf || !pais || !situacao || !celular || !telefone || !rg || !orgao_emissor || !carteira_trabalho ||!serie || !pais || !titulo_eleitor || !zona_eleitoral||!secao_eleitoral  || !cargo || !imageAvatar){             
+            if(!nome || !sexo || !email || !cep || !logradouro || !numero || !bairro || !cidade || !uf || !pais || !situacao || !celular || !telefone || !rg || !orgao_emissor || !carteira_trabalho ||!serie || !pais || !titulo_eleitor || !zona_eleitoral||!secao_eleitoral  || !cargo ){             
                 setMessage('Preencha todos os campos!');
                 return;
             }
 
-            setLoaging(true);
+            console.log(imageAvatar);
 
-            // //const nascimentoDate =  new Date(nascimento)  
-            // const salarioBase = parseFloat(salario_base.replace(',', '.'));
-            // const complementoSalario = parseInt(complemento_salario);
-            // const quebraCaixa = parseFloat(quebra_caixa.replace(',', '.'));
+            setLoaging(true);
             
             data.append('colaborador_id', colaboradorId);
             data.append('nome', nome);
             data.append('sexo', sexo);
             data.append('email', email);
-            data.append('file', imageAvatar);
+            data.append('file', imageAvatar || '');
             data.append('cep', cep);
             data.append('logradouro', logradouro);
             data.append('numero', numero);
@@ -155,7 +150,7 @@ export default function DetailCollaborator(){
             data.append('cidade', cidade);
             data.append('uf', uf);
             data.append('pais', pais);
-            data.append('situacao', situacao.toString());
+            data.append('situacao', situacao);
             data.append('cargo', cargo);
             data.append('celular', celular);
             data.append('telefone', telefone);
@@ -171,7 +166,6 @@ export default function DetailCollaborator(){
             data.append('complemento_salario', complemento_salario || '0');
             data.append('quebra_caixa', quebra_caixa),
             data.append('obs', obs);
-            data.append('colaborador_id', user.id);
             data.append('colaborador_cargo', user.cargo);
 
             await toEdit(data);
@@ -230,7 +224,6 @@ export default function DetailCollaborator(){
             }
         })
         .then(response => {
-            console.log(response.data[0]?.nome)
             setNome(response.data[0]?.nome);
             setSexo(response.data[0]?.sexo);
             setEmail(response.data[0]?.email);
@@ -260,6 +253,43 @@ export default function DetailCollaborator(){
             setAvatarUrl(url + '/' + response.data[0]?.foto);
             setObs(response.data[0]?.colaborador[0]?.obs);
             
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error('ID do colaborador inválido');
+
+            //LIMPANDO OS CAMPOS DO FORM
+            setColaboradorId('');
+            setNome('');
+            setSexo('');
+            setEmail('');
+            setAvatarUrl('');
+            setImageAvatar(null);
+            setCep('');
+            setLogradouro('');
+            setNumero('');
+            setComplemento('');
+            setBairro('');
+            setCidade('');
+            setUf('');
+            setPais('');
+            //setSituacao('');
+            setCargo('');
+            setCelular('');
+            setTelefone('');
+            setRg('');
+            setOrgaoEmisor('');
+            setCarteiraTrabalho('');
+            setSerie('');
+            setPis('');
+            setTituloEleitor('');
+            setZonaEleitoral('');
+            setSecaoEleitoral('');
+            setSalarioBase('');
+            setComplementoSalario('');
+            setQuebracaixa('');
+            setObs('');
+            setMessage('');
         })
     }
 
