@@ -24,8 +24,6 @@ export function Header({title}: HeaderProps){
 
     const [renderPage, setRenderPage] = useState('');
 
-    const [teste, setTest] = useState('');
-
     const [titleHeader, setTitleHeader] = useState(title || '');
 
     function handleItemClick(page: string) {
@@ -47,10 +45,14 @@ export function Header({title}: HeaderProps){
                 setRenderPage('arquivo');
                 break;
 
+            case 'arquivo/configuracao':
+                setRenderPage('arquivo');
+                break;
+
+
             //Colaborador
             case 'collaborator/newcollaborator':
                 setRenderPage('colaborador');
-                setTest('newcollaborator');
                 break;
 
             case 'collaborator/listcollaborator':

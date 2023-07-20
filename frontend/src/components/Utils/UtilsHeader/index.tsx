@@ -84,8 +84,8 @@ export function UtilsHeader( param: string, title: string ){
                             <span>IMPRIMIR</span>
                         </li>
 
-                        <li>
-                            <Link href="/"><FcEngineering size={28}/></Link>
+                        <li onClick={() => handleItemClick('configuracao')} className={renderButton === 'configuracao' ? styles.actived : ''}>
+                            <Link href="/arquivo/configuracao"><FcEngineering size={28}/></Link>
                             <span>CONFIGURAÇÕES</span>
                         </li>
 
