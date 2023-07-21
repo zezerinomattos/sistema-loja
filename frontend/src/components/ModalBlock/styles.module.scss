@@ -22,7 +22,7 @@ div.container{
 
     span{
         font-family: 'Ubuntu', sans-serif;
-        font-size: max(18px, 1.3vw);
+        font-size: max(16px, 1vw);
         color: var(--dark-700);
         text-shadow: 2px 2px 4px var(--dark-900);
         margin-bottom: 20px;
@@ -45,6 +45,27 @@ div.container{
             margin-bottom: 5px;
             max-width: 70%;
             text-align: center;
+        }
+    }
+}
+
+div.settingsContainer{
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    li{
+        list-style: none;
+        cursor: pointer;
+
+        h4{
+            font-family: 'Ubuntu', sans-serif;
+            font-size: max(16px, 1vw);
+            color: var(--dark-700);
+            text-shadow: 2px 2px 4px var(--dark-900);
         }
     }
 }

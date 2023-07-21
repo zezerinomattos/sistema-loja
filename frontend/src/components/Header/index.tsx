@@ -45,11 +45,6 @@ export function Header({title}: HeaderProps){
                 setRenderPage('arquivo');
                 break;
 
-            case 'arquivo/configuracao':
-                setRenderPage('arquivo');
-                break;
-
-
             //Colaborador
             case 'collaborator/newcollaborator':
                 setRenderPage('colaborador');

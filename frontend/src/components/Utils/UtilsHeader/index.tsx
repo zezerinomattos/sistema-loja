@@ -8,12 +8,12 @@ import { toast } from 'react-toastify';
 
 // MY IMPORTS
 import styles from '../../Header/styles.module.scss';
-import { ModalBlock } from '../../ModalBlock';
+import { ModalBlock, ModalSettings } from '../../ModalBlock';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 
 export function UtilsHeader( param: string, title: string ){
-    const { user, blockIn } = useContext(AuthContext);
+    const { user, blockIn, toEditPassaword } = useContext(AuthContext);
     const router = useRouter();
 
     const [renderButton, setRenderButton] = useState('');
@@ -21,11 +21,13 @@ export function UtilsHeader( param: string, title: string ){
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoaging] = useState(false);
 
+    const [isModalSettingsOpen, setIsModalSettingsOpen] = useState(false);
+
     function handleItemClick(page: string) {
         setRenderButton(page);
     } 
 
-    // FECHAR MODAL
+    // FECHAR MODAL DE BLOQUEIO
     async function handleCloseModal(password: string){
 
         if(!user.email || !password){          
@@ -43,6 +45,7 @@ export function UtilsHeader( param: string, title: string ){
         const isBlock = await blockIn(data);
 
         if (isBlock) {
+            toast.success('DESBLOQUEADO COM SUCESSO!');
             setIsModalOpen(false);
         } else {
             toast.error('ERRO AO TENTAR DESBLOQUEAR!');
@@ -52,6 +55,36 @@ export function UtilsHeader( param: string, title: string ){
 
         setLoaging(false);
         
+    }
+
+    // FECHAR MODAL DE CONFIGURAÇÕES
+    async function handleCloseModalSettings(){
+        setIsModalSettingsOpen(false);
+    }
+
+    // FUNÇÃO PARA ALTERAR A SENHA DO USER LOGADO
+    async function handleChangePassword(password: string, newPassword: string, confirmNewPassword: string){
+        //const newPasswordUper = newPassword.toUpperCase();
+
+        if(!user.email || !password || !newPassword || !confirmNewPassword){
+            toast.error('Preencha todos os campos');
+            return;
+        }
+
+        if(newPassword.toUpperCase() !== confirmNewPassword.toUpperCase()){
+            toast.error('Senha de confirmação diferente');
+            return;
+        }
+
+        setLoaging(true);
+
+        const colaborador_id = user.colaborador_id;
+        const email = user.email;
+        const senha = password;
+
+        await toEditPassaword({colaborador_id, email, senha, newPassword});
+
+        setLoaging(false);
     }
 
     useEffect(() => {
@@ -69,6 +102,8 @@ export function UtilsHeader( param: string, title: string ){
 
     }, [isModalOpen]);
 
+    Modal.setAppElement('#__next');
+
     switch (param) {
         case 'arquivo':
             return(
@@ -84,8 +119,8 @@ export function UtilsHeader( param: string, title: string ){
                             <span>IMPRIMIR</span>
                         </li>
 
-                        <li onClick={() => handleItemClick('configuracao')} className={renderButton === 'configuracao' ? styles.actived : ''}>
-                            <Link href="/arquivo/configuracao"><FcEngineering size={28}/></Link>
+                        <li onClick={() => setIsModalSettingsOpen(true)}>
+                            <FcEngineering size={28}/>
                             <span>CONFIGURAÇÕES</span>
                         </li>
 
@@ -102,6 +137,17 @@ export function UtilsHeader( param: string, title: string ){
                             <ModalBlock 
                                 isOpen={isModalOpen}
                                 onRequestClose={handleCloseModal}
+                                loading={loading}
+                                email={user.email}
+                            />
+                    }
+
+                    {
+                        isModalSettingsOpen && 
+                            <ModalSettings 
+                                isOpen={isModalSettingsOpen}
+                                onRequestClose={handleCloseModalSettings}
+                                changePassword={handleChangePassword}
                                 loading={loading}
                                 email={user.email}
                             />

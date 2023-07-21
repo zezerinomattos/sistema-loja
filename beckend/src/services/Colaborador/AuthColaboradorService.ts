@@ -81,6 +81,7 @@ class AuthColaboradorService {
             obs: user.colaborador[0].obs, 
             created_at: user.created_at,
             updated_at: user.created_at,
+            colaborador_id: user.colaborador[0].id,
             token: token,
             url: 'http://localhost:3333/files/',
         };

@@ -115,7 +115,7 @@ export default function DetailCollaborator(){
         
     }
 
-    //FUNCAO PARA CRIAR COLABORADOR
+    //FUNCAO PARA EDITAR COLABORADOR
     async function hadleEdit(event: FormEvent){
         event.preventDefault();
 

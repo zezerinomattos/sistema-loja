@@ -7,6 +7,7 @@ import { DetailUserController } from '../controllers/Colaborador/DetailUserContr
 import { DetailColaboradorController } from '../controllers/Colaborador/DetailColaboradorController';
 import { ListColaboradorController } from '../controllers/Colaborador/ListColaboradorController';
 import { EditColaboradorController } from '../controllers/Colaborador/EditColaboradorController';
+import { EditPasswordColaboradorController } from '../controllers/Colaborador/EditPasswordColaboradorController';
 import { ListByNomeColabController } from '../controllers/Colaborador/ListByNomeColabController';
 import { CreateHoleriteController } from '../controllers/Colaborador/CreateHoleriteController';
 import { ListFullHoleriteController } from '../controllers/Colaborador/ListFullHoleriteController';
@@ -113,6 +114,7 @@ router.post('/colaborador', isAuthenticated, upload.single('file'), new CreateCo
 router.get('/colaborador', isAuthenticated, new ListColaboradorController().handle);
 router.get('/colaborador/detail', isAuthenticated, new DetailColaboradorController().handle);
 router.put('/colaborador/edit', isAuthenticated, upload.single('file'), new EditColaboradorController().handle);
+router.put('/colaborador/edit/pass', isAuthenticated, new EditPasswordColaboradorController().handle); //editar password
 router.get('/nome/colaborador', isAuthenticated, new ListByNomeColabController().handle);
 router.post('/holerite', isAuthenticated, new CreateHoleriteController().handle);
 router.get('/holerite', isAuthenticated, new ListFullHoleriteController().handle);

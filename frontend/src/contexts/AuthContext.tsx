@@ -15,6 +15,7 @@ type AuthContextData ={
     signOut:() => void;
     blockIn: (Credential: SignInProps) => Promise<boolean>;
     toEdit: (Credential: FormData) => Promise<void>;
+    toEditPassaword: (Credential: ToEditPassawordProps) => Promise<void>;
 }
 
 type UserProps ={
@@ -24,6 +25,7 @@ type UserProps ={
     cargo: string;
     foto: string;
     url: string;
+    colaborador_id: string;
 }
 
 type SignInProps = {
@@ -70,6 +72,13 @@ type SignUpProps = {
     obs: string;
 }
 
+type ToEditPassawordProps = {
+    colaborador_id: string;
+    email: string;
+    senha: string;
+    newPassword: string;
+}
+
 export const AuthContext = createContext({} as AuthContextData)
 
 //FUNCAO PARA DESLOGAR
@@ -104,6 +113,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
                     cargo: response.data.colaborador[0].cargo,
                     foto: response.data.foto,
                     url: 'http://localhost:3333/files/',
+                    colaborador_id: response.data.colaborador[0].id,
                 });
 
                 console.log(response.data.cargo)
@@ -139,6 +149,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
                 cargo,
                 foto,
                 url,
+                colaborador_id: response.data.colaborador_id,
             })
 
             //PASSAR PARA PROXIMAS REQUISIÇÕES O NOSSO TOKEN
@@ -164,7 +175,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
             email,
             senha,
           });     
-          toast.success('LOGADO COM SUCESSO!');
+          //toast.success('LOGADO COM SUCESSO!');
           return true; // Retorna true para indicar que o login foi bem-sucedido
           
         } catch (error) {
@@ -201,6 +212,7 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
 
     }
 
+    // FUNCAO PARA EDITAR DADOS DO COLABORADOR
     async function toEdit(data: FormData){
         try {
 
@@ -221,9 +233,41 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
             }
         }
     }
+
+    // FUNCAO PARA EDITAR PASSWORD DO COLABORADOR
+    async function toEditPassaword({ colaborador_id, email, senha, newPassword }: ToEditPassawordProps){
+        try {
+            //verificando se a senha antiga está correta
+            await api.post('/login', {
+              email,
+              senha,
+            })
+            .then(async() => {
+                // Alterando a senha
+                await api.put('/colaborador/edit/pass', {
+                    colaborador_id,
+                    email,
+                    senha: newPassword
+                })
+                .then(() => {
+                    toast.success('SENHA ALTERADA COM SUCESSO');
+                });
+            })
+            .catch(error => {
+                toast.error('ALGO DEU ERRADO, VERIFIQUE E TENTE NOVAMENTE');
+                console.log('ERRO AO ACESSAR', error);
+            })   
+            
+          } catch (error) {
+            console.log('ERRO AO ACESSAR', error);
+          }
+        
+        
+        
+    }
  
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp, blockIn, toEdit }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut, signUp, blockIn, toEdit, toEditPassaword }}>
             {children}
         </AuthContext.Provider>
     )

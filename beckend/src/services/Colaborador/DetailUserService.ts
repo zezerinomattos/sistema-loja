@@ -10,6 +10,7 @@ class DetailUserService{
             include: {
                 colaborador: {
                     select:{
+                        id: true,
                         situacao: true,
                         cargo: true,
                         celular: true,
