@@ -76,6 +76,12 @@ export function UtilsHeader( param: string, title: string ){
             return;
         }
 
+         //Validando senha segura
+         if(newPassword.length < 8 || !/[a-zA-Z]/.test(newPassword) || !/[^a-zA-Z0-9]/.test(newPassword)){
+            toast.error('A senha precisa ter pelo menos 8 caracteres, uma letra e um caractere especial');
+            return;
+        }
+
         setLoaging(true);
 
         const colaborador_id = user.colaborador_id;
