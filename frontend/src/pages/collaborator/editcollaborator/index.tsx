@@ -4,6 +4,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { FcSearch } from "react-icons/fc";
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 
 // MY IMPORTS
@@ -23,6 +24,7 @@ import { api } from '../../../services/apiClient';
 
 export default function DetailCollaborator(){
     const { user, toEdit } = useContext(AuthContext);
+    const router = useRouter();
 
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
@@ -67,11 +69,7 @@ export default function DetailCollaborator(){
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
         setCarregando(false);
-    }, [])
-
-    if (carregando) {
-        return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
-    }
+    }, []);
 
     // Funcao para salvarmos imagem
     function handleFile(e: ChangeEvent<HTMLInputElement>){
@@ -218,6 +216,15 @@ export default function DetailCollaborator(){
             return;
         }
 
+        // IMPEDINDO QUE PESSOAS NÃO AUTORIZADAS TENHAM ACESSO A DADOS
+        if (user.cargo !== 'GERENTE' && user.cargo !== 'ADMIM') {
+            toast.error('VOCÊ NÃO TEM AUTORIZAÇÃO!');
+            router.push('/dashboard');
+            return null; // Retorna null para não renderizar o restante do componente.
+        }
+
+        setLoaging(true);
+
         await api.get('/colaborador/detail', {
             params: {
                 colaborador_id: colaboradorId,
@@ -252,6 +259,8 @@ export default function DetailCollaborator(){
             setQuebracaixa(response.data[0]?.colaborador[0]?.quebra_caixa);
             setAvatarUrl(url + '/' + response.data[0]?.foto);
             setObs(response.data[0]?.colaborador[0]?.obs);
+
+            setLoaging(false);
             
         })
         .catch(error => {
@@ -290,7 +299,17 @@ export default function DetailCollaborator(){
             setQuebracaixa('');
             setObs('');
             setMessage('');
+
+            setLoaging(false);
         })
+    }
+
+    if (carregando) {
+        return (
+            <div className={styles.loadingContainer}>
+                <FaSpinner color="#FFF" size={46} className={styles.loading} />
+            </div>
+        );
     }
 
     return(
@@ -307,7 +326,7 @@ export default function DetailCollaborator(){
                             </div>
 
                             <div className={styles.filter}>
-                                <button onClick={handleFilter} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                                <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                             </div>
                         </div>
                         

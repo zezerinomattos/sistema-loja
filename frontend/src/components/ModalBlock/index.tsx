@@ -115,7 +115,7 @@ export function ModalSettings({ isOpen, onRequestClose, changePassword, loading,
 
                 <div className={styles.settingsContainer}>
                     <ul>
-                        <li onClick={() => setChangeNewPassword(true)}><h4>- ALTERAR SENHA</h4></li>
+                        <li onClick={() => setChangeNewPassword(!changeNewPassword)}><h4>- ALTERAR SENHA</h4></li>
                     </ul>
                 </div>
 

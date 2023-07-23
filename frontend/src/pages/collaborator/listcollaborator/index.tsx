@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState  } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
-import { CiSearch } from "react-icons/ci";
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
@@ -11,8 +11,6 @@ import { Header } from '../../../components/Header';
 import { Presentation } from '../../../components/Presentation';
 import { Input } from '../../../components/Ui/Input';
 import { ModalCollaborator } from '../../../components/ModalCollaborator';
-
-import logoEmpresa from '../../../../public/logo-Nanda.png';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -84,6 +82,7 @@ export type CollaboratorDetailProps = {
 
 export default function ListCollaborator({ collaborator }: ListProps){
     const { user} = useContext(AuthContext);
+    const router = useRouter();
 
     const [collaboratorList, setCollaboratorList] = useState(collaborator || []);
 
@@ -92,6 +91,15 @@ export default function ListCollaborator({ collaborator }: ListProps){
 
     const [modalCollaborator, setModalCollaborator] = useState<CollaboratorDetailProps[]>()
     const [modalVisible, setModalVisible] = useState(false)
+
+    const [carregando, setCarregando] = useState(true);
+    const [loading, setLoaging] = useState(false);
+
+    if (user.cargo !== 'GERENTE' && user.cargo !== 'ADMIM') {
+        toast.error('VOCÊ NÃO TEM AUTORIZAÇÃO!');
+        router.push('/dashboard');
+        return null; // Retorna null para não renderizar o restante do componente.
+    }
 
     //FUNCAO PARA DETALHAR COLABORADOR SELECIONADO
     async function handleOpenModalView(id: string){
@@ -103,7 +111,7 @@ export default function ListCollaborator({ collaborator }: ListProps){
         .then(response => {
             setModalCollaborator(response.data);
             setModalVisible(true);
-        })
+        });
     }
 
     // FUNCAO FECHAR MODAL
@@ -138,6 +146,11 @@ export default function ListCollaborator({ collaborator }: ListProps){
         setListName('');
     }
 
+    useEffect(() => {
+        //Escondendo o loading quando ele montar completamente o componente
+        setCarregando(false);
+    }, [])
+
     // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -146,6 +159,14 @@ export default function ListCollaborator({ collaborator }: ListProps){
 
         return () => clearTimeout(delayDebounceFn);
     }, [listName]);
+
+    if (carregando) {
+        return (
+            <div className={styles.loadingContainer}>
+                <FaSpinner color="#FFF" size={46} className={styles.loading} />
+            </div>
+        );
+    }
 
     return(
         <div className={styles.container}>
