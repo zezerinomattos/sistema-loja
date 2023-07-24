@@ -65,11 +65,11 @@ export function Header({title}: HeaderProps){
                 setRenderPage('cliente');
                 break;
 
-            case 'client/newclient':
+            case 'client/listclient':
                 setRenderPage('cliente');
                 break;
 
-            case '/client/editclient':
+            case 'client/editclient':
                 setRenderPage('cliente');
                 break;
 
