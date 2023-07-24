@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useState  } from 'react';
-import Image from 'next/image';
 import { FaSpinner } from 'react-icons/fa';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
 import { Header } from '@/components/Header';
 import { Presentation } from '../../components/Presentation';
-
-import logoEmpresa from '../../../public/logo-Nanda.png';
 
 import { AuthContext } from '../../contexts/AuthContext';
 import { canSSRAuth } from '../../components/Utils/serverSideProps/canSSRAuth';
