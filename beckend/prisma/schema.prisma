@@ -112,6 +112,7 @@ model Cliente {
   score String
   limite_credito Float @default(0.0)
   situacao Boolean?
+  obs String?
   ultima_compra DateTime?
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())

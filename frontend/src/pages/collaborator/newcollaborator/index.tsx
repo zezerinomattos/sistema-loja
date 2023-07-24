@@ -104,10 +104,10 @@ export default function Register(){
     }
 
     //FUNCAO PARA CRIAR COLABORADOR
-    async function hadleRegiste(event: FormEvent){
+    async function hadleRegister(event: FormEvent){
         event.preventDefault();
 
-        console.log(user.cargo);
+        //console.log(user.cargo);
 
         try {
             const data = new FormData();
@@ -246,7 +246,7 @@ export default function Register(){
 
                         <div className={styles.rigthContainer}>
                             
-                            <form className={styles.formColaborador} onSubmit={hadleRegiste}>
+                            <form className={styles.formColaborador} onSubmit={hadleRegister}>
                                 <Input placeholder='NOME COMPLETO' type='text' className={styles.inputName} onChange={(e) => setNome(e.target.value)} value={nome}/>
 
                                 <div className={styles.inputsBasicData}>                               

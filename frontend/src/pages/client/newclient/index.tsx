@@ -14,6 +14,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 
 import { apiCep } from '@/services/apiCep';
+import { api } from '../../../services/apiClient';
 
 export default function NewClient(){
     const { user } = useContext(AuthContext);
@@ -42,6 +43,18 @@ export default function NewClient(){
     const [situacao, setSituacao] = useState(true);
     const [celular, setCelular] = useState('');
     const [telefone, setTelefone] = useState('');
+    const [nome_referencia1, setNomeReferencia1] = useState('');
+    const [telefone_referencia1, setTelefoneReferencia1] = useState('');
+    const [nome_referencia2, setNomeReferencia2] = useState('');
+    const [telefone_referencia2, setTelefoneReferencia2] = useState('');
+    const [nome_referencia3, setNomeReferencia3] = useState('');
+    const [telefone_referencia3, setTelefoneReferencia3] = useState('');
+    const [score, setScore] = useState('');
+    const [limite_credito, setLimiteCredito] = useState('');   
+    const [profissao, setProfissao] = useState('');
+    const [empresa, setEmpresa] = useState('');
+    const [renda_fixa, setRendaFixa] = useState('');
+    const [complemento_renda, setComplementoRenda] = useState('');
     const [obs, setObs] = useState('');
 
     const [avatarUrl, setAvatarUrl] = useState('');
@@ -89,6 +102,126 @@ export default function NewClient(){
         
     }
 
+    //FUNCAO PARA CRIAR CLIENTE
+    async function hadleRegister(event: FormEvent){
+        event.preventDefault();
+
+        try {
+
+            const data = new FormData();
+            
+            //Verificações
+            if(!nome || !cpf || !nascimento || !sexo || !email || !cep || !logradouro || !numero || !bairro || !cidade || !uf || !pais || !situacao || !celular || !telefone || !nome_referencia1 || !telefone_referencia1 || !nome_referencia2 || !telefone_referencia2 || !nome_referencia3 || !telefone_referencia3 || !score || !profissao || !empresa || !renda_fixa || !imageAvatar){             
+                setMessage('Preencha todos os campos!');
+                return;
+            }
+
+            if(cpf.length !== 11){
+                setMessage('Informe um CPF valido');
+                return;
+            }
+
+            // Validação da idade mínima
+            const nascimentoDate = new Date(nascimento);
+            const idadeMinima = 18; // Idade mínima de 18 anos
+
+            const hoje = new Date();
+            const diffAnos = hoje.getFullYear() - nascimentoDate.getFullYear();
+
+            if (diffAnos < idadeMinima) {
+                setMessage('A idade mínima é de 18 anos');
+                return;
+            }
+
+            setLoaging(true);
+
+            data.append('nome', nome);
+            data.append('cpf', cpf);
+            data.append('nascimento', nascimento);
+            data.append('sexo', sexo);
+            data.append('email', email);
+            data.append('file', imageAvatar);
+
+            data.append('cep', cep);
+            data.append('logradouro', logradouro);
+            data.append('numero', numero);
+            data.append('complemento', complemento);
+            data.append('bairro', bairro);
+            data.append('cidade', cidade);
+            data.append('uf', uf);
+            data.append('pais', pais);
+
+            data.append('situacao', situacao.toString());
+            data.append('celular', celular);
+            data.append('telefone', telefone);
+            data.append('rg', rg);
+            data.append('orgao_emissor', orgao_emissor);
+            data.append('obs', obs);
+            data.append('profissao', profissao);
+            data.append('empresa', empresa);
+            data.append('renda_fixa', renda_fixa);
+            data.append('complemento_renda', complemento_renda);
+            data.append('nome_referencia1', nome_referencia1);
+            data.append('nome_referencia2', nome_referencia2);
+            data.append('nome_referencia3', nome_referencia3);
+            data.append('telefone_referencia1', telefone_referencia1);
+            data.append('telefone_referencia2', telefone_referencia2);
+            data.append('telefone_referencia3', telefone_referencia3);
+            data.append('score', score);
+            data.append('limite_credito', limite_credito);
+
+            await api.post('/cliente', data);
+
+            toast.success('CLIENTE CADSTRADO COM SUCESSO!');
+
+            setLoaging(false);
+
+            //LIMPANDO OS CAMPOS DO FORM
+            setNome('');
+            setCpf('');
+            setNascimento('');
+            setSexo('');
+            setEmail('');
+            setAvatarUrl('');
+            setImageAvatar(null);
+            setCep('');
+            setLogradouro('');
+            setNumero('');
+            setComplemento('');
+            setBairro('');
+            setCidade('');
+            setUf('');
+            setPais('');
+            setCelular('');
+            setTelefone('');
+            setRg('');
+            setOrgaoEmisor('');
+            setObs('');
+            setProfissao('');
+            setEmpresa('');
+            setRendaFixa('');
+            setComplementoRenda('');
+            setNomeReferencia1('');
+            setTelefoneReferencia1('');
+            setNomeReferencia2('');
+            setTelefoneReferencia2('');
+            setNomeReferencia3('');
+            setTelefoneReferencia3('');
+            setScore('');
+            setLimiteCredito('');
+
+            setMessage('');
+
+
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error.response.data.erro);
+            setLoaging(false);
+            //toast.error('Ops, erro ao cadastrar, verifique e tente novamente!');
+        }
+        
+    }
+
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
         setCarregando(false);
@@ -106,7 +239,7 @@ export default function NewClient(){
                     <Presentation />
 
                     <div className={styles.rigthContainer}>
-                        <form className={styles.formCliente} >
+                        <form className={styles.formCliente} onSubmit={hadleRegister}>
                             <Input placeholder='NOME COMPLETO' type='text' className={styles.inputName} onChange={(e) => setNome(e.target.value)} value={nome}/>
 
                             <div className={styles.inputsBasicData}>                               
@@ -114,7 +247,7 @@ export default function NewClient(){
                                     <Input placeholder='NASCIMENTO' type='date' id='nascimento' onChange={(e) => setNascimento(e.target.value)} value={nascimento}/>
                                     <label htmlFor="nascimento">DATA NACIMENTO</label>
                                 </div>
-                                
+
                                 <select 
                                     name="sexo" id="sexo" 
                                     className={styles.selectInput} 
@@ -149,12 +282,37 @@ export default function NewClient(){
                             </div>
 
                             <div className={styles.inputsBasicData}>
+                                <Input placeholder='PROFISSÃO' type='text' onChange={(e) => setProfissao(e.target.value)} value={profissao}/>
+                                <Input placeholder='EMPRESA' type='text' onChange={(e) => setEmpresa(e.target.value)} value={empresa}/>
+                                <Input placeholder='RENDA FIXA' type='text' onChange={(e) => setRendaFixa(e.target.value)} value={renda_fixa}/>
+                                <Input placeholder='RENDA COMPLEMENTAR' type='text' onChange={(e) => setComplementoRenda(e.target.value)} value={complemento_renda}/>
+                            </div>
+
+                            <div className={styles.inputsBasicData}>
                                 <Input placeholder='CELULAR' type='text' onChange={(e) => setCelular(e.target.value)} value={celular}/>
                                 <Input placeholder='TELEFONE' type='text' onChange={(e) => setTelefone(e.target.value)} value={telefone}/>
                             </div>
 
+                            <h3>REFERÊNCIAS</h3>
+                            <div className={styles.inputsBasicData}>
+                                <Input placeholder='REFERÊNCIA 01' type='text' onChange={(e) => setNomeReferencia1(e.target.value)} value={nome_referencia1}/>
+                                <Input placeholder='TELEFONE' type='text' onChange={(e) => setTelefoneReferencia1(e.target.value)} value={telefone_referencia1}/>
+                            </div>
+
+                            <div className={styles.inputsBasicData}>
+                                <Input placeholder='REFERÊNCIA 02' type='text' onChange={(e) => setNomeReferencia2(e.target.value)} value={nome_referencia2}/>
+                                <Input placeholder='TELEFONE' type='text' onChange={(e) => setTelefoneReferencia2(e.target.value)} value={telefone_referencia2}/>
+                            </div>
+
+                            <div className={styles.inputsBasicData}>
+                                <Input placeholder='REFERÊNCIA 03' type='text' onChange={(e) => setNomeReferencia3(e.target.value)} value={nome_referencia3}/>
+                                <Input placeholder='TELEFONE' type='text' onChange={(e) => setTelefoneReferencia3(e.target.value)} value={telefone_referencia3}/>
+                            </div>
+
                             <div className={styles.inputsBasicData}>
                                 <Input placeholder='SITUAÇÃO' type='text' disabled />
+                                <Input placeholder='SCORE' type='text'  value={score} onChange={(e) => setScore(e.target.value)}/>
+                                <Input placeholder='LIMITE DE CREDITO' type='text'  value={limite_credito} onChange={(e) => setLimiteCredito(e.target.value)}/>
                             </div>
 
                             <label className={styles.labelAvatar}>

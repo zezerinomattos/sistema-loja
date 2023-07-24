@@ -54,6 +54,11 @@ class CreateColaboradorService {
         const colaboradorAlreadyExists = await prismaClient.usuario.findFirst({
             where: {
                 cpf: cpf,
+                colaborador:{
+                    some: {
+                        situacao: true,
+                    }
+                }
             }
         });
         if(colaboradorAlreadyExists){

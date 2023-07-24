@@ -28,6 +28,7 @@ class CreateColaboradorController {
             const password = senha.toUpperCase();
             const saveEmail = email.toLowerCase();
             const saveObs = obs.toUpperCase()
+            const savePais = pais.toUpperCase();
 
             //--------------------------------------------------------
 
@@ -45,7 +46,7 @@ class CreateColaboradorController {
                 bairro, 
                 cidade, 
                 uf, 
-                pais, 
+                pais: savePais, 
                 situacao, 
                 cargo, 
                 celular, 

@@ -35,6 +35,11 @@ class CreateRegistroCaixaService{
                         bonificacao: true
                     },
                 },
+                cliente: { // mudei
+                    select:{
+                        id: true,
+                    }
+                }
             },
         });
 
@@ -139,6 +144,16 @@ class CreateRegistroCaixaService{
                     },
                 });
 
+                // REGISTRANDO A DATA DA ULTIMA COMPRA,
+                const cliente = await prismaClient.cliente.update({
+                    where: {
+                        id: valorOrder.cliente.id,
+                    },
+                    data: {
+                        ultima_compra: new Date(),
+                    }
+                });
+
                 // Trazendo para criar o comprovante de pagamento do cliente
                 const itemsOrder = await prismaClient.order.findFirst({
                     where: {id: order_id},
@@ -218,6 +233,16 @@ class CreateRegistroCaixaService{
                             },
                         },
                     },
+                });
+
+                // REGISTRANDO A DATA DA ULTIMA COMPRA,
+                const cliente = await prismaClient.cliente.update({
+                    where: {
+                        id: valorOrder.cliente.id,
+                    },
+                    data: {
+                        ultima_compra: new Date(),
+                    }
                 });
 
                 // Trazendo para criar o comprovante de pagamento do cliente
@@ -316,6 +341,16 @@ class CreateRegistroCaixaService{
                             },
                         },
                     },
+                });
+
+                // REGISTRANDO A DATA DA ULTIMA COMPRA,
+                const cliente = await prismaClient.cliente.update({
+                    where: {
+                        id: valorOrder.cliente.id,
+                    },
+                    data: {
+                        ultima_compra: new Date(),
+                    }
                 });
 
                 // Trazendo para criar o comprovante de pagamento do cliente

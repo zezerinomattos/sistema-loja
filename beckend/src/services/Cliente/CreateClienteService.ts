@@ -16,8 +16,8 @@ interface ClienteRequest{
     cidade: string;
     uf: string;
     pais: string;
-    rg: string; 
-    orgao_emissor: string; 
+    rg?: string; 
+    orgao_emissor?: string; 
     celular: string;
     telefone: string
     telefone_referencia1: string; 
@@ -31,13 +31,13 @@ interface ClienteRequest{
     empresa: string;
     renda_fixa: string;
     complemento_renda?: string;
-    limite_credito: number; 
+    limite_credito?: number; 
+    obs?: string;
     situacao: boolean;
-    ultima_compra: string;
 }
 
 class CreateClienteService {
-    async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, ultima_compra, profissao, empresa, renda_fixa, complemento_renda }: ClienteRequest){
+    async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, profissao, empresa, renda_fixa, complemento_renda, obs }: ClienteRequest){
 
         //Verificando se tem cpf digitado
         if(!cpf || cpf.length !== 11){
@@ -46,7 +46,12 @@ class CreateClienteService {
         //Verificando se tem cpf já está cadastrado na plataforma
         const colaboradorAlreadyExists = await prismaClient.usuario.findFirst({
             where: {
-                cpf: cpf
+                cpf: cpf,
+                cliente:{
+                    some:{
+                        situacao: true,
+                    }
+                }
             }
         });
         if(colaboradorAlreadyExists){
@@ -83,8 +88,6 @@ class CreateClienteService {
             },
         });
 
-        // Convertendo a string da última compra em um objeto Date
-        const dataUltimaCompra = parseISO(ultima_compra);
 
         // Salvando o cliente
         const cliente = await prismaClient.cliente.create({
@@ -106,7 +109,7 @@ class CreateClienteService {
                 empresa: empresa, 
                 renda_fixa: renda_fixa, 
                 complemento_renda: complemento_renda,
-                ultima_compra: dataUltimaCompra,
+                obs: obs,
                 usuario_id: usuario.id,
             },
         });
