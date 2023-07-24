@@ -105,6 +105,10 @@ model Cliente {
   nome_referencia2 String
   telefone_referencia3 String
   nome_referencia3 String
+  profissao String?
+  empresa String?
+  renda_fixa String?
+  complemento_renda String?
   score String
   limite_credito Float @default(0.0)
   situacao Boolean?

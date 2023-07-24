@@ -36,15 +36,14 @@ export default function Register(){
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
     const [uf, setUf] = useState('');
-
     const [pais, setPais] = useState('');
+
     const [situacao, setSituacao] = useState(true);
     const [celular, setCelular] = useState('');
     const [telefone, setTelefone] = useState('');
     const [rg, setRg] = useState('');
     const [orgao_emissor, setOrgaoEmisor] = useState('');
     const [carteira_trabalho, setCarteiraTrabalho] = useState('');
-
     const [serie, setSerie] = useState('');
     const [pis, setPis] = useState('');
     const [titulo_eleitor, setTituloEleitor] = useState('');

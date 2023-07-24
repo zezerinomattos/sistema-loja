@@ -4,7 +4,7 @@ import { CreateClienteService } from  '../../services/Cliente/CreateClienteServi
 
 class CreateClienteController{
     async handle(req: Request, res: Response){
-        const {  cpf, nome, nascimento, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, ultima_compra } = req.body;
+        const {  cpf, nome, nascimento, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, ultima_compra, profissao, empresa, renda_fixa, complemento_renda } = req.body;
         
         const createClienteService = new CreateClienteService;
 
@@ -16,8 +16,8 @@ class CreateClienteController{
             //--------------------------------------------------------
             // apenas para pode cadastrar um colaborador com Insominia
 
-            // const situacao = JSON.parse(req.body.situacao);
-            // const limite_credito = parseFloat(req.body.limite_credito);
+            const situacao = JSON.parse(req.body.situacao);
+            const limite_credito = parseFloat(req.body.limite_credito);
 
             //--------------------------------------------------------
 
@@ -49,7 +49,11 @@ class CreateClienteController{
                 score, 
                 limite_credito, 
                 situacao, 
-                ultima_compra
+                ultima_compra,
+                profissao, 
+                empresa, 
+                renda_fixa, 
+                complemento_renda
             });
     
             return res.json(cliente);

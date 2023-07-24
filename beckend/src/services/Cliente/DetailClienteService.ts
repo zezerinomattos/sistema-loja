@@ -9,7 +9,12 @@ class DetailClienteService{
 
         const cliente = await prismaClient.usuario.findMany({
             where:{
-                id: cliente_id
+                //id: cliente_id
+                cliente: {
+                    some:{
+                        id: cliente_id,
+                    }
+                }
             },
             include:{
                 cliente: true,

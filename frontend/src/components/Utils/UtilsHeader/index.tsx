@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
-import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode } from "react-icons/fc";
+import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience } from "react-icons/fc";
+import { BsFillPersonVcardFill } from "react-icons/bs";
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -205,28 +206,23 @@ export function UtilsHeader( param: string, title: string ){
                     <ul className={styles.paginas}>
                         <li onClick={() => handleItemClick('newClient')} className={renderButton === 'newClient' ? styles.actived : ''}>
                             <Link href="/client/newclient">
-                                <FcBusinessman size={28}/>
+                                <FcBusinesswoman size={28}/>
                                 <span><strong>NOVO</strong><br />CLIENTE</span>
                             </Link>
                         </li>
 
                         <li onClick={() => handleItemClick('listClient')} className={renderButton === 'listClient' ? styles.actived : ''}>
                             <Link href="/client/listclient">
-                                <FcBusinessman size={28}/>
-                                <span><strong>+</strong> COLABORADOR</span>
+                                <FcPodiumWithAudience size={28}/>
+                                <span><strong>LISTA</strong><br/>CLIENTES</span>
                             </Link>
                         </li>
 
                         <li>
                             <Link href="/">
-                                <FcBusinessman size={28}/>
-                                <span><strong>+</strong> COLABORADOR</span>
+                                <BsFillPersonVcardFill size={24} style={{color: '#e99a3b'}}/>
+                                <span><strong>EDITAR</strong><br />CLIENTE</span>
                             </Link>
-                        </li>
-
-                        <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
                         </li>
                     </ul>
 
