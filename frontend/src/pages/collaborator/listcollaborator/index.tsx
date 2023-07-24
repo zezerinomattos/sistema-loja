@@ -4,6 +4,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import Modal from 'react-modal';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
@@ -95,12 +96,6 @@ export default function ListCollaborator({ collaborator }: ListProps){
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
 
-    if (user.cargo !== 'GERENTE' && user.cargo !== 'ADMIM') {
-        toast.error('VOCÊ NÃO TEM AUTORIZAÇÃO!');
-        router.push('/dashboard');
-        return null; // Retorna null para não renderizar o restante do componente.
-    }
-
     //FUNCAO PARA DETALHAR COLABORADOR SELECIONADO
     async function handleOpenModalView(id: string){
         await api.get('/colaborador/detail', {
@@ -123,7 +118,7 @@ export default function ListCollaborator({ collaborator }: ListProps){
     function filterCollaborator(){
         //FILTRANDO SE TEM ID
         if(listId){
-            const filteredCollaborators = collaborator.filter((colab) => colab.usuario.id.includes(listId));
+            const filteredCollaborators = collaborator.filter((colab) => colab.id.includes(listId));
             setCollaboratorList(filteredCollaborators);
         }
 
@@ -148,6 +143,15 @@ export default function ListCollaborator({ collaborator }: ListProps){
 
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
+        function authenticator(){
+           if (user.cargo !== 'GERENTE' && user.cargo !== 'ADMIM') {
+                toast.error('VOCÊ NÃO TEM AUTORIZAÇÃO!');
+                router.push('/dashboard');
+                return null; // Retorna null para não renderizar o restante do componente.
+            }
+        }
+        authenticator();
+        
         setCarregando(false);
     }, [])
 
@@ -168,6 +172,8 @@ export default function ListCollaborator({ collaborator }: ListProps){
         );
     }
 
+    Modal.setAppElement('#__next');
+
     return(
         <div className={styles.container}>
             <Header title={'LISTA DE CLIENTES'}/>
@@ -178,7 +184,7 @@ export default function ListCollaborator({ collaborator }: ListProps){
                 <div className={styles.rigthContainer}>
                     <div className={styles.filterContainer}>
                         <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)}/>
+                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
                         </div>
 
                         <div className={styles.filter}>

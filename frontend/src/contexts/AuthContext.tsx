@@ -159,9 +159,8 @@ export function AuthProvaider({ children }:  AuthProvaiderProps){
             toast.success('LOGADO COM SUCESSO!');
 
             //REDIRECIONAR O USER PARA A PAGINA DE DASHBOARD (ULTIMOS PEDIDOS)
-            Router.push('/dashboard')
+            Router.push('/dashboard');
             
-
         } catch (err) {
             toast.error('ERRO AO ACESSAR!');
             console.log('ERRO AO ACESSAR', err);

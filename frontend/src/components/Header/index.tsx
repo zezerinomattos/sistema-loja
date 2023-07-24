@@ -45,6 +45,7 @@ export function Header({title}: HeaderProps){
                 setRenderPage('arquivo');
                 break;
 
+            //----------------
             //Colaborador
             case 'collaborator/newcollaborator':
                 setRenderPage('colaborador');
@@ -58,6 +59,22 @@ export function Header({title}: HeaderProps){
                 setRenderPage('colaborador');
                 break;
         
+            //-----------------
+            //Cliente
+            case 'client/newclient':
+                setRenderPage('cliente');
+                break;
+
+            case 'client/newclient':
+                setRenderPage('cliente');
+                break;
+
+            case '/client/editclient':
+                setRenderPage('cliente');
+                break;
+
+            //------------
+            //Default
             default:
                 //setRenderPage(currentPath);
                 break;

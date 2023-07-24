@@ -62,7 +62,7 @@ export function UtilsHeader( param: string, title: string ){
         setIsModalSettingsOpen(false);
     }
 
-    // FUNÇÃO PARA ALTERAR A SENHA DO USER LOGADO
+    // FUNÇÃO MODAL PARA ALTERAR A SENHA DO USER LOGADO
     async function handleChangePassword(password: string, newPassword: string, confirmNewPassword: string){
         //const newPasswordUper = newPassword.toUpperCase();
 
@@ -100,7 +100,7 @@ export function UtilsHeader( param: string, title: string ){
         if (isModalOpen === 'true') {
           setIsModalOpen(true);
         }
-      }, []);
+    }, []);
     
       useEffect(() => {
         // Salva o estado do modal no Local Storage sempre que ele for alterado
@@ -203,19 +203,25 @@ export function UtilsHeader( param: string, title: string ){
             return(
                 <>
                     <ul className={styles.paginas}>
-                        <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                        <li onClick={() => handleItemClick('newClient')} className={renderButton === 'newClient' ? styles.actived : ''}>
+                            <Link href="/client/newclient">
+                                <FcBusinessman size={28}/>
+                                <span><strong>NOVO</strong><br />CLIENTE</span>
+                            </Link>
+                        </li>
+
+                        <li onClick={() => handleItemClick('listClient')} className={renderButton === 'listClient' ? styles.actived : ''}>
+                            <Link href="/client/listclient">
+                                <FcBusinessman size={28}/>
+                                <span><strong>+</strong> COLABORADOR</span>
+                            </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
-                        </li>
-
-                        <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/">
+                                <FcBusinessman size={28}/>
+                                <span><strong>+</strong> COLABORADOR</span>
+                            </Link>
                         </li>
 
                         <li>

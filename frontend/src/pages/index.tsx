@@ -22,6 +22,7 @@ export default function Home() {
   const [loading, setLoaging] = useState(false);
   const [message, setMessage] = useState('');
 
+  // FUNCAO PARA LOGAR
   async function handleLogin(event: FormEvent){
     event.preventDefault();
 
@@ -75,7 +76,3 @@ export const getServerSideProps = canSSRGuest(async (ctx) => {
     props: {}
   }
 });
-
-// const delayDebounceFn = setTimeout(() => {
-//     filterCollaborator();
-// }, 300);
