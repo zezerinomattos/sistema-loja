@@ -199,7 +199,16 @@ export function ModalCollaborator({ isOpen, onRequestClose, colaborador }: Modal
 
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">DEMISSÃO</label>
-                                    <Input value={new Date(Array.isArray(colab.colaborador) ? colab.colaborador[0]?.data_demisao : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
+                                    <Input
+                                        value={Array.isArray(colab.colaborador) ? (colab.colaborador[0]?.data_demisao ? new Date(colab.colaborador[0]?.data_demisao).toLocaleDateString("pt-BR", { day: '2-digit', month: '2-digit', year: 'numeric' }) : '') : ''}
+                                        disabled
+                                        style={{ width: '120px' }}
+                                    />
+                                </div>
+
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">UPDATED</label>
+                                    <Input value={new Date(Array.isArray(colab.colaborador) ? colab.colaborador[0]?.updated_at : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
                                 </div>
 
                             </div>

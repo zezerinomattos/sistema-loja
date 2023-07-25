@@ -40,7 +40,8 @@ class DetailColaboradorService{
                         saldo_salario: true,
                         data_admissao: true,
                         data_demisao: true,
-                        obs: true
+                        obs: true,
+                        updated_at: true,
                     }
                 },
                 endereco: true

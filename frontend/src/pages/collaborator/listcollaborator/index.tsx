@@ -64,6 +64,8 @@ export type CollaboratorDetailProps = {
         saldo_salario: number;
         data_admissao: Date;
         data_demisao: Date;
+        created_at: Date;
+        updated_at: Date;
         obs: string;
     }
     endereco: {
