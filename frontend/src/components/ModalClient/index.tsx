@@ -92,9 +92,6 @@ export function ModalClient({ isOpen, onRequestClose, client }: ModalProps){
                                     <Input value={Array.isArray(colab.cliente) ? colab.cliente[0]?.telefone : ''} disabled style={{width: '120px'}}/>
                                 </div>
 
-
-
-
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">PROFISSÃO</label>
                                     <Input value={Array.isArray(colab.cliente) ? colab.cliente[0]?.profissao : ''} disabled style={{width: '140px'}}/>
@@ -144,9 +141,6 @@ export function ModalClient({ isOpen, onRequestClose, client }: ModalProps){
                                     <label htmlFor="">LIMITE CREDITO</label>
                                     <Input value={`R$ ${Array.isArray(colab.cliente) ? colab.cliente[0]?.limite_credito : ''}`} disabled style={{width: '120px'}}/>
                                 </div>
-
-
-
 
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">SITUAÇÃO</label>
@@ -224,6 +218,18 @@ export function ModalClient({ isOpen, onRequestClose, client }: ModalProps){
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">TELEFONE 03</label>
                                     <Input value={Array.isArray(colab.cliente) ? colab.cliente[0]?.telefone_referencia3 : ''} disabled style={{width: '150px'}}/>
+                                </div>
+                            </div>
+
+                            <div className={styles.inputsBasicData}>
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">CREATED</label>
+                                    <Input value={new Date(Array.isArray(colab.cliente) ? colab.cliente[0]?.created_at : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
+                                </div>
+
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">UPDATED</label>
+                                    <Input value={new Date(Array.isArray(colab.cliente) ? colab.cliente[0]?.updated_at : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
                                 </div>
                             </div>
 
