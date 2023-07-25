@@ -219,7 +219,7 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/">
+                            <Link href="/client/editclient">
                                 <BsFillPersonVcardFill size={24} style={{color: '#e99a3b'}}/>
                                 <span><strong>EDITAR</strong><br />CLIENTE</span>
                             </Link>
