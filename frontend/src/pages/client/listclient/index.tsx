@@ -21,6 +21,7 @@ import { api } from '../../../services/apiClient';
 type ClientProps = {
     id: string;
     situacao: boolean;
+    ultima_compra: Date;
     usuario: {
         id: string;
         nome: string;
@@ -91,6 +92,7 @@ export default function ListClient({ client }: ListProps){
 
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
+    const [listInativo, setListInativo] = useState(false);
 
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
@@ -120,18 +122,35 @@ export default function ListClient({ client }: ListProps){
     function filterCollaborator(){
         //FILTRANDO SE TEM ID
         if(listId){
-            const filteredCollaborators = client.filter((colab) => colab.id.includes(listId));
-            setClientList(filteredCollaborators);
+            const filteredClient = client.filter((client) => client.id.includes(listId));
+            setClientList(filteredClient);
         }
 
         //FILTRANDO PELO NOME
         if(!listId && listName){
-            const filteredCollaborators = client.filter((colab) => colab.usuario.nome.includes(listName));
-            setClientList(filteredCollaborators);
+            const filteredClient = client.filter((client) => client.usuario.nome.includes(listName));
+            setClientList(filteredClient);
+        }
+
+        //FILTRANDO POR INATIVOS COM ÚLTIMA COMPRA HÁ MAIS DE 3 MESES
+        if (!listId && !listName && listInativo) {
+            const currentDate = new Date();
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
+
+            const filteredClient = client.filter((client) => {
+            if (client.ultima_compra) {
+                const ultimaCompraDate = new Date(client.ultima_compra);
+                return ultimaCompraDate <= threeMonthsAgo;
+            }
+            return false; // Caso a data de ultima_compra seja nula ou undefined
+            });
+
+            setClientList(filteredClient);
         }
 
         //FILTRANDO TODOS
-        if(!listName && !listId){
+        if(!listName && !listId && !listInativo){
             clearFilter();
         }
     }
@@ -141,6 +160,7 @@ export default function ListClient({ client }: ListProps){
         setClientList(client);
         setListId('');
         setListName('');
+        setListInativo(false);
     }
 
     useEffect(() => {
@@ -191,6 +211,13 @@ export default function ListClient({ client }: ListProps){
 
                             <div className={styles.filter}>
                                 <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <div className={styles.filterInativo}>
+                                    <label htmlFor="checkbox" className={styles.labelChecbox}>INATIVOS</label>
+                                    <Input id='checkbox' type='checkbox' checked={listInativo} onChange={() => setListInativo(!listInativo)} className={styles.imputChecbox}/>
+                                </div>
                             </div>
 
                             <div className={styles.filter}>

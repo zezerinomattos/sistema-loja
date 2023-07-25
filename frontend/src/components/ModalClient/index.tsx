@@ -33,7 +33,7 @@ export function ModalClient({ isOpen, onRequestClose, client }: ModalProps){
     return(
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
             <div className={styles.container}>
-                <h1>DETALHES COLABORADOR</h1>
+                <h1>DETALHES DO CLIENTE</h1>
                 {
                     client.map(colab => (
                         <form key={Array.isArray(colab.cliente) ? colab.cliente[0]?.id : ''} className={styles.form}>
@@ -123,28 +123,8 @@ export function ModalClient({ isOpen, onRequestClose, client }: ModalProps){
                                 </div>
 
                                 <div className={styles.inputLabel}>
-                                    <label htmlFor="">ÚLTIMA COMPRA</label>
-                                    <Input value={new Date(Array.isArray(colab.cliente) ? colab.cliente[0]?.ultima_compra : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
-                                </div>  
-
-                                <div className={styles.inputLabel}>
-                                    <label htmlFor="">DATA CRIAÇÃO</label>
-                                    <Input value={new Date(Array.isArray(colab.cliente) ? colab.cliente[0]?.created_at : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
-                                </div>
-
-                                <div className={styles.inputLabel}>
-                                    <label htmlFor="">ULTIMA ATUALIZAÇÃO</label>
-                                    <Input value={new Date(Array.isArray(colab.cliente) ? colab.cliente[0]?.updated_at : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
-                                </div>
-
-                                <div className={styles.inputLabel}>
                                     <label htmlFor="">LIMITE CREDITO</label>
                                     <Input value={`R$ ${Array.isArray(colab.cliente) ? colab.cliente[0]?.limite_credito : ''}`} disabled style={{width: '120px'}}/>
-                                </div>
-
-                                <div className={styles.inputLabel}>
-                                    <label htmlFor="">SITUAÇÃO</label>
-                                    <Input value={Array.isArray(colab.cliente) ? (colab.cliente[0]?.situacao ? "ATIVO" : "INATIVO") : ''} disabled style={{width: '150px'}}/>
                                 </div>
                                 
                                 <div className={styles.inputLabel}>
@@ -222,6 +202,16 @@ export function ModalClient({ isOpen, onRequestClose, client }: ModalProps){
                             </div>
 
                             <div className={styles.inputsBasicData}>
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">ÚLTIMA COMPRA</label>
+                                    <Input value={new Date(Array.isArray(colab.cliente) ? colab.cliente[0]?.ultima_compra : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
+                                </div>
+
+                                <div className={styles.inputLabel}>
+                                    <label htmlFor="">SITUAÇÃO</label>
+                                    <Input value={Array.isArray(colab.cliente) ? (colab.cliente[0]?.situacao ? "ATIVO" : "INATIVO") : ''} disabled style={{width: '150px'}}/>
+                                </div>
+
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">CREATED</label>
                                     <Input value={new Date(Array.isArray(colab.cliente) ? colab.cliente[0]?.created_at : '').toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>

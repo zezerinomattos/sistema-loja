@@ -7,6 +7,7 @@ class ListClienteService{
             select: {
                 id: true,
                 situacao: true,
+                ultima_compra: true,
                 usuario:{
                     select:{
                         id: true,
