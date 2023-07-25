@@ -77,6 +77,7 @@ class EditProdutoService{
                 categoria_id: categoria_id,
                 fabrica_id: fabrica_id,
                 representante_id: representante_id,
+                updated_at: new Date(),
             }
         });
 

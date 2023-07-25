@@ -74,6 +74,7 @@ class EditColaboradorService{
             data_admissao,
             data_demisao,
             obs,
+            updated_at: new Date(),
             },
         });
 

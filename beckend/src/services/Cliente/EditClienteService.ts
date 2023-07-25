@@ -32,12 +32,11 @@ interface ClienteRequest{
     complemento_renda?: string;
     limite_credito: number; 
     situacao: boolean;
-    updated_at: string;
     obs: string;
 }
 
 class EditClienteService{
-    async execute({ cliente_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, updated_at, profissao, empresa, renda_fixa, complemento_renda, obs }: ClienteRequest){
+    async execute({ cliente_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, profissao, empresa, renda_fixa, complemento_renda, obs }: ClienteRequest){
 
         // Verificar se o colaborador existe
         const existingCliente = await prismaClient.cliente.findUnique({
@@ -50,7 +49,7 @@ class EditClienteService{
         }
 
         // Convertendo a string da última atualizacao em um objeto Date
-        const dataUltimaUpdate = parseISO(updated_at);
+        //const dataUltimaUpdate = parseISO(updated_at);
 
         //Atualizar os dados do cliente
         const updateCliente = await prismaClient.cliente.update({
@@ -73,7 +72,7 @@ class EditClienteService{
                 complemento_renda: complemento_renda,
                 limite_credito: limite_credito, 
                 situacao: situacao,
-                updated_at: dataUltimaUpdate,
+                updated_at: new Date(),
                 obs: obs,
             },
         });

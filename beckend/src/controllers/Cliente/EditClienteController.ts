@@ -4,7 +4,7 @@ import { EditClienteService } from '../../services/Cliente/EditClienteService';
 
 class EditClienteController{
     async handle(req: Request, res: Response){
-        const { cliente_id ,nome, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, ultima_compra, profissao, empresa, renda_fixa, complemento_renda, obs, updated_at } = req.body;
+        const { cliente_id ,nome, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, ultima_compra, profissao, empresa, renda_fixa, complemento_renda, obs } = req.body;
 
         const editClienteService = new EditClienteService;
 
@@ -60,7 +60,6 @@ class EditClienteController{
                 renda_fixa, 
                 complemento_renda,
                 obs: saveObs,
-                updated_at,
              });
 
             return res.json(cliente);
@@ -115,7 +114,6 @@ class EditClienteController{
                 renda_fixa, 
                 complemento_renda,
                 obs: saveObs,
-                updated_at,
             });
 
             return res.json(cliente);

@@ -39,6 +39,7 @@ class EditRepresentanteService{
                 empresa: empresa, 
                 celular: celular, 
                 telefone: telefone, 
+                updated_at: new Date(),
             },
         });
 

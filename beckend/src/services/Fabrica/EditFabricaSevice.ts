@@ -22,6 +22,7 @@ class EditFabricaSevice{
                 razaosocial: razaosocial,
                 contato: contato,
                 representante_id: representante_id,
+                updated_at: new Date(),
             }
         });
 
