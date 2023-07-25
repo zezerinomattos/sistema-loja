@@ -60,6 +60,48 @@ main.containerBody div.rigthContainer{
 
 }
 
+div.rigthContainer div.filterContainer{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+div.filterContainer div.filter{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    height: 40px;
+}
+
+div.filterContainer div.filter button.buttonBuscar{
+    height: 40px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    max-width: 600px;
+    background-color: var(--green-700);
+    border: 0;
+    color: var(--white);
+    border-radius: 0.5rem;
+    transition: filter 0.2s;
+
+    //Avimando o Loading do button
+    &[disabled]{
+        cursor: not-allowed;
+        svg{
+            animation: animate 2s infinite;
+        }
+    }
+
+    &:hover{
+        filter: brightness(0.7);
+    }
+}
+
 form.formCliente{
     max-width: 90%;
     height: 100%;

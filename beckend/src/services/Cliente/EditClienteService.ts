@@ -31,12 +31,11 @@ interface ClienteRequest{
     renda_fixa: string;
     complemento_renda?: string;
     limite_credito: number; 
-    situacao: boolean;
     obs: string;
 }
 
 class EditClienteService{
-    async execute({ cliente_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, profissao, empresa, renda_fixa, complemento_renda, obs }: ClienteRequest){
+    async execute({ cliente_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, profissao, empresa, renda_fixa, complemento_renda, obs }: ClienteRequest){
 
         // Verificar se o colaborador existe
         const existingCliente = await prismaClient.cliente.findUnique({
@@ -71,7 +70,6 @@ class EditClienteService{
                 renda_fixa: renda_fixa, 
                 complemento_renda: complemento_renda,
                 limite_credito: limite_credito, 
-                situacao: situacao,
                 updated_at: new Date(),
                 obs: obs,
             },

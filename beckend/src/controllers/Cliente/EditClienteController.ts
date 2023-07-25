@@ -15,7 +15,7 @@ class EditClienteController{
             //--------------------------------------------------------
             // apenas para pode cadastrar um colaborador com Insominia
 
-            const situacao = JSON.parse(req.body.situacao);
+            //const situacao = JSON.parse(req.body.situacao);
             const limite_credito = parseFloat(req.body.limite_credito);
 
             const name = nome.toUpperCase();
@@ -54,7 +54,6 @@ class EditClienteController{
                 nome_referencia3: referencia3, 
                 score, 
                 limite_credito, 
-                situacao, 
                 profissao, 
                 empresa, 
                 renda_fixa, 
@@ -69,7 +68,7 @@ class EditClienteController{
             //--------------------------------------------------------
             // apenas para pode cadastrar um colaborador com Insominia
 
-            const situacao = JSON.parse(req.body.situacao);
+            //const situacao = JSON.parse(req.body.situacao);
             const limite_credito = parseFloat(req.body.limite_credito);
             const foto = null; 
 
@@ -108,7 +107,6 @@ class EditClienteController{
                 nome_referencia3: referencia3, 
                 score, 
                 limite_credito, 
-                situacao, 
                 profissao, 
                 empresa, 
                 renda_fixa, 

@@ -2,6 +2,8 @@ import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'r
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import { FcSearch } from "react-icons/fc";
+import { useRouter } from 'next/router';
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -18,10 +20,13 @@ import { api } from '../../../services/apiClient';
 
 export default function EditClient(){
     const { user } = useContext(AuthContext);
+    const router = useRouter();
+
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
     const [message, setMessage] = useState('');
 
+    const [clienteId, setClienterId] = useState('');
     const [nome, setNome] = useState('');
     // const [cpf, setCpf] = useState('');
     // const [nascimento, setNascimento] = useState('');
@@ -55,9 +60,11 @@ export default function EditClient(){
     const [renda_fixa, setRendaFixa] = useState('');
     const [complemento_renda, setComplementoRenda] = useState('');
     const [obs, setObs] = useState('');
+    const [situacao, setSituacao] = useState('');
 
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
+    const url = 'http://localhost:3333/files/';
 
     // Funcao para salvarmos imagem
     function handleFile(e: ChangeEvent<HTMLInputElement>){
@@ -101,9 +108,201 @@ export default function EditClient(){
         
     }
 
-    //FUNCAO PARA CRIAR CLIENTE
-    async function hadleRegister(event: FormEvent){
-        alert('teste');
+    //FUNCAO PARA BUSCAR O COLABORADOR
+    async function handleFilter(){
+        if(!clienteId){
+            setMessage('Iforme o código do colaborador!');
+            return;
+        }
+
+        setLoaging(true);
+
+        await api.get('/cliente/detail', {
+            params: {
+                cliente_id: clienteId,
+            }
+        })
+        .then(response => {
+            setNome(response.data[0]?.nome);
+            setSexo(response.data[0]?.sexo);
+            setEmail(response.data[0]?.email);
+            setRg(response.data[0]?.cliente[0]?.rg);
+            setOrgaoEmisor(response.data[0]?.cliente[0]?.orgao_emissor);
+            setCep(response.data[0]?.endereco?.cep);
+            setLogradouro(response.data[0]?.endereco?.logradouro);
+            setNumero(response.data[0]?.endereco?.numero);
+            setComplemento(response.data[0]?.endereco?.complemento);
+            setBairro(response.data[0]?.endereco?.bairro);
+            setCidade(response.data[0]?.endereco?.cidade);
+            setUf(response.data[0]?.endereco?.uf);
+            setPais(response.data[0]?.endereco?.pais);
+            setProfissao(response.data[0]?.cliente[0]?.profissao);
+            setEmpresa(response.data[0]?.cliente[0]?.empresa);
+            setRendaFixa(response.data[0]?.cliente[0]?.renda_fixa);
+            setComplementoRenda(response.data[0]?.cliente[0]?.complemento_renda);
+            setScore(response.data[0]?.cliente[0]?.score);
+            setLimiteCredito(response.data[0]?.cliente[0]?.limite_credito);
+
+            setNomeReferencia1(response.data[0]?.cliente[0]?.nome_referencia1);
+            setNomeReferencia2(response.data[0]?.cliente[0]?.nome_referencia2);
+            setNomeReferencia3(response.data[0]?.cliente[0]?.nome_referencia3);
+            setTelefoneReferencia1(response.data[0]?.cliente[0]?.telefone_referencia1);
+            setTelefoneReferencia2(response.data[0]?.cliente[0]?.telefone_referencia2);
+            setTelefoneReferencia3(response.data[0]?.cliente[0]?.telefone_referencia3);
+            setSituacao(response.data[0]?.cliente[0]?.situacao);
+
+            setCelular(response.data[0]?.cliente[0]?.celular);
+            setTelefone(response.data[0]?.cliente[0]?.telefone);
+            setAvatarUrl(url + '/' + response.data[0]?.foto);
+            setObs(response.data[0]?.cliente[0]?.obs);
+
+            setLoaging(false);
+            
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error('ID do cliente inválido');
+
+            //LIMPANDO OS CAMPOS DO FORM
+            setClienterId('');
+            setNome('');
+            setSexo('');
+            setEmail('');
+            setAvatarUrl('');
+            setImageAvatar(null);
+            setCep('');
+            setLogradouro('');
+            setNumero('');
+            setComplemento('');
+            setBairro('');
+            setCidade('');
+            setUf('');
+            setPais('');
+            setCelular('');
+            setTelefone('');
+            setRg('');
+            setOrgaoEmisor('');
+            setObs('');
+            setMessage('');
+            setProfissao('');
+            setEmpresa('');
+            setRendaFixa('');
+            setComplementoRenda('');
+            setScore('');
+            setNomeReferencia1('');
+            setTelefoneReferencia1('');
+            setNomeReferencia2('');
+            setTelefoneReferencia2('');
+            setNomeReferencia3('');
+            setTelefoneReferencia3('');
+            setLimiteCredito('');
+            setClienterId('');
+
+            setLoaging(false);
+        })
+    }
+
+    //FUNCAO PARA EDITAR COLABORADOR
+    async function hadleEdit(event: FormEvent){
+        event.preventDefault();
+
+        try {
+            const data = new FormData();
+
+            //Verificações
+            if(!clienteId ){
+                setMessage('Iforme o código do cliente!');
+                return;
+            }
+
+            //Verificações
+            if(!nome || !sexo || !email || !cep || !logradouro || !numero || !bairro || !cidade || !uf || !pais || !situacao || !celular || !telefone || !nome_referencia1 || !telefone_referencia1 || !nome_referencia2 || !telefone_referencia2 || !nome_referencia3 || !telefone_referencia3 || !score || !profissao || !empresa || !renda_fixa){             
+                setMessage('Preencha todos os campos!');
+                return;
+            }
+
+            setLoaging(true);
+
+            data.append('nome', nome);
+            data.append('sexo', sexo);
+            data.append('email', email);
+            data.append('file', imageAvatar || '');
+
+            data.append('cep', cep);
+            data.append('logradouro', logradouro);
+            data.append('numero', numero);
+            data.append('complemento', complemento);
+            data.append('bairro', bairro);
+            data.append('cidade', cidade);
+            data.append('uf', uf);
+            data.append('pais', pais);
+
+            data.append('celular', celular);
+            data.append('telefone', telefone);
+            data.append('rg', rg);
+            data.append('orgao_emissor', orgao_emissor);
+            data.append('obs', obs);
+            data.append('profissao', profissao);
+            data.append('empresa', empresa);
+            data.append('renda_fixa', renda_fixa);
+            data.append('complemento_renda', complemento_renda);
+            data.append('nome_referencia1', nome_referencia1);
+            data.append('nome_referencia2', nome_referencia2);
+            data.append('nome_referencia3', nome_referencia3);
+            data.append('telefone_referencia1', telefone_referencia1);
+            data.append('telefone_referencia2', telefone_referencia2);
+            data.append('telefone_referencia3', telefone_referencia3);
+            data.append('score', score);
+            data.append('limite_credito', limite_credito);
+
+            data.append('cliente_id', clienteId);
+
+            await api.put('/cliente/edit', data);
+
+            toast.success('CLIENTE EDITADO COM SUCESSO!');
+
+            setLoaging(false);
+
+            //LIMPANDO OS CAMPOS DO FORM
+            setNome('');
+            setSexo('');
+            setEmail('');
+            setAvatarUrl('');
+            setImageAvatar(null);
+            setCep('');
+            setLogradouro('');
+            setNumero('');
+            setComplemento('');
+            setBairro('');
+            setCidade('');
+            setUf('');
+            setPais('');
+            setCelular('');
+            setTelefone('');
+            setRg('');
+            setOrgaoEmisor('');
+            setObs('');
+            setProfissao('');
+            setEmpresa('');
+            setRendaFixa('');
+            setComplementoRenda('');
+            setNomeReferencia1('');
+            setTelefoneReferencia1('');
+            setNomeReferencia2('');
+            setTelefoneReferencia2('');
+            setNomeReferencia3('');
+            setTelefoneReferencia3('');
+            setScore('');
+            setLimiteCredito('');
+            setClienterId('');
+
+            setMessage('');
+
+        } catch (error) {
+            console.log(error);
+            setMessage('Ops, algo deu errado, atualize a pagina e tente novamente!');
+            setLoaging(false);
+        }
     }
     
     useEffect(() => {
@@ -123,7 +322,17 @@ export default function EditClient(){
                     <Presentation />
 
                     <div className={styles.rigthContainer}>
-                        <form className={styles.formCliente} onSubmit={hadleRegister}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={clienteId} onChange={(e) => setClienterId(e.target.value)} style={{width:'350px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
+                        </div>
+
+                        <form className={styles.formCliente} >
                             <Input placeholder='NOME COMPLETO' type='text' className={styles.inputName} onChange={(e) => setNome(e.target.value)} value={nome}/>
 
                             <div className={styles.inputsBasicData}>                               
@@ -188,7 +397,7 @@ export default function EditClient(){
                             </div>
 
                             <div className={styles.inputsBasicData}>
-                                <Input placeholder='SITUAÇÃO' type='text' disabled />
+                                <Input placeholder='SITUAÇÃO' type='text' disabled  value={situacao ? 'ATIVO' : 'INATIVO'}/>
                                 <Input placeholder='SCORE' type='text'  value={score} onChange={(e) => setScore(e.target.value)}/>
                                 <Input placeholder='LIMITE DE CREDITO' type='text'  value={limite_credito} onChange={(e) => setLimiteCredito(e.target.value)}/>
                             </div>
@@ -213,7 +422,7 @@ export default function EditClient(){
                             <TextArea placeholder='OBS' onChange={(e) => setObs(e.target.value)} value={obs}/>
 
                             <div className={styles.buttonForm}>
-                                <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
+                                <Button onClick={hadleEdit} type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
                             </div>
                         </form>
 
