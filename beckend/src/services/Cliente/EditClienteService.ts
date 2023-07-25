@@ -6,7 +6,7 @@ interface ClienteRequest{
     nome: string;
     sexo: string;
     email: string;
-    foto: string;
+    foto?: string;
     cep: string;
     logradouro: string;
     numero: string;
@@ -32,11 +32,12 @@ interface ClienteRequest{
     complemento_renda?: string;
     limite_credito: number; 
     situacao: boolean;
-    ultima_compra: string;
+    updated_at: string;
+    obs: string;
 }
 
 class EditClienteService{
-    async execute({ cliente_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, ultima_compra, profissao, empresa, renda_fixa, complemento_renda }: ClienteRequest){
+    async execute({ cliente_id, nome, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, rg, orgao_emissor, celular, telefone, telefone_referencia1, nome_referencia1, telefone_referencia2, nome_referencia2, telefone_referencia3, nome_referencia3, score, limite_credito, situacao, updated_at, profissao, empresa, renda_fixa, complemento_renda, obs }: ClienteRequest){
 
         // Verificar se o colaborador existe
         const existingCliente = await prismaClient.cliente.findUnique({
@@ -48,8 +49,8 @@ class EditClienteService{
             throw new Error('Cliente not found');
         }
 
-        // Convertendo a string da última compra em um objeto Date
-        const dataUltimaCompra = parseISO(ultima_compra);
+        // Convertendo a string da última atualizacao em um objeto Date
+        const dataUltimaUpdate = parseISO(updated_at);
 
         //Atualizar os dados do cliente
         const updateCliente = await prismaClient.cliente.update({
@@ -72,7 +73,8 @@ class EditClienteService{
                 complemento_renda: complemento_renda,
                 limite_credito: limite_credito, 
                 situacao: situacao,
-                ultima_compra: dataUltimaCompra,
+                updated_at: dataUltimaUpdate,
+                obs: obs,
             },
         });
 
@@ -83,7 +85,7 @@ class EditClienteService{
                 nome,
                 sexo,
                 email,
-                foto,
+                foto: foto !== null ? foto : existingCliente.usuario.foto,
             },
         });
 
