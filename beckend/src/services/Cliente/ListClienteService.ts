@@ -17,7 +17,7 @@ class ListClienteService{
             },
             orderBy: {
                 usuario: {
-                  nome: "asc", // Ordenar em ordem crescente pelo nome do representante
+                  nome: "asc", // Ordenar em ordem crescente pelo nome do cliente
                 },
             },
         });

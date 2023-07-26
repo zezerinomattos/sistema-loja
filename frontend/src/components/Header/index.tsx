@@ -74,6 +74,18 @@ export function Header({title}: HeaderProps){
                 break;
 
             //------------
+            //Representante
+            case 'representative/newrepresentative':
+                setRenderPage('representante');
+                break;
+
+            case 'representative/newrepresentative':
+                setRenderPage('representante');
+                break;
+
+            case 'representative/newrepresentative':
+                setRenderPage('representante');
+                break;
             //Default
             default:
                 //setRenderPage(currentPath);

@@ -4,7 +4,7 @@ import { CreateRepresentanteService } from '../../services/Representante/CreateR
 
 class CreateRepresentanteController{
     async handle(req: Request, res: Response){
-        const { cpf, nome, nascimento, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, celular, telefone} = req.body;
+        const { cpf, nome, nascimento, sexo, email, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, celular, telefone, obs} = req.body;
 
         const createRepresentanteService = new CreateRepresentanteService;
 
@@ -31,6 +31,7 @@ class CreateRepresentanteController{
                 empresa, 
                 celular, 
                 telefone, 
+                obs,
             });
     
             return res.json(representante);

@@ -19,10 +19,11 @@ interface RepresentanteRequest{
     empresa: string; 
     celular: string; 
     telefone: string; 
+    obs?: string
 }
 
 class CreateRepresentanteService{
-    async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, celular, telefone }: RepresentanteRequest){
+    async execute({ cpf, nome, nascimento, sexo, email, foto, cep, logradouro, numero, complemento, bairro, cidade, uf, pais, empresa, celular, telefone, obs }: RepresentanteRequest){
 
         //Verificando se tem cpf digitado
         if(!cpf || cpf.length !== 11){
@@ -31,7 +32,12 @@ class CreateRepresentanteService{
         //Verificando se tem cpf já está cadastrado na plataforma
         const colaboradorAlreadyExists = await prismaClient.usuario.findFirst({
             where: {
-                cpf: cpf
+                cpf: cpf,
+                representante:{
+                    some: {
+                        status: true,
+                    }
+                }
             }
         });
         if(colaboradorAlreadyExists){
@@ -74,6 +80,7 @@ class CreateRepresentanteService{
                 empresa: empresa, 
                 celular: celular, 
                 telefone: telefone, 
+                obs: obs,
                 usuario_id: usuario.id,
             }
         });

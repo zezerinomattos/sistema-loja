@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
-import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience } from "react-icons/fc";
+import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcDebt } from "react-icons/fc";
+import { BsPersonLinesFill } from "react-icons/bs";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 
 import Modal from 'react-modal';
@@ -270,23 +271,24 @@ export function UtilsHeader( param: string, title: string ){
                 <>
                     <ul className={styles.paginas}>
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/representative/newrepresentative">
+                                <FcDebt size={28}/>
+                                <span><strong>NOVO</strong><br />REPRESENTANTE</span>
+                            </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/">
+                                <FcCollaboration size={28}/>
+                                <span><strong>LISTA</strong><br />REPRESENTANTE</span>
+                            </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
-                        </li>
-
-                        <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/">
+                                <BsPersonLinesFill size={28} style={{color: '#e99a3b'}}/>
+                                <span><strong>EDITAR</strong><br />REPRESENTANTE</span>
+                            </Link>
                         </li>
                     </ul>
 

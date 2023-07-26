@@ -134,6 +134,8 @@ model Representante {
   telefone String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
+  status Boolean? @default(true)
+  obs String?
 
   usuario Usuario @relation(fields: [usuario_id], references: [id])
 
