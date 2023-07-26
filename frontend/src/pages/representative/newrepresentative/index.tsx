@@ -95,10 +95,86 @@ export default function(){
         try {
             const data = new FormData();
 
+            //Verificações
+            if(!nome || !cpf || !nascimento || !sexo || !email || !cep || !logradouro || !numero || !bairro || !cidade || !uf || !pais || !celular || !telefone || !empresa || !imageAvatar){             
+                setMessage('Preencha todos os campos!');
+                return;
+            }
+
+            if(cpf.length !== 11){
+                setMessage('Informe um CPF valido');
+                return;
+            }
+
+            // Validação da idade mínima
+            const nascimentoDate = new Date(nascimento);
+            const idadeMinima = 16; // Idade mínima de 16 anos
+
+            const hoje = new Date();
+            const diffAnos = hoje.getFullYear() - nascimentoDate.getFullYear();
+
+            if (diffAnos < idadeMinima) {
+                setMessage('A idade mínima é de 16 anos');
+                return;
+            }
+
+            setLoaging(true);
+
+            data.append('nome', nome);
+            data.append('cpf', cpf);
+            data.append('nascimento', nascimento);
+            data.append('sexo', sexo);
+            data.append('email', email);
+            data.append('file', imageAvatar);
+
+            data.append('cep', cep);
+            data.append('logradouro', logradouro);
+            data.append('numero', numero);
+            data.append('complemento', complemento);
+            data.append('bairro', bairro);
+            data.append('cidade', cidade);
+            data.append('uf', uf);
+            data.append('pais', pais);
+
+            data.append('empresa', empresa);
+            data.append('telefone', telefone);
+            data.append('celular', celular);
+            data.append('obs', obs);
+
+            await api.post('/representante', data);
+
+            toast.success('REPRESENTANTE CADSTRADO COM SUCESSO!');
+
+            setLoaging(false);
+
+            //LIMPANDO OS CAMPOS DO FORM
+            setNome('');
+            setCpf('');
+            setNascimento('');
+            setSexo('');
+            setEmail('');
+            setAvatarUrl('');
+            setImageAvatar(null);
+            setCep('');
+            setLogradouro('');
+            setNumero('');
+            setComplemento('');
+            setBairro('');
+            setCidade('');
+            setUf('');
+            setPais('');
+            setCelular('');
+            setTelefone('');
+            setEmpresa('');
+            setObs('');
+
+            setMessage('');
+
         } catch (error: any) {
             console.log(error);
             toast.error(error.response.data.erro);
             setLoaging(false);
+            setMessage('');
         }
     }
 

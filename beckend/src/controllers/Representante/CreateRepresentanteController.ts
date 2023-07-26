@@ -13,13 +13,19 @@ class CreateRepresentanteController{
         }else{
             const { originalname, filename: foto } = req.file;
 
+            const name = nome.toUpperCase();
+            const saveEmail = email.toLowerCase();
+            const saveObs = obs.toUpperCase()
+            const savePais = pais.toUpperCase();
+            const saveEmpresa = empresa.toUpperCase();
+
             const representante = await createRepresentanteService.execute({
                 cpf, 
-                nome, 
+                nome: name, 
                 nascimento, 
                 sexo, 
                 foto,
-                email, 
+                email: saveEmail, 
                 cep, 
                 logradouro, 
                 numero, 
@@ -27,11 +33,11 @@ class CreateRepresentanteController{
                 bairro, 
                 cidade, 
                 uf, 
-                pais, 
-                empresa, 
+                pais: savePais, 
+                empresa: saveEmpresa, 
                 celular, 
                 telefone, 
-                obs,
+                obs: obs,
             });
     
             return res.json(representante);
