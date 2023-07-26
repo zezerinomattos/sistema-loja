@@ -86,6 +86,21 @@ export function Header({title}: HeaderProps){
             case 'representative/editrepresentative':
                 setRenderPage('representante');
                 break;
+
+             //------------
+            //Representante
+            case 'factory/newfactory':
+                setRenderPage('fabricas');
+                break;
+
+            case 'factory/listfactory':
+                setRenderPage('fabricas');
+                break;
+
+            case 'factory/editfactory':
+                setRenderPage('fabricas');
+                break;
+
             //Default
             default:
                 //setRenderPage(currentPath);

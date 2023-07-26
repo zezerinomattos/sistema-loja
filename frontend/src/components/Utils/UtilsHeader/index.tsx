@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
-import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcDebt } from "react-icons/fc";
-import { BsPersonLinesFill } from "react-icons/bs";
-import { BsFillPersonVcardFill } from "react-icons/bs";
+import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList } from "react-icons/fc";
+import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill } from "react-icons/bs";
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -272,7 +271,7 @@ export function UtilsHeader( param: string, title: string ){
                     <ul className={styles.paginas}>
                         <li>
                             <Link href="/representative/newrepresentative">
-                                <FcDebt size={28}/>
+                                <FcBriefcase size={28}/>
                                 <span><strong>NOVO</strong><br />REPRESENTANTE</span>
                             </Link>
                         </li>
@@ -300,6 +299,36 @@ export function UtilsHeader( param: string, title: string ){
             break;
 
         case 'fabricas':
+            return(
+                <>
+                    <ul className={styles.paginas}>
+                        <li>
+                            <Link href="/factory/newfactory">
+                                <FcFactory size={28}/>
+                                <span><strong>NOVA</strong><br />FABRICA</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/factory/listfactory">
+                                <FcTodoList size={28}/>
+                                <span><strong>LISTA</strong><br />FABRICA</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/factory/editfactory">
+                                <BsBuildingFillUp size={28} style={{color: '#e99a3b'}}/>
+                                <span><strong>EDITAR</strong><br />FABRICA</span>
+                            </Link>
+                        </li>
+                    </ul>
+
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
+                </>
+            );
             break;
         
         case 'pedidos':
