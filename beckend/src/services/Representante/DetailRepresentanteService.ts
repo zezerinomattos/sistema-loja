@@ -9,7 +9,12 @@ class DetailRepresentanteService{
 
         const representante = await prismaClient.usuario.findMany({
             where: {
-                id: representante_id
+                //id: representante_id
+                representante: {
+                    some: {
+                        id: representante_id,
+                    }
+                }
             },
             include: {
                 representante: true,

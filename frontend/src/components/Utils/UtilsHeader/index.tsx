@@ -278,7 +278,7 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/">
+                            <Link href="/representative/listrepresentative">
                                 <FcCollaboration size={28}/>
                                 <span><strong>LISTA</strong><br />REPRESENTANTE</span>
                             </Link>

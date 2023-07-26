@@ -79,7 +79,7 @@ export function Header({title}: HeaderProps){
                 setRenderPage('representante');
                 break;
 
-            case 'representative/newrepresentative':
+            case 'representative/listrepresentative':
                 setRenderPage('representante');
                 break;
 

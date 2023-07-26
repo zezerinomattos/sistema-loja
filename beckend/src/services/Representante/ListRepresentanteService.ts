@@ -6,7 +6,9 @@ class ListRepresentanteService{
         const representante = await prismaClient.representante.findMany({
             // VOU PEDIR PARA ELE TRAZER APENAS ID, NoME E EMPRESA
             select: {
+                id: true,
                 empresa: true,
+                status: true,
                 usuario: {
                     select: {
                         nome: true,
