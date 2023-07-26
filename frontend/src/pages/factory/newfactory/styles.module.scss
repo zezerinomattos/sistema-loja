@@ -32,7 +32,7 @@ div.container{
     height: 100vh;
 }
 
-main.containerFavorit{
+main.containerBody{
     width: 100%;
     height: 79.5vh;
     margin-top: .5vh;
@@ -43,7 +43,9 @@ main.containerFavorit{
 }
 
 
-main.containerFavorit div.rigthContainer{
+
+// RIGTH CONTAINER
+main.containerBody div.rigthContainer{
     width: 80%;
     height: 100%;
     display: flex;
@@ -51,10 +53,60 @@ main.containerFavorit div.rigthContainer{
     align-items: center;
     padding: 10px;
 
-    h1{
-        color: var(--white);
-        font-size: 24px;
-        font-family: 'Roboto', sans-serif;
-        text-shadow: 2px 2px 4px var(--gray-900);
+}
+
+form.formFabrica{
+    max-width: 90%;
+    height: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+    box-shadow: 2px 2px 4px var(--white);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        width: 5px; /* Largura da barra de rolagem */
     }
+
+    &::-webkit-scrollbar-track {
+        background: var(--dark-900); /* Cor de fundo da barra de rolagem */
+    }
+}
+
+form.formFabrica input.inputName{   
+    width: 400px;
+    height: 40px;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: var(--dark-700);
+    color: var(--white);
+    padding: 1rem;
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
+
+form.formFabrica div.inputsBasicData{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+form.formFabrica div.inputsBasicData select.selectInput{
+    height: 40px;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: var(--dark-700);
+    color: var(--white);
+    
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
+
+main.containerBody div.rigthContainer span{
+    color: var(--red-900);
+    margin-top: 2rem;
+    font-size: max(18px, 1.2vw);
+    font-family: 'Ubuntu', sans-serif;
+    text-shadow: 2px 2px 4px #2b2929;
 }

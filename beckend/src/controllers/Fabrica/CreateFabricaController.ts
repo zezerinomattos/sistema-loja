@@ -8,11 +8,14 @@ class CreateFabricaController{
 
         const createFabricaSevice = new CreateFabricaSevice;
 
+        const saveEmpresa = empresa.toUpperCase();
+        const saveRazaoSocial = razaosocial.toUpperCase();
+
         const fabrica = await createFabricaSevice.execute({
-            empresa,
+            empresa: saveEmpresa,
             cnpj,
             ie, 
-            razaosocial,
+            razaosocial: saveRazaoSocial,
             contato, 
             representante_id
         });
