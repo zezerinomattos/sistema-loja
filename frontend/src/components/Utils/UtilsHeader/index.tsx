@@ -285,7 +285,7 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/">
+                            <Link href="/representative/editrepresentative">
                                 <BsPersonLinesFill size={28} style={{color: '#e99a3b'}}/>
                                 <span><strong>EDITAR</strong><br />REPRESENTANTE</span>
                             </Link>

@@ -182,7 +182,7 @@ export default function ListRepresentative({ representative }: ListProps){
                                     <li key={rep.id}>
                                         <span>{rep.id}</span>
                                         <span onClick={() => handleOpenModalView(rep.id)} className={styles.nameDetail}>{rep.usuario.nome}</span>
-                                        {/* <span className={styles.nameDetail}>{colab.usuario.nome}</span> */}
+                                        <span>{rep.empresa}</span>
                                         <span>{rep.status ? "ATIVO" : "INATIVO"}</span>           
                                     </li>
                                 ))}

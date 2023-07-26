@@ -50,7 +50,7 @@ class EditRepresentanteService{
                 nome,
                 sexo,
                 email,
-                foto,
+                foto: foto !== null ? foto : existingRepresentante.usuario.foto,
             },
         });
 
