@@ -11,7 +11,7 @@ import { Header } from '@/components/Header';
 import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
-import { ModalClient } from '../../../components/ModalClient';
+import { ModalRepresentative } from '../../../components/ModalRepresentative';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
