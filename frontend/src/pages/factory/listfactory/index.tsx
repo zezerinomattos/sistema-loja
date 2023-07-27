@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState  } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
+import { BsTrash } from "react-icons/bs";
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import Modal from 'react-modal';
@@ -67,7 +68,7 @@ export default function ListFactory({ factory }: ListProps){
     const [modalFactory, setModalFactory] = useState<FactoryDetailProps[]>();
     const [modalVisible, setModalVisible] = useState(false);
 
-    //FUNCAO PARA DETALHAR COLABORADOR SELECIONADO
+    //FUNCAO PARA DETALHAR FABRICA SELECIONADO
     async function handleOpenModalView(id: string){
         await api.get('/fabrica/detail', {
             params: {
@@ -78,6 +79,36 @@ export default function ListFactory({ factory }: ListProps){
             setModalFactory(response.data);
             setModalVisible(true);
         });
+    }
+
+    // FUNCAO PARA DELETAR FABRICA
+    async function handleDelete(id: string){
+        if(!id){
+            toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+            return;
+        }
+
+        // Mostrar a caixa de diálogo de confirmação
+        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa fábrica?');
+
+        if (confirmDelete) {
+            // O usuário confirmou a exclusão, então faz a requisição para deletar a fábrica
+            await api.delete('fabrica/delete', {
+                params:{
+                    fabrica_id: id,
+                }
+            })
+            .then(() => {
+                toast.success('FABRICA DELETADA');
+                window.location.reload();
+            })
+            .catch(error => {
+                toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+            });
+        } else {
+            // O usuário cancelou a exclusão, não faz nada
+            return;
+        }
     }
 
     // FUNCAO FECHAR MODAL
@@ -160,7 +191,12 @@ export default function ListFactory({ factory }: ListProps){
                                 <li key={fac.id}>
                                     <span className={styles.idDetail}>{fac.id}</span>
                                     <span onClick={() => handleOpenModalView(fac.id)} className={styles.nameDetail}>{fac.empresa}</span>
-                                    <span>{fac.representante.usuario.nome}</span>           
+                                    <span>{fac.representante.usuario.nome}</span>
+                                    <BsTrash 
+                                        size={20} 
+                                        style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                        onClick={() => handleDelete(fac.id)}
+                                    />           
                                 </li>
                             ))}
                         </ol>
