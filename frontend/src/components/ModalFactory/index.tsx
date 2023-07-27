@@ -69,7 +69,10 @@ export function ModalFactory({ isOpen, onRequestClose, factory }: ModalProps){
                                     <label htmlFor="">CONTATO</label>
                                     <Input value={fac.contato} disabled style={{width: '120px'}}/>
                                 </div>
+                                
+                            </div>
 
+                            <div className={styles.inputsBasicData}>
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">REPRESENTANTE</label>
                                     <Input value={fac.representante.usuario.nome} disabled style={{width: '250px'}}/>
@@ -83,18 +86,7 @@ export function ModalFactory({ isOpen, onRequestClose, factory }: ModalProps){
                                 <div className={styles.inputLabel}>
                                     <label htmlFor="">TELEFONE REPRE.</label>
                                     <Input value={fac.representante.telefone} disabled style={{width: '120px'}}/>
-                                </div>
-                                
-                                <div className={styles.inputLabel}>
-                                    <label htmlFor="">CREATED</label>
-                                    <Input value={new Date(fac.created_at).toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
-                                </div>
-
-                                <div className={styles.inputLabel}>
-                                    <label htmlFor="">UPDATED</label>
-                                    <Input value={new Date(fac.updated_at).toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
-                                </div>
-
+                                </div> 
                             </div>
 
                             <div className={styles.inputsBasicData}>

@@ -97,7 +97,7 @@ export default function EditRepresentative(){
     //FUNCAO PARA BUSCAR O REPRESENTANTE
     async function handleFilter(){
         if(!representante_id){
-            setMessage('Iforme o código do colaborador!');
+            setMessage('Iforme o código do representante!');
             return;
         }
 
