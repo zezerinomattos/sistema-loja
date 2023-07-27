@@ -11,7 +11,7 @@ import { Header } from '@/components/Header';
 import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
-import { ModalRepresentative } from '../../../components/ModalRepresentative';
+import { ModalFactory } from '../../../components/ModalFactory';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -33,6 +33,25 @@ interface ListProps{
     factory: FactoryProps[];
 }
 
+export type FactoryDetailProps = {
+    id: string;
+    empresa: string;
+    cnpj: string;
+    ie: string;
+    contato: string;
+    razaosocial: string;
+    representante_id: string;
+    representante:{
+        usuario:{
+            nome: string;
+        };
+        celular: string;
+        telefone: string;
+    };
+    created_at: Date;
+    updated_at: Date;
+}
+
 export default function ListFactory({ factory }: ListProps){
     const { user } = useContext(AuthContext);
     const router = useRouter();
@@ -45,20 +64,20 @@ export default function ListFactory({ factory }: ListProps){
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
 
-    // const [modalRepresentative, setModalRepresentative] = useState<RepresentativeDetailProps[]>();
+    const [modalFactory, setModalFactory] = useState<FactoryDetailProps[]>();
     const [modalVisible, setModalVisible] = useState(false);
 
     //FUNCAO PARA DETALHAR COLABORADOR SELECIONADO
     async function handleOpenModalView(id: string){
-        // await api.get('/representante/detail', {
-        //     params: {
-        //         representante_id: id,
-        //     }
-        // })
-        // .then(response => {
-        //     setModalRepresentative(response.data);
-        //     setModalVisible(true);
-        // });
+        await api.get('/fabrica/detail', {
+            params: {
+                fabrica_id: id,
+            }
+        })
+        .then(response => {
+            setModalFactory(response.data);
+            setModalVisible(true);
+        });
     }
 
     // FUNCAO FECHAR MODAL
@@ -76,7 +95,7 @@ export default function ListFactory({ factory }: ListProps){
 
         //FILTRANDO PELO NOME
         if(!listId && listName){
-            const filterFactory = factory.filter((fac) => fac.representante.usuario.nome.includes(listName));
+            const filterFactory = factory.filter((fac) => fac.empresa.includes(listName));
             setFactoryList(filterFactory);
         }
 
@@ -115,7 +134,7 @@ export default function ListFactory({ factory }: ListProps){
 
     return(
         <div className={styles.container}>
-            <Header title={'LISTA REPRESENTANTE'}/>
+            <Header title={'LISTA FABRICAS'}/>
 
             <main className={styles.containerFavorit}>
                 <Presentation />
@@ -149,7 +168,15 @@ export default function ListFactory({ factory }: ListProps){
                     
                 </div>
             </main>
-            
+            {
+                modalVisible && modalFactory && modalFactory.length > 0 && (
+                    <ModalFactory
+                        isOpen={modalVisible}
+                        onRequestClose={handleCloseModal}
+                        factory={modalFactory}
+                    />
+                )
+            }
         </div>
     );
 }
