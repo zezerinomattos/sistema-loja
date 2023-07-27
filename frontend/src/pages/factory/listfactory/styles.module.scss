@@ -150,9 +150,9 @@ article.listContainer ol.list{
 
     li{
         width: 100%;
-        list-style: none;
-        display: flex;
+        list-style: none;       
         margin-bottom: 0.5rem;
+        display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
         
@@ -161,7 +161,7 @@ article.listContainer ol.list{
             text-shadow: 1px 1px 2px #1a1818;
             color: var(--white);
 
-            width: 25%;
+            width: 30%;
         }
     }
 }
@@ -170,8 +170,6 @@ article.listContainer ol.list li span.idDetail{
     width: 320px;
 }
 
-article.listContainer ol.list li span.nameDetail{
-    width: 30%;
+article.listContainer ol.list li span.nameDetail{   
     cursor: pointer;
-    
 }

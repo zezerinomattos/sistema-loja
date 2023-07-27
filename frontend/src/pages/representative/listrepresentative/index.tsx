@@ -129,11 +129,6 @@ export default function ListRepresentative({ representative }: ListProps){
         setListName('');
     }
 
-    useEffect(() => {
-        //Escondendo o loading quando ele montar completamente o componente
-        setCarregando(false);
-    }, [])
-
     // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -180,10 +175,10 @@ export default function ListRepresentative({ representative }: ListProps){
                             <ol className={styles.list}>
                                 {representativetList.map(rep => (
                                     <li key={rep.id}>
-                                        <span>{rep.id}</span>
+                                        <span className={styles.idDetail}>{rep.id}</span>
                                         <span onClick={() => handleOpenModalView(rep.id)} className={styles.nameDetail}>{rep.usuario.nome}</span>
                                         <span>{rep.empresa}</span>
-                                        <span>{rep.status ? "ATIVO" : "INATIVO"}</span>           
+                                        <span style={{width: '52px'}}>{rep.status ? "ATIVO" : "INATIVO"}</span>           
                                     </li>
                                 ))}
                             </ol>
@@ -208,8 +203,8 @@ export default function ListRepresentative({ representative }: ListProps){
 export const getServerSideProps = canSSRAuth(async (ctx) => {
 
     // @ts-ignore
-    const  apiClient = setupAPIClient(ctx);
-    const response = await apiClient.get('representante');
+    const  apiRepresentative = setupAPIClient(ctx);
+    const response = await apiRepresentative.get('representante');
 
     //console.log(response.data);
 

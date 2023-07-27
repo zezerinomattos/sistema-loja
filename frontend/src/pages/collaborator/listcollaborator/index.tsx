@@ -202,9 +202,9 @@ export default function ListCollaborator({ collaborator }: ListProps){
                         <ol className={styles.list}>
                             {collaboratorList.map(colab => (
                                 <li key={colab.usuario.id}>
-                                    <span>{colab.id}</span>
+                                    <span style={{width: '320px'}}>{colab.id}</span>
                                     <span onClick={() => handleOpenModalView(colab.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
-                                    <span>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
+                                    <span style={{width: '52px'}}>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
                                 </li>
                             ))}
                         </ol>
