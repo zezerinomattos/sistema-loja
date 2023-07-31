@@ -103,9 +103,9 @@ export function UtilsHeader( param: string, title: string ){
         }
     }, []);
     
-      useEffect(() => {
-        // Salva o estado do modal no Local Storage sempre que ele for alterado
-        localStorage.setItem('isModalOpen', isModalOpen.toString());
+    useEffect(() => {
+    // Salva o estado do modal no Local Storage sempre que ele for alterado
+    localStorage.setItem('isModalOpen', isModalOpen.toString());
 
     }, [isModalOpen]);
 
@@ -238,23 +238,27 @@ export function UtilsHeader( param: string, title: string ){
                 <>
                     <ul className={styles.paginas}>
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/"><FcBusinessman size={28}/>
+                                <span><strong>NOVO</strong><br /> PRODUTO</span>
+                            </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/"><FcBusinessman size={28}/>
+                                <span><strong>LISTA</strong><br /> PRODUTOS</span>
+                            </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/"><FcBusinessman size={28}/>
+                                <span><strong>NOVA</strong><br /> SEÇÃO</span>
+                            </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/></Link>
-                            <span><strong>+</strong> COLABORADOR</span>
+                            <Link href="/"><FcBusinessman size={28}/>
+                                <span><strong>NOVA</strong><br /> CATEGORIA</span>
+                            </Link>
                         </li>
                     </ul>
 

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FcLock, FcEngineering } from "react-icons/fc";
 import Modal from 'react-modal';
+
+import { useRouter } from 'next/router';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
@@ -24,6 +26,7 @@ interface ModalSettingskProps {
 
 // MODAL DE BLOQUEIO DE TELA 
 export function ModalBlock({ isOpen, onRequestClose, loading, email }: ModalBlockProps){
+    const router = useRouter();
 
     const customStyles = {
         content: {
@@ -46,6 +49,24 @@ export function ModalBlock({ isOpen, onRequestClose, loading, email }: ModalBloc
           event.preventDefault(); // Impede a ação padrão do evento (no caso, submit do formulário)
         }
     };
+
+    useEffect(() => {
+        router.push('/dashboard');
+    }, []);
+
+    useEffect(() => {
+        const handleBlockedNavigation = (event: any) => {
+          event.preventDefault();
+          return false;
+        };
+    
+        window.history.pushState('', '', window.location.href);
+        window.addEventListener('popstate', handleBlockedNavigation);
+    
+        return () => {
+          window.removeEventListener('popstate', handleBlockedNavigation);
+        };
+      }, [router]);
 
     return(
         <Modal 
@@ -138,5 +159,3 @@ export function ModalSettings({ isOpen, onRequestClose, changePassword, loading,
         </Modal>
     )
 }
-
-//changePassword

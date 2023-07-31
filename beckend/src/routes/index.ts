@@ -36,9 +36,11 @@ import { ListByRepresentanteFabricaController } from '../controllers/Fabrica/Lis
 
 import { CreateSecaoController } from '../controllers/Secao/CreateSecaoController';
 import { ListSecaoController } from  '../controllers/Secao/ListSecaoController';
+import { DeleteSecaoController } from '../controllers/Secao/DeleteSecaoController';
 
 import { CreateCategoriaController } from '../controllers/Categoria/CreateCategoriaController';
 import { ListCategoriaController } from '../controllers/Categoria/ListCategoriaController';
+import { DeleteCategoriaController } from '../controllers/Categoria/DeleteCategoriaController';
 
 import { CreateProdutoController } from '../controllers/Produto/CreateProdutoController';
 import { ListProdutosController } from '../controllers/Produto/ListProdutosController';
@@ -152,10 +154,12 @@ router.get('/representante/fabrica', isAuthenticated, new ListByRepresentanteFab
 // -- ROTAS SECAO --
 router.post('/secao', isAuthenticated, new CreateSecaoController().handle);
 router.get('/secao', isAuthenticated, new ListSecaoController().handle);
+router.delete('/secao', isAuthenticated, new DeleteSecaoController().handle); 
 
 // -- ROTAS CATEGORIA --
 router.post('/categoria', isAuthenticated, new CreateCategoriaController().handle);
 router.get('/categoria', isAuthenticated, new ListCategoriaController().handle);
+router.delete('/categoria', isAuthenticated, new DeleteCategoriaController().handle);
 
 // -- ROTAS PRODUTO --
 router.post('/produto', isAuthenticated, upload.single('file'), new CreateProdutoController().handle);
