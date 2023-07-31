@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
 import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList } from "react-icons/fc";
-import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill } from "react-icons/bs";
+import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill, BsTagsFill, BsReverseListColumnsReverse, BsPencilSquare, BsClipboardPlusFill, BsFillFileRuledFill, BsFillGrid1X2Fill, BsClipboard2Plus } from "react-icons/bs";
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -238,26 +238,44 @@ export function UtilsHeader( param: string, title: string ){
                 <>
                     <ul className={styles.paginas}>
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/>
+                            <Link href="/"><BsTagsFill size={28} style={{color: '#F2C4B3'}}/>
                                 <span><strong>NOVO</strong><br /> PRODUTO</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/>
+                            <Link href="/"><BsReverseListColumnsReverse size={28} style={{color: '#ce8730'}}/>
                                 <span><strong>LISTA</strong><br /> PRODUTOS</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/>
+                            <Link href="/"><BsPencilSquare size={28} style={{color: '#ce8730'}}/>
+                                <span><strong>EDITAR</strong><br /> PRODUTO</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/"><BsClipboardPlusFill size={28} style={{color: '#cea495'}} />
                                 <span><strong>NOVA</strong><br /> SEÇÃO</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><FcBusinessman size={28}/>
+                            <Link href="/"><BsFillFileRuledFill size={28} style={{color: '#ce8730'}}/>
+                                <span><strong>LISTA</strong><br /> SEÇÃO</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/"><BsClipboard2Plus size={28} style={{color: '#cea495'}}/>
                                 <span><strong>NOVA</strong><br /> CATEGORIA</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/"><BsFillGrid1X2Fill size={28} style={{color: '#ce8730'}}/>
+                                <span><strong>LISTA</strong><br /> CATEGORIA</span>
                             </Link>
                         </li>
                     </ul>
