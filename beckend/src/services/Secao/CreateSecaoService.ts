@@ -17,7 +17,7 @@ class CreateSecaoService{
         });
 
         if(existingCategoria){
-            throw new Error("Seção ja cadastrada");
+            throw new Error("Seção já cadastrada");
         }
 
         const secao = await prismaClient.secao.create({

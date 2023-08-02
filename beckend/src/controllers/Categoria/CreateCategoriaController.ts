@@ -8,8 +8,10 @@ class CreateCategoriaController{
 
         const createCategoriaService = new CreateCategoriaService;
 
+        const nameCategoria = nome_categoria.toUpperCase();
+
         const categoria = await createCategoriaService.execute({
-            nome_categoria
+            nome_categoria: nameCategoria,
         });
 
         return res.json(categoria);

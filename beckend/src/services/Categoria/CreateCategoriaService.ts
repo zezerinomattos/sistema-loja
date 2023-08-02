@@ -17,7 +17,7 @@ class CreateCategoriaService{
         });
 
         if(existingCategoria){
-            throw new Error("Categoria ja cadastrada");
+            throw new Error("Categoria já cadastrada");
         }
 
 

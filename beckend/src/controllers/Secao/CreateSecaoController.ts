@@ -8,8 +8,10 @@ class CreateSecaoController{
 
         const createSecaoService = new CreateSecaoService;
 
+        const nameSecao = nome_secao.toUpperCase();
+
         const secao = await createSecaoService.execute({
-            nome_secao
+            nome_secao: nameSecao,
         })
 
         return res.json(secao);

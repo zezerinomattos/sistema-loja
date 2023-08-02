@@ -1,0 +1,115 @@
+div.loadingContainer{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.loadingContainer .loading{
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    top: 50%;
+
+    animation: animate 2s infinite;
+}
+
+//Avimando o Loading do button
+@keyframes animate{
+    from{
+        transform: rotate(0);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+div.container{
+    width: 100%;
+    height: 100vh;
+}
+
+main.containerBody{
+    width: 100%;
+    height: 79.5vh;
+    margin-top: .5vh;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+// RIGTH CONTAINER
+main.containerBody div.rigthContainer{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+}
+
+form.formSecao{
+    max-width: 90%;
+    height: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+    box-shadow: 2px 2px 4px var(--white);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        width: 5px; /* Largura da barra de rolagem */
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--dark-900); /* Cor de fundo da barra de rolagem */
+    }
+}
+
+form.formSecao div.inputContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+form.formSecao div.inputContainer label.labelInput{
+    color: var(--white);
+    margin: 0 15px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-family: 'Ubuntu', sans-serif;
+    text-shadow: 2px 2px 4px #2b2929;
+}
+
+form.formSecao input.inputName{   
+    width: 400px;
+    height: 40px;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: var(--dark-700);
+    color: var(--white);
+    padding: 1rem;
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
+
+form.formSecao div.inputsBasicData{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+main.containerBody div.rigthContainer span{
+    color: var(--red-900);
+    margin-top: 2rem;
+    font-size: max(18px, 1.2vw);
+    font-family: 'Ubuntu', sans-serif;
+    text-shadow: 2px 2px 4px #2b2929;
+}
