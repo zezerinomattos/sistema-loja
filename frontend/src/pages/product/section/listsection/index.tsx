@@ -3,18 +3,13 @@ import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
-import Modal from 'react-modal';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
 import { Header } from '@/components/Header';
 import { Presentation } from '../../../../components/Presentation';
-
 import { Input } from '../../../../components/Ui/Input';
-//import { ModalFactory } from '../../../components/ModalFactory';
 
-import { AuthContext } from '../../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../../components/Utils/serverSideProps/canSSRAuth';
 import { setupAPIClient } from '../../../../services/api';
 import { api } from '../../../../services/apiClient';
@@ -43,12 +38,12 @@ export default function ListSection({ section }: ListProps){
     async function handleDelete(id: string){
         
         if(!id){
-            toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+            toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
             return;
         }
 
         // Mostrar a caixa de diálogo de confirmação
-        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa fábrica?');
+        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa categoria?');
 
         if (confirmDelete) {
 
@@ -58,7 +53,7 @@ export default function ListSection({ section }: ListProps){
                 }
             })
             .then(() => {
-                toast.success('FABRICA DELETADA');
+                toast.success('SEÇÃO DELETADA');
                 window.location.reload();
             })
             .catch(error => {
@@ -118,7 +113,7 @@ export default function ListSection({ section }: ListProps){
 
     return(
         <div className={styles.container}>
-            <Header title={'LISTA FABRICAS'}/>
+            <Header title={'LISTA SEÇÃO'}/>
 
             <main className={styles.containerFavorit}>
                 <Presentation />

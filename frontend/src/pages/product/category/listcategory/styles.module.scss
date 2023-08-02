@@ -1,0 +1,154 @@
+div.loadingContainer{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.loadingContainer .loading{
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    top: 50%;
+
+    animation: animate 2s infinite;
+}
+
+//Avimando o Loading do button
+@keyframes animate{
+    from{
+        transform: rotate(0);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+div.container{
+    width: 100%;
+    height: 100vh;
+}
+
+main.containerFavorit{
+    width: 100%;
+    height: 79.5vh;
+    margin-top: .5vh;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// RIGTH --------------------------
+
+main.containerFavorit div.rigthContainer{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+    h1{
+        color: var(--white);
+        font-size: 24px;
+        font-family: 'Roboto', sans-serif;
+        text-shadow: 2px 2px 4px var(--gray-900);
+    }
+}
+
+div.rigthContainer div.filterContainer{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+div.filterContainer div.filter{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    height: 40px;
+}
+
+div.filterContainer div.filter button.buttonBuscar{
+    height: 40px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    max-width: 600px;
+    background-color: var(--green-700);
+    border: 0;
+    color: var(--white);
+    border-radius: 0.5rem;
+    transition: filter 0.2s;
+
+    //Avimando o Loading do button
+    &[disabled]{
+        cursor: not-allowed;
+        svg{
+            animation: animate 2s infinite;
+        }
+    }
+
+    &:hover{
+        filter: brightness(0.7);
+    }
+}
+
+// LISTA
+
+article.listContainer{
+    width: 90%;
+    height: 70vh;
+    margin-top: 20px;
+}
+
+article.listContainer ol.list{
+    width: 100%;
+    height: 100%;
+    background-color: var(--gray-900);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+    border-radius: 0.8rem;
+    box-shadow: 2px 2px 2px var(--green-700);
+
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        width: 0; /* Largura da barra de rolagem */
+    }
+
+    li{
+        width: 100%;
+        list-style: none;       
+        margin-bottom: 0.5rem;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        
+        span{
+            font-family: 'Ubuntu', sans-serif;
+            text-shadow: 1px 1px 2px #1a1818;
+            color: var(--white);
+
+            width: 30%;
+        }
+    }
+}
+
+article.listContainer ol.list li span.idDetail{
+    width: 320px;
+}
+
+// article.listContainer ol.list li span.nameDetail{   
+//     cursor: pointer;
+// }
