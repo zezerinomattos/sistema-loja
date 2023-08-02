@@ -101,6 +101,31 @@ export function Header({title}: HeaderProps){
                 setRenderPage('fabricas');
                 break;
 
+            //Produto
+            case 'factory/newfactory':
+                setRenderPage('fabricas');
+                break;
+
+            case 'factory/listfactory':
+                setRenderPage('fabricas');
+                break;
+
+            case 'product/section/newsection':
+                setRenderPage('produto');
+                break;
+            
+            case 'product/section/listsection':
+                setRenderPage('produto');
+                break;
+
+            case 'product/category/newcategory':
+                setRenderPage('produto');
+                break;
+
+            case 'product/category/listcategory':
+                setRenderPage('produto');
+                break;
+
             //Default
             default:
                 //setRenderPage(currentPath);

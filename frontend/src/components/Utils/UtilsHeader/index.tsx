@@ -256,25 +256,25 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/"><BsClipboardPlusFill size={28} style={{color: '#cea495'}} />
+                            <Link href="/product/section/newsection"><BsClipboardPlusFill size={28} style={{color: '#cea495'}} />
                                 <span><strong>NOVA</strong><br /> SEÇÃO</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><BsFillFileRuledFill size={28} style={{color: '#ce8730'}}/>
+                            <Link href="/product/section/listsection"><BsFillFileRuledFill size={28} style={{color: '#ce8730'}}/>
                                 <span><strong>LISTA</strong><br /> SEÇÃO</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><BsClipboard2Plus size={28} style={{color: '#cea495'}}/>
+                            <Link href="/product/category/newcategory"><BsClipboard2Plus size={28} style={{color: '#cea495'}}/>
                                 <span><strong>NOVA</strong><br /> CATEGORIA</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/"><BsFillGrid1X2Fill size={28} style={{color: '#ce8730'}}/>
+                            <Link href="/product/category/listcategory"><BsFillGrid1X2Fill size={28} style={{color: '#ce8730'}}/>
                                 <span><strong>LISTA</strong><br /> CATEGORIA</span>
                             </Link>
                         </li>
