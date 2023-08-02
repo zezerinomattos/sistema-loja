@@ -1,11 +1,162 @@
-import React from 'react';
+import React, { useContext, useEffect, useState  } from 'react';
+import { FaSpinner } from 'react-icons/fa';
+import { FcSearch } from "react-icons/fc";
+import { BsTrash } from "react-icons/bs";
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+import Modal from 'react-modal';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
+import { Header } from '@/components/Header';
+import { Presentation } from '../../../../components/Presentation';
 
-export default function ListSection(){
+import { Input } from '../../../../components/Ui/Input';
+//import { ModalFactory } from '../../../components/ModalFactory';
+
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { canSSRAuth } from '../../../../components/Utils/serverSideProps/canSSRAuth';
+import { setupAPIClient } from '../../../../services/api';
+import { api } from '../../../../services/apiClient';
+
+type SectionProps = {
+    id: string;
+    nome_secao: string;
+}
+
+interface ListProps{
+    section: SectionProps[];
+}
+
+export default function ListSection({ section }: ListProps){
+    const { user } = useContext(AuthContext);
+    const router = useRouter();
+
+    const [carregando, setCarregando] = useState(true);
+    const [loading, setLoaging] = useState(false);
+
+    const [sectionList, setSectionList] = useState(section || []);
+
+    const [listId, setListId] = useState('');
+    const [listName, setListName] = useState('');
+
+    //FUNCAO PARA DETALHAR SECAO SELECIONADO
+    async function handleOpenModalView(id: string){
+        alert(id);
+    }
+
+    // FUNCAO PARA DELETAR SECAO
+    async function handleDelete(id: string){
+
+    }
+
+    // FUNCAO FECHAR MODAL
+    function handleCloseModal(){
+
+    }
+
+    // FUNCAO FILTRO 
+    function filterFactory(){
+        //FILTRANDO SE TEM ID
+        if(listId){
+            const filterSection = section.filter((sec) => sec.id.includes(listId));
+            setSectionList(filterSection);
+        }
+
+        //FILTRANDO PELO NOME
+        if(!listId && listName){
+            const filterSection = section.filter((sec) => sec.nome_secao.includes(listName));
+            setSectionList(filterSection);
+        }
+
+        //FILTRANDO TODOS
+        if(!listName && !listId){
+            clearFilter();
+        }
+    }
+
+    // FUNÇÃO LIMPAR FILTRO
+    function clearFilter() {
+        setSectionList(section);
+        setListId('');
+        setListName('');
+    }
+
+    // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            filterFactory();
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [listName]);
+
+
+    useEffect(() => {
+        //Escondendo o loading quando ele montar completamente o componente
+        setCarregando(false);
+    }, [])
+
+    if (carregando) {
+        return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
+    }
+
+    Modal.setAppElement('#__next');
+
     return(
-        <h1>ListSection</h1>
+        <div className={styles.container}>
+            <Header title={'LISTA FABRICAS'}/>
+
+            <main className={styles.containerFavorit}>
+                <Presentation />
+
+                <div className={styles.rigthContainer}>
+                    <div className={styles.filterContainer}>
+                        <div className={styles.filter}>
+                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+                        </div>
+
+                        <div className={styles.filter}>
+                            <Input placeholder='EMPRESA' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                        </div>
+
+                        <div className={styles.filter}>
+                            <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                        </div>
+                    </div>
+
+                    <article className={styles.listContainer}>
+                        <ol className={styles.list}>
+                            {sectionList.map(sec => (
+                                <li key={sec.id}>
+                                    <span className={styles.idDetail}>{sec.id}</span>
+                                    <span onClick={() => handleOpenModalView(sec.id)} className={styles.nameDetail}>{sec.nome_secao}</span>
+                                    <BsTrash 
+                                        size={20} 
+                                        style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                        onClick={() => handleDelete(sec.id)}
+                                    />           
+                                </li>
+                            ))}
+                        </ol>
+                    </article>
+                    
+                </div>
+            </main>
+        </div>
     );
 }
+
+export const getServerSideProps = canSSRAuth(async(ctx) => {
+
+    //@ts-ignore
+    const apiSection = setupAPIClient(ctx);
+    const response = await apiSection.get('secao');
+    
+    return{
+        props:{
+            section: response.data
+        }
+    }
+})
 
