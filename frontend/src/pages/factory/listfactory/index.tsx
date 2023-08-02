@@ -103,7 +103,7 @@ export default function ListFactory({ factory }: ListProps){
                 window.location.reload();
             })
             .catch(error => {
-                toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+                toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
             });
         } else {
             // O usuário cancelou a exclusão, não faz nada

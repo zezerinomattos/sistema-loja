@@ -7,7 +7,7 @@ interface SecaoRequest{
 class DeleteSecaoService{
     async execute({ secao_id }: SecaoRequest){
 
-        const secao = await prismaClient.categoria.delete({
+        const secao = await prismaClient.secao.delete({
             where: {
                 id: secao_id
             }

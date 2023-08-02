@@ -28,9 +28,8 @@ interface ListProps{
     section: SectionProps[];
 }
 
+
 export default function ListSection({ section }: ListProps){
-    const { user } = useContext(AuthContext);
-    const router = useRouter();
 
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
@@ -40,19 +39,35 @@ export default function ListSection({ section }: ListProps){
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
 
-    //FUNCAO PARA DETALHAR SECAO SELECIONADO
-    async function handleOpenModalView(id: string){
-        alert(id);
-    }
-
     // FUNCAO PARA DELETAR SECAO
     async function handleDelete(id: string){
+        
+        if(!id){
+            toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+            return;
+        }
 
-    }
+        // Mostrar a caixa de diálogo de confirmação
+        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa fábrica?');
 
-    // FUNCAO FECHAR MODAL
-    function handleCloseModal(){
+        if (confirmDelete) {
 
+            await api.delete('/secao', {
+                params:{
+                    secao_id: id,
+                }
+            })
+            .then(() => {
+                toast.success('FABRICA DELETADA');
+                window.location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+                toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+            })
+        }else{
+            return;
+        }
     }
 
     // FUNCAO FILTRO 
@@ -101,8 +116,6 @@ export default function ListSection({ section }: ListProps){
         return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
     }
 
-    Modal.setAppElement('#__next');
-
     return(
         <div className={styles.container}>
             <Header title={'LISTA FABRICAS'}/>
@@ -117,7 +130,7 @@ export default function ListSection({ section }: ListProps){
                         </div>
 
                         <div className={styles.filter}>
-                            <Input placeholder='EMPRESA' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                            <Input placeholder='SEÇÃO' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
                         </div>
 
                         <div className={styles.filter}>
@@ -130,7 +143,7 @@ export default function ListSection({ section }: ListProps){
                             {sectionList.map(sec => (
                                 <li key={sec.id}>
                                     <span className={styles.idDetail}>{sec.id}</span>
-                                    <span onClick={() => handleOpenModalView(sec.id)} className={styles.nameDetail}>{sec.nome_secao}</span>
+                                    <span className={styles.nameDetail}>{sec.nome_secao}</span>
                                     <BsTrash 
                                         size={20} 
                                         style={{color: '#FF3F4B', cursor: 'pointer'}}
