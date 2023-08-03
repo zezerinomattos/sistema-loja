@@ -189,6 +189,25 @@ form.formProduct h3{
     text-shadow: 2px 2px 4px var(--gray-900);
 }
 
+form.formProduct div.colorContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+form.formProduct div.colorContainer button{
+    max-width: 250px;
+    background-color: var(--blue-700);
+    margin-bottom: 1rem;
+    padding: 10 20px;
+
+    strong{
+        font-size: 20px;
+        margin-right: 10px;
+    }
+}
+
 main.containerBody div.rigthContainer span{
     color: var(--red-900);
     margin-top: 2rem;

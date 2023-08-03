@@ -17,6 +17,20 @@ import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
 
+type ProductSizeProps = {
+    tamanho: string;
+    estoque: number;
+};
+
+type ProductColorProps = {
+cor: string;
+tamanhos_estoque: ProductSizeProps[];
+};
+
+type ProductDataProps = {
+cor_produto: ProductColorProps[];
+};
+
 export default function NewProduct(){
 
     const [carregando, setCarregando] = useState(true);
@@ -37,6 +51,8 @@ export default function NewProduct(){
     const [fabrica_id, setFabricaId] = useState('');
     const [secao_id, setSecaoId] = useState('');
     const [categoria_id, setCategoriaId] = useState('');
+
+    const [cor_produto, setColorProduto] = useState<ProductColorProps[]>([]);
 
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
@@ -62,21 +78,23 @@ export default function NewProduct(){
     async function hadleRegister(event: FormEvent){
         event.preventDefault();
 
-        if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
-            setMessage('Preencha todos os campos!');
-            return;
-        }
+        // if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
+        //     setMessage('Preencha todos os campos!');
+        //     return;
+        // }
 
-        // Validando desconto maximo e atual
-        const descAtual = parseInt(desconto_atual);
-        const descMaximo = parseInt(desconto_maximo)
+        // // Validando desconto maximo e atual
+        // const descAtual = parseInt(desconto_atual);
+        // const descMaximo = parseInt(desconto_maximo)
 
-        if(descAtual > descMaximo){
-            setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
-            return;
-        }
+        // if(descAtual > descMaximo){
+        //     setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
+        //     return;
+        // }
 
-        alert('ok');
+        // alert('ok');
+
+        console.log(cor_produto);
 
     }
 
@@ -112,6 +130,47 @@ export default function NewProduct(){
         handleVenda();
 
     }, [custo, porcentagem_venda]);
+
+
+    //FUNCAO QUE ATUALIZA E INCREMENTA COR E TAMANHO
+    const handleAddColor = () => {
+        setColorProduto([...cor_produto, { cor: '', tamanhos_estoque: [] }]);
+    };
+      
+    const handleColorChange = (
+        index: number,
+        field: string,
+        value: string | ProductSizeProps[]
+        ) => {
+        const updatedColorsData = [...cor_produto];
+        updatedColorsData[index] = {
+            ...updatedColorsData[index],
+            [field]: value,
+        };
+        setColorProduto(updatedColorsData);
+    };
+      
+    const handleAddTamanhoEstoque = (index: number) => {
+        const updatedColorsData = [...cor_produto];
+        updatedColorsData[index].tamanhos_estoque.push({ tamanho: '', estoque: 0 });
+        setColorProduto(updatedColorsData);
+    };
+      
+    const handleTamanhoEstoqueChange = (
+        colorIndex: number,
+        tamanhoEstoqueIndex: number,
+        field: string,
+        value: string | number
+        ) => {
+        const updatedColorsData = [...cor_produto];
+        updatedColorsData[colorIndex].tamanhos_estoque[tamanhoEstoqueIndex] = {
+            ...updatedColorsData[colorIndex].tamanhos_estoque[tamanhoEstoqueIndex],
+            [field]: value,
+        };
+        setColorProduto(updatedColorsData);
+    };
+
+    //--------------------------------------------------
 
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
@@ -231,6 +290,58 @@ export default function NewProduct(){
                                     ))} */}
                                 </select>
                             </div>
+                            
+                            {/* ADICIONAR COR TAMANHO E ESTOQUE */}
+                            <div className={styles.colorContainer}>
+                                {cor_produto.map((color, index) => (
+                                    <div key={index}>
+                                        <Input
+                                        placeholder='COR'
+                                        type='text'
+                                        value={color.cor}
+                                        onChange={(e) => handleColorChange(index, 'cor', e.target.value)}
+                                        />
+
+                                        {color.tamanhos_estoque.map((tamanho_estoque, subIndex) => (
+                                        <div key={subIndex}>
+                                            <Input
+                                            placeholder='EX: P, M, G, GG, EXG'
+                                            type='text'
+                                            value={tamanho_estoque.tamanho}
+                                            onChange={(e) => handleTamanhoEstoqueChange(index, subIndex, 'tamanho', e.target.value)}
+                                            />
+
+                                            <Input
+                                            placeholder='ESTOQUE'
+                                            type='number'
+                                            value={tamanho_estoque.estoque}
+                                            onChange={(e) => handleTamanhoEstoqueChange(index, subIndex, 'estoque', e.target.value)}
+                                            />
+                                        </div>
+                                        ))}
+
+                                        <Button loading={loading}  onClick={() => handleAddTamanhoEstoque(index)} ><strong>+</strong>TAMANHO E ESTOQUE</Button>
+                                    </div>
+                                ))}
+                                <Button onClick={handleAddColor}>ADICIONAR COR</Button>
+                            </div>
+
+                            <label className={styles.labelAvatar}>
+                                <span>
+                                    <FiUpload size={25} color='#fff' />
+                                </span>
+                                <input type="file" accept='image/png, image/jpeg' onChange={handleFile}/>
+                                {
+                                    avatarUrl && 
+                                        <img 
+                                            className={styles.previw} 
+                                            src={avatarUrl} 
+                                            alt="Imagem colaborador" 
+                                            width={'100%'}
+                                            height={'200px'}
+                                        />
+                                }
+                            </label>
 
                             <div className={styles.buttonForm}>
                                 <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
