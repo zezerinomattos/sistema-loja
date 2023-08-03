@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'r
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import { BsTrash } from "react-icons/bs";
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -23,15 +24,40 @@ type ProductSizeProps = {
 };
 
 type ProductColorProps = {
-cor: string;
-tamanhos_estoque: ProductSizeProps[];
+    cor: string;
+    tamanhos_estoque: ProductSizeProps[];
 };
 
-type ProductDataProps = {
-cor_produto: ProductColorProps[];
-};
+type SectionProps = {
+    id: string;
+    nome_secao: string;
+}
 
-export default function NewProduct(){
+type CategoryProps = {
+    id: string;
+    nome_categoria: string;
+}
+
+type RepresentativeProps = {
+    id: string;
+    usuario: {
+        nome: string;
+    }
+}
+
+type FactoryProps = {
+    id: string;
+    empresa: string;
+}
+
+interface ListProps{
+    section: SectionProps[];
+    representetive: RepresentativeProps[];
+    category: CategoryProps[];
+    factory: FactoryProps[];
+}
+
+export default function NewProduct({ section, category, representetive, factory }: ListProps){
 
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
@@ -78,23 +104,21 @@ export default function NewProduct(){
     async function hadleRegister(event: FormEvent){
         event.preventDefault();
 
-        // if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
-        //     setMessage('Preencha todos os campos!');
-        //     return;
-        // }
+        if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
+            setMessage('Preencha todos os campos!');
+            return;
+        }
 
-        // // Validando desconto maximo e atual
-        // const descAtual = parseInt(desconto_atual);
-        // const descMaximo = parseInt(desconto_maximo)
+        // Validando desconto maximo e atual
+        const descAtual = parseInt(desconto_atual);
+        const descMaximo = parseInt(desconto_maximo)
 
-        // if(descAtual > descMaximo){
-        //     setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
-        //     return;
-        // }
+        if(descAtual > descMaximo){
+            setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
+            return;
+        }
 
-        // alert('ok');
-
-        console.log(cor_produto);
+        alert('ok');
 
     }
 
@@ -171,6 +195,20 @@ export default function NewProduct(){
     };
 
     //--------------------------------------------------
+    //FUNCAO PARA REMOVER TAMANHO E COR
+    const handleRemoveColor = (index: number) => {
+        const updatedColorsData = [...cor_produto];
+        updatedColorsData.splice(index, 1);
+        setColorProduto(updatedColorsData);
+    };
+
+    const handleRemoveTamanhoEstoque = (colorIndex: number, tamanhoEstoqueIndex: number) => {
+        const updatedColorsData = [...cor_produto];
+        updatedColorsData[colorIndex].tamanhos_estoque.splice(tamanhoEstoqueIndex, 1);
+        setColorProduto(updatedColorsData);
+    };
+
+    //---------------------------------------------------
 
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
@@ -201,9 +239,9 @@ export default function NewProduct(){
                                     className={styles.selectInput}
                                 >
                                     <option value="" disabled>SEÇÃO</option>
-                                    {/* {representative.map((rep) => (
-                                        <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
-                                    ))} */}
+                                    {section.map((sec) => (
+                                        <option key={sec.id} value={sec.id}>{sec.nome_secao}</option>
+                                    ))}
                                 </select>
 
                                 <select 
@@ -214,9 +252,9 @@ export default function NewProduct(){
                                     className={styles.selectInput}
                                 >
                                     <option value="" disabled>CATEGORIA</option>
-                                    {/* {representative.map((rep) => (
-                                        <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
-                                    ))} */}
+                                    {category.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>{cat.nome_categoria}</option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -272,9 +310,9 @@ export default function NewProduct(){
                                     className={styles.selectInput}
                                 >
                                     <option value="" disabled>REPRESENTANTE</option>
-                                    {/* {representative.map((rep) => (
+                                    {representetive.map((rep) => (
                                         <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
-                                    ))} */}
+                                    ))}
                                 </select>
 
                                 <select 
@@ -285,9 +323,9 @@ export default function NewProduct(){
                                     className={styles.selectInput}
                                 >
                                     <option value="" disabled>FABRICA</option>
-                                    {/* {representative.map((rep) => (
-                                        <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
-                                    ))} */}
+                                    {factory.map((fac) => (
+                                        <option key={fac.id} value={fac.id}>{fac.empresa}</option>
+                                    ))}
                                 </select>
                             </div>
                             
@@ -317,10 +355,31 @@ export default function NewProduct(){
                                             value={tamanho_estoque.estoque}
                                             onChange={(e) => handleTamanhoEstoqueChange(index, subIndex, 'estoque', e.target.value)}
                                             />
+
+                                            <BsTrash 
+                                                size={24} 
+                                                style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                                onClick={() => handleRemoveTamanhoEstoque(index, subIndex)}
+                                            />  
                                         </div>
                                         ))}
 
-                                        <Button loading={loading}  onClick={() => handleAddTamanhoEstoque(index)} ><strong>+</strong>TAMANHO E ESTOQUE</Button>
+                                        <div className={styles.butonColorContainer}>
+
+                                            <Button loading={loading}  onClick={() => handleAddTamanhoEstoque(index)} ><strong>+</strong>TAMANHO E ESTOQUE</Button>
+
+                                            {/* <Button onClick={() => handleRemoveColor(index)} style={{marginLeft: '20px'}}>Remover Cor</Button> */}
+                                            <BsTrash 
+                                                size={28} 
+                                                style={{
+                                                    color: '#FF3F4B', 
+                                                    cursor: 'pointer',
+                                                    marginLeft: '15px',
+                                                    
+                                                }}
+                                                onClick={() => handleRemoveColor(index)}
+                                            />  
+                                        </div>
                                     </div>
                                 ))}
                                 <Button onClick={handleAddColor}>ADICIONAR COR</Button>
@@ -357,10 +416,23 @@ export default function NewProduct(){
     );
 }
 
+//CARREGANDO SECAO, CATEGORIA, REPRESENTANTE E FABRICA PELO LADO DO SERVIDOR
 export const getServerSideProps = canSSRAuth(async(ctx) => {
 
+    //@ts-ignore
+    const apiSection = setupAPIClient(ctx);
+    const section = await apiSection.get('secao');
+    const category = await apiSection.get('categoria');
+    const representetive = await apiSection.get('representante');
+    const factory = await apiSection.get('fabrica');
+      
     return{
-        props: {}
+        props:{
+            section: section.data,
+            category: category.data,
+            representetive: representetive.data,
+            factory: factory.data,
+        }
     }
 });
 
