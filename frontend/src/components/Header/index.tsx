@@ -88,7 +88,7 @@ export function Header({title}: HeaderProps){
                 break;
 
              //------------
-            //Representante
+            //Fabrica
             case 'factory/newfactory':
                 setRenderPage('fabricas');
                 break;
@@ -102,8 +102,8 @@ export function Header({title}: HeaderProps){
                 break;
 
             //Produto
-            case 'factory/newfactory':
-                setRenderPage('fabricas');
+            case 'product/newproduct':
+                setRenderPage('produto');
                 break;
 
             case 'factory/listfactory':

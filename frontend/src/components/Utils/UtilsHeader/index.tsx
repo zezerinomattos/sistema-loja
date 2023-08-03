@@ -238,7 +238,7 @@ export function UtilsHeader( param: string, title: string ){
                 <>
                     <ul className={styles.paginas}>
                         <li>
-                            <Link href="/"><BsTagsFill size={28} style={{color: '#F2C4B3'}}/>
+                            <Link href="/product/newproduct"><BsTagsFill size={28} style={{color: '#F2C4B3'}}/>
                                 <span><strong>NOVO</strong><br /> PRODUTO</span>
                             </Link>
                         </li>
