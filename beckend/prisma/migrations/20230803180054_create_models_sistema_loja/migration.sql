@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "produtos" ALTER COLUMN "margem_lucro" SET DATA TYPE DOUBLE PRECISION;

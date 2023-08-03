@@ -96,20 +96,27 @@ form.formProduct div.inputsBasicData{
     display: flex;
     flex-flow: row wrap;
     width: 100%;
+    margin-bottom: 1rem;
 }
 
-form.formProduct div.inputsBasicData div.inputNascimento{
+form.formProduct div.inputsBasicData div.inputLabel{
     display: flex;
-    flex-direction: column;
+    flex-flow: row wrap;
     align-items: center;
     justify-content: center;
+    max-height: 40px;
 
     label{
         color: var(--white);
         font-family: 'Ubuntu', sans-serif;
-        margin-top: -10px;
-        margin-bottom: 15px;
         text-shadow: 2px 2px 4px #3b3838;
+        font-size: 20px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+    }
+
+    input{
+        width: 150px;
     }
 }
 
@@ -122,6 +129,7 @@ form.formProduct div.inputsBasicData select.selectInput{
     
     margin: 0 10px;
     margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 form.formProduct label.labelAvatar{

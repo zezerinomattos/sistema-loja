@@ -24,7 +24,7 @@ class CreateProdutoController{
         const custo = parseFloat(req.body.custo.replace(',', '.'));         
         const porcentagem_venda = parseInt(req.body.porcentagem_venda);
         const preco_venda = parseFloat(req.body.preco_venda.replace(',', '.'));
-        const margem_lucro = parseInt(req.body.margem_lucro);
+        const margem_lucro = parseFloat(req.body.margem_lucro.replace(',', '.'));
         const desconto_atual = parseInt(req.body.desconto_atual);
         const desconto_maximo = parseInt(req.body.desconto_maximo);
         const descricaoProduto = descricao.toUpperCase();
