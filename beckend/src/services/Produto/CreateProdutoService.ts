@@ -58,6 +58,11 @@ class CreateProdutoService{
             throw new Error('Esse PRODUTO já existe em nosso Banco de dados!');
         }
 
+        //Validando se desconto atual é menor que desconto maximo
+        if(desconto_atual > desconto_maximo){
+            throw new Error('O desconto atual não pode ser maior que ' + desconto_maximo);
+        }
+
         // Salvando o produto
         const produto = await prismaClient.produto.create({
             data:{

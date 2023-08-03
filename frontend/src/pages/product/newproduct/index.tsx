@@ -23,6 +23,17 @@ export default function NewProduct(){
     const [loading, setLoaging] = useState(false);
     const [message, setMessage] = useState('');
 
+    const [nome_produto, setNomeProduto] = useState('');
+    const [marca, setMarca] = useState('');
+    const [material, setMaterial] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [custo, setCusto] = useState('');
+    const [porcentagem_venda, setPorcentagem] = useState('');
+    const [preco_venda, serPrecoVenda] = useState('');
+    const [margem_lucro, setMargemLucro] = useState('');
+    const [desconto_atual, setDescontoAtual] = useState('');
+    const [desconto_maximo, setDescontoMaximo] = useState('');
+
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
 

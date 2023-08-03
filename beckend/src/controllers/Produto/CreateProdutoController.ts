@@ -11,30 +11,36 @@ class CreateProdutoController{
             cor_produto, // Array de objetos contendo as cores do produto
             material,
             descricao,
-            custo,
-            porcentagem_venda,
-            preco_venda,
-            margem_lucro,
-            desconto_atual,
-            desconto_maximo,
             representante_id,
             fabrica_id,
             secao_id,
             categoria_id,
-         } = req.body;
+        } = req.body;
 
         const createProdutoService = new CreateProdutoService;
+        
+        // CONVERTENDO DADOS QUE CHEGAM DO FRONTE FORMDATE
+        const nomeProduto = nome_produto.toUpperCase();
+        const custo = parseFloat(req.body.custo.replace(',', '.'));         
+        const porcentagem_venda = parseInt(req.body.porcentagem_venda);
+        const preco_venda = parseFloat(req.body.preco_venda.replace(',', '.'));
+        const margem_lucro = parseInt(req.body.margem_lucro);
+        const desconto_atual = parseInt(req.body.desconto_atual);
+        const desconto_maximo = parseInt(req.body.desconto_maximo);
+        const descricaoProduto = descricao.toUpperCase();
+        const materialProduto = material.toUpperCase();
+        
         
         if(req.file){
             const { originalname, filename: foto } = req.file;
 
             const produto = await createProdutoService.execute({
-                nome_produto,
+                nome_produto: nomeProduto,
                 marca,
                 cor_produto,
-                material,
+                material: materialProduto,
                 foto,
-                descricao,
+                descricao: descricaoProduto,
                 custo,
                 porcentagem_venda,
                 preco_venda,
