@@ -57,7 +57,7 @@ interface ListProps{
     factory: FactoryProps[];
 }
 
-export default function NewProduct({ section, category, representetive, factory }: ListProps){
+export default function NewProduct({ section, category, representetive }: ListProps){
 
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
@@ -83,6 +83,8 @@ export default function NewProduct({ section, category, representetive, factory 
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
 
+    const [factory, setFactory] = useState<FactoryProps[]>([]);
+
     // Funcao para salvarmos imagem
     function handleFile(e: ChangeEvent<HTMLInputElement>){
         if(!e.target.files){
@@ -104,57 +106,75 @@ export default function NewProduct({ section, category, representetive, factory 
     async function hadleRegister(event: FormEvent){
         event.preventDefault();
 
-        if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
-            setMessage('Preencha todos os campos!');
-            return;
+        try {
+
+            const data = new FormData();
+
+            if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
+                setMessage('Preencha todos os campos!');
+                return;
+            }
+
+            // Validando desconto maximo e atual
+            const descAtual = parseInt(desconto_atual);
+            const descMaximo = parseInt(desconto_maximo)
+
+            if(descAtual > descMaximo){
+                setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
+                return;
+            }
+
+            setLoaging(true);
+
+            data.append('nome_produto', nome_produto);
+            data.append('marca', marca);
+            data.append('material', material);
+            data.append('file', imageAvatar || '');
+            data.append('descricao', descricao);
+            data.append('custo', custo);
+            data.append('porcentagem_venda', porcentagem_venda);
+            data.append('preco_venda', preco_venda);
+            data.append('margem_lucro', margem_lucro);
+            data.append('desconto_atual', desconto_atual);
+            data.append('desconto_maximo', desconto_maximo);
+            data.append('representante_id', representante_id);
+            data.append('fabrica_id', fabrica_id);
+            data.append('secao_id', secao_id);
+            data.append('categoria_id', categoria_id);
+            data.append('cor_produto', JSON.stringify(cor_produto));
+
+            await api.post('/produto', data);
+
+            toast.success('PRODUTO CADSTRADO COM SUCESSO!');
+
+            setNomeProduto('');
+            setMarca('');
+            setMaterial('');
+            setAvatarUrl('');
+            setImageAvatar(null);
+            setDescricao('');
+            setCusto('');
+            setPorcentagemVenda('');
+            setPrecoVenda('');
+            setMargemLucro('');
+            setDescontoAtual('');
+            setDescontoMaximo('');
+            setRepresentanteId('');
+            setFabricaId('');
+            setSecaoId('');
+            setCategoriaId('');
+            setColorProduto([]);
+
+            setLoaging(false);
+            
+
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error.response.data.erro);
+            setLoaging(false);
         }
-
-        // Validando desconto maximo e atual
-        const descAtual = parseInt(desconto_atual);
-        const descMaximo = parseInt(desconto_maximo)
-
-        if(descAtual > descMaximo){
-            setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
-            return;
-        }
-
-        alert('ok');
 
     }
-
-    //ATUALIZA OS CAMPOS A MEDIDA QUE PREENCHE
-    useEffect(() => {
-        function handleVenda(){
-            // Verificação se tem valor de custo
-            if(!custo){
-                setPrecoVenda('');
-                setMargemLucro('');
-                return
-            }
-
-            let valorCusto = parseFloat(custo.replace(',', '.'));
-            let porcentagemVenda = parseInt(porcentagem_venda);
-
-            if(!porcentagemVenda){
-                porcentagemVenda = 0;               
-            }
-
-            // Preco de venda
-            const responseVenda = valorCusto * (1 + porcentagemVenda / 100);
-            const valorVenda = responseVenda.toFixed(2).replace('.', ',');
-
-            // Margem de lucro
-            const responseLucro = responseVenda - valorCusto
-            const margLucro = responseLucro.toFixed(2).replace('.', ',');
-
-            setPrecoVenda(valorVenda.toString());
-            setMargemLucro(margLucro.toString());
-        }
-
-        handleVenda();
-
-    }, [custo, porcentagem_venda]);
-
 
     //FUNCAO QUE ATUALIZA E INCREMENTA COR E TAMANHO
     const handleAddColor = () => {
@@ -210,6 +230,56 @@ export default function NewProduct({ section, category, representetive, factory 
 
     //---------------------------------------------------
 
+    //ATUALIZA OS CAMPOS A MEDIDA QUE PREENCHE
+    useEffect(() => {
+        function handleVenda(){
+            // Verificação se tem valor de custo
+            if(!custo){
+                setPrecoVenda('');
+                setMargemLucro('');
+                return
+            }
+
+            let valorCusto = parseFloat(custo.replace(',', '.'));
+            let porcentagemVenda = parseInt(porcentagem_venda);
+
+            if(!porcentagemVenda){
+                porcentagemVenda = 0;               
+            }
+
+            // Preco de venda
+            const responseVenda = valorCusto * (1 + porcentagemVenda / 100);
+            const valorVenda = responseVenda.toFixed(2).replace('.', ',');
+
+            // Margem de lucro
+            const responseLucro = responseVenda - valorCusto
+            const margLucro = responseLucro.toFixed(2).replace('.', ',');
+
+            setPrecoVenda(valorVenda.toString());
+            setMargemLucro(margLucro.toString());
+        }
+
+        handleVenda();
+
+    }, [custo, porcentagem_venda]);
+
+    useEffect(() => {
+        async function getFactory(){
+            await api.get('/representante/fabrica', {
+                params:{
+                    representante_id: representante_id,
+                }
+            })
+            .then(response => {
+                setFactory(response.data);
+            })
+        }
+
+        getFactory();
+
+
+    }, [representante_id])
+
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
         setCarregando(false);   
@@ -260,7 +330,7 @@ export default function NewProduct({ section, category, representetive, factory 
 
                             <div className={styles.inputsBasicData}>
                                 <Input placeholder='MARCA' type='text' onChange={(e) => setMarca(e.target.value)} value={marca}/>
-                                <Input placeholder='MATERIAL' type='text' onChange={(e) => setMaterial(e.target.value)} value={marca} style={{width: '350px'}}/>
+                                <Input placeholder='MATERIAL' type='text' onChange={(e) => setMaterial(e.target.value)} value={material} style={{width: '350px'}}/>
                             </div>
 
                             <TextArea placeholder='DESCRIÇÃO' onChange={(e) => setDescricao(e.target.value)} value={descricao}/>
@@ -366,7 +436,7 @@ export default function NewProduct({ section, category, representetive, factory 
 
                                         <div className={styles.butonColorContainer}>
 
-                                            <Button loading={loading}  onClick={() => handleAddTamanhoEstoque(index)} ><strong>+</strong>TAMANHO E ESTOQUE</Button>
+                                            <Button loading={loading} type='button' onClick={() => handleAddTamanhoEstoque(index)} ><strong>+</strong>TAMANHO E ESTOQUE</Button>
 
                                             {/* <Button onClick={() => handleRemoveColor(index)} style={{marginLeft: '20px'}}>Remover Cor</Button> */}
                                             <BsTrash 
@@ -382,7 +452,7 @@ export default function NewProduct({ section, category, representetive, factory 
                                         </div>
                                     </div>
                                 ))}
-                                <Button onClick={handleAddColor}>ADICIONAR COR</Button>
+                                <Button type='button' loading={loading} onClick={handleAddColor}>ADICIONAR COR</Button>
                             </div>
 
                             <label className={styles.labelAvatar}>
@@ -424,14 +494,12 @@ export const getServerSideProps = canSSRAuth(async(ctx) => {
     const section = await apiSection.get('secao');
     const category = await apiSection.get('categoria');
     const representetive = await apiSection.get('representante');
-    const factory = await apiSection.get('fabrica');
       
     return{
         props:{
             section: section.data,
             category: category.data,
             representetive: representetive.data,
-            factory: factory.data,
         }
     }
 });

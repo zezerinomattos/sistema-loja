@@ -2,6 +2,16 @@ import { Request, Response } from 'express';
 
 import { CreateProdutoService } from '../../services/Produto/CreateProdutoService';
 
+export type ProductSizeProps = {
+    tamanho: string;
+    estoque: string;
+  }
+  
+  export type ProductColorProps = {
+    cor: string;
+    tamanhos_estoque: ProductSizeProps[];
+  }
+
 class CreateProdutoController{
     async handle(req: Request, res: Response){
         const {
@@ -29,7 +39,9 @@ class CreateProdutoController{
         const desconto_maximo = parseInt(req.body.desconto_maximo);
         const descricaoProduto = descricao.toUpperCase();
         const materialProduto = material.toUpperCase();
-        
+
+        // Convertendo o array de cores para o formato esperado pelo serviço
+        const corProduto = JSON.parse(cor_produto) as ProductColorProps[];
         
         if(req.file){
             const { originalname, filename: foto } = req.file;
@@ -37,7 +49,7 @@ class CreateProdutoController{
             const produto = await createProdutoService.execute({
                 nome_produto: nomeProduto,
                 marca,
-                cor_produto,
+                cor_produto: corProduto,
                 material: materialProduto,
                 foto,
                 descricao: descricaoProduto,
@@ -59,12 +71,12 @@ class CreateProdutoController{
             const foto = null;
 
             const produto = await createProdutoService.execute({
-                nome_produto,
+                nome_produto: nomeProduto,
                 marca,
-                cor_produto,
-                material,
+                cor_produto: corProduto,
+                material: materialProduto,
                 foto,
-                descricao,
+                descricao: descricaoProduto,
                 custo,
                 porcentagem_venda,
                 preco_venda,

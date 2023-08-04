@@ -20,7 +20,7 @@ interface ProdutoRequest{
         cor: string;
         tamanhos_estoque: {
             tamanho: string;
-            estoque: number;
+            estoque: string;
         }[];
     }[];
 }
@@ -43,7 +43,7 @@ class CreateProdutoService{
         secao_id,
         categoria_id,
         cor_produto,
-     }: ProdutoRequest){
+    }: ProdutoRequest){
 
         //Vamos verificar se já tem esse produto cadastrado
         const produtoAllReadyExists = await prismaClient.produto.findFirst({
@@ -84,7 +84,7 @@ class CreateProdutoService{
             },
         });
         
-        // Criar os registros de cores
+        //Criar os registros de cores
         const corProduto = await Promise.all(cor_produto.map(async (cor) => {
             const produtoCor = await prismaClient.produtoCor.create({
             data: {
@@ -95,9 +95,9 @@ class CreateProdutoService{
             
             // Criar os registros de tamanhos e estoque
             const tamanhosEstoque = cor.tamanhos_estoque.map((tamanhoEstoque) => ({
-            tamanho: tamanhoEstoque.tamanho,
-            estoque: tamanhoEstoque.estoque,
-            produtoCor_id: produtoCor.id,
+                tamanho: tamanhoEstoque.tamanho,
+                estoque: parseInt(tamanhoEstoque.estoque),
+                produtoCor_id: produtoCor.id,
             }));
         
             return { produtoCor, tamanhosEstoque };
@@ -112,7 +112,7 @@ class CreateProdutoService{
         });
 
         return { produto, corProduto, produtosTamanhoEstoque };
-        }
+    }
 }
 
 export { CreateProdutoService }
