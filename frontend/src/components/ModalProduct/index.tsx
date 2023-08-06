@@ -88,7 +88,7 @@ export function ModalProduct({ isOpen, onRequestClose, product }: ModalProps){
                             </div>
 
                             <div className={styles.inputLabel}>
-                                <label htmlFor="">OBS</label>
+                                <label htmlFor="">DESCRIÇÃO</label>
                                 <TextArea value={prod.produto.descricao} disabled />
                             </div>
 

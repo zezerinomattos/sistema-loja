@@ -174,7 +174,7 @@ export default function ListProduct({ product }: ListProps){
                         </div>
 
                         <div className={styles.filter}>
-                            <Input placeholder='EMPRESA' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                            <Input placeholder='PRODUTO' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '380px'}}/>
                         </div>
 
                         <div className={styles.filter}>
