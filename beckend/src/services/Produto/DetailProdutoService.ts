@@ -23,8 +23,33 @@ class DetailProdutoService{
                         },
                     },
                 },
+                secao:{
+                    select:{
+                        nome_secao: true,
+                    }
+                },
+                categoria: {
+                    select: {
+                        nome_categoria: true,
+                    }
+                },
+                representante: {
+                    select: {
+                        usuario:{
+                            select:{
+                                nome: true,
+                            }
+                        }
+                    }
+                },
+                fabrica:{
+                    select: {
+                        empresa: true,
+                    }
+                }
             }
-        })
+        });
+
 
         return { produto };
     }

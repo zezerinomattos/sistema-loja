@@ -263,6 +263,7 @@ export default function NewProduct({ section, category, representetive }: ListPr
 
     }, [custo, porcentagem_venda]);
 
+    //ATUALIZA O SELECT DE FABRICA VIA REPRESENTANTE
     useEffect(() => {
         async function getFactory(){
             await api.get('/representante/fabrica', {

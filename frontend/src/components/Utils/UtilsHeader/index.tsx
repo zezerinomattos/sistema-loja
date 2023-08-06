@@ -244,7 +244,7 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/"><BsReverseListColumnsReverse size={28} style={{color: '#ce8730'}}/>
+                            <Link href="/product/listproduct"><BsReverseListColumnsReverse size={28} style={{color: '#ce8730'}}/>
                                 <span><strong>LISTA</strong><br /> PRODUTOS</span>
                             </Link>
                         </li>

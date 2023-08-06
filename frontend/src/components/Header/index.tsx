@@ -106,8 +106,8 @@ export function Header({title}: HeaderProps){
                 setRenderPage('produto');
                 break;
 
-            case 'factory/listfactory':
-                setRenderPage('fabricas');
+            case 'product/listproduct':
+                setRenderPage('produto');
                 break;
 
             case 'product/section/newsection':
