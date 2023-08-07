@@ -9,7 +9,8 @@ export type ProductSizeProps = {
   
   export type ProductColorProps = {
     cor: string;
-    tamanhos_estoque: ProductSizeProps[];
+    //tamanhos_estoque: ProductSizeProps[];
+    produto_tamanhos_estoque: ProductSizeProps[]
   }
 
 class EditProdutoController{
@@ -52,7 +53,7 @@ class EditProdutoController{
                 produto_id,
                 nome_produto: nomeProduto,
                 marca: marcaProduto,
-                cor_produto,
+                cor_produto: corProduto,
                 material: materialProduto,
                 foto,
                 descricao: descricaoProduto,
@@ -77,7 +78,7 @@ class EditProdutoController{
                 produto_id,
                 nome_produto: nomeProduto,
                 marca: marcaProduto,
-                cor_produto,
+                cor_produto: corProduto,
                 material: materialProduto,
                 foto,
                 descricao: descricaoProduto,

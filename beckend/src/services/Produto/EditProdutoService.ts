@@ -19,7 +19,7 @@ interface ProdutoRequest{
     categoria_id: string;
     cor_produto: {
         cor: string;
-        tamanhos_estoque: {
+        produto_tamanhos_estoque: {
             tamanho: string;
             estoque: string;
         }[];
@@ -55,7 +55,7 @@ class EditProdutoService{
         });
 
         if(!existingProduto){
-            throw new Error('Produto not found');
+            throw new Error('Produto não existe no banco');
         }
 
         // Atualizar os dados do produto
@@ -65,7 +65,7 @@ class EditProdutoService{
                 nome_produto: nome_produto,
                 marca: marca,
                 material: material,
-                foto: foto,
+                foto: foto !== null ? foto : existingProduto.foto,
                 descricao: descricao,
                 custo: custo,
                 porcentagem_venda: porcentagem_venda, 
@@ -109,41 +109,39 @@ class EditProdutoService{
                 produto_id: produto_id,
             },
         });
-        
 
         // Criar as novas cores relacionadas ao produto
         const novasCores = await Promise.all(
             cor_produto.map(async (cor) => {
-            const produtoCor = await prismaClient.produtoCor.create({
-                data: {
-                    cor: cor.cor,
-                    produto_id: produto_id,
-                },
-            });
-        
-            // Criar os registros de tamanhos e estoque
-            const tamanhosEstoque = cor.tamanhos_estoque.map((tamanhoEstoque) => ({
-                tamanho: tamanhoEstoque.tamanho,
-                estoque: parseInt(tamanhoEstoque.estoque),
-                produtoCor_id: produtoCor.id,
-            }));
-        
-            return { produtoCor, tamanhosEstoque };
+                const produtoCor = await prismaClient.produtoCor.create({
+                    data: {
+                        cor: cor.cor,
+                        produto_id: produto_id,
+                    },
+                });
+
+                // Verificar se há tamanhos e estoque definidos para a cor
+                if (cor.produto_tamanhos_estoque && cor.produto_tamanhos_estoque.length > 0) {
+                    // Criar os registros de tamanhos e estoque
+                    const tamanhosEstoque = cor.produto_tamanhos_estoque.map((tamanhoEstoque) => ({
+                        tamanho: tamanhoEstoque.tamanho,
+                        estoque: parseInt(tamanhoEstoque.estoque),
+                        produtoCor_id: produtoCor.id,
+                    }));
+
+                    // Criar os novos tamanhos e estoque para cada cor
+                    await prismaClient.produtoTamanhoEstoque.createMany({
+                        data: tamanhosEstoque,
+                    });
+                }
+
+                return produtoCor;
             })
         );
-        
-        const produtoCores = novasCores.map(({ produtoCor }) => produtoCor);
-        
-        const tamanhosEstoque = novasCores.flatMap(({ tamanhosEstoque }) => tamanhosEstoque);
-        
-        // Criar os novos tamanhos e estoque para cada cor
-        const produtosTamanhoEstoque = await prismaClient.produtoTamanhoEstoque.createMany({
-            data: tamanhosEstoque,
-        });
-        
+
         return {
             updatedProduto,
-            novasCores
+            novasCores,
         };
     }
 }

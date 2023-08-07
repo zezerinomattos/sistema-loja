@@ -28,12 +28,12 @@ export type ProductColorProps = {
     tamanhos_estoque: ProductSizeProps[];
 };
 
-type SectionProps = {
+export type SectionProps = {
     id: string;
     nome_secao: string;
 }
 
-type CategoryProps = {
+export type CategoryProps = {
     id: string;
     nome_categoria: string;
 }
@@ -169,7 +169,7 @@ export default function NewProduct({ section, category, representetive }: ListPr
             
 
         } catch (error: any) {
-            console.log(error);
+            console.log(error.response.data.erro);
             toast.error(error.response.data.erro);
             setLoaging(false);
         }

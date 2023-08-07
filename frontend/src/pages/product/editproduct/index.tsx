@@ -11,7 +11,7 @@ import { Header } from '@/components/Header';
 import { Presentation } from '../../../components/Presentation';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
-import { ProductColorProps, FactoryProps, ProductSizeProps, ListProps } from '../newproduct';
+import { FactoryProps, ProductSizeProps, ListProps } from '../newproduct';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -19,6 +19,11 @@ import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth
 import { apiCep } from '@/services/apiCep';
 import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
+
+type ProductColorProps = {
+    cor: string;
+    produto_tamanhos_estoque: ProductSizeProps[];
+};
 
 export default function EditProduct({ section, category, representetive }: ListProps){
     const { user } = useContext(AuthContext);
@@ -84,7 +89,7 @@ export default function EditProduct({ section, category, representetive }: ListP
         })
         .then(response => {
             setNomeProduto(response.data?.produto?.nome_produto);
-            setSecaoId(response.data?.produto?.secao);
+            setSecaoId(response.data?.produto?.secao_id);
             setCategoriaId(response.data?.produto?.categoria_id);
             setMarca(response.data?.produto?.marca);
             setMaterial(response.data?.produto?.material);
@@ -97,6 +102,7 @@ export default function EditProduct({ section, category, representetive }: ListP
             setDescontoMaximo(response.data.produto.desconto_maximo.toString());
             setRepresentanteId(response.data?.produto?.representante_id);
             setFabricaId(response.data?.produto?.fabrica_id);
+            setColorProduto(response.data?.produto?.produto_cor);
 
             setAvatarUrl(url + '/' + response.data?.produto?.foto);
 
@@ -106,6 +112,23 @@ export default function EditProduct({ section, category, representetive }: ListP
             console.log(error);
             toast.error('ID do cliente inválido');
             setLoaging(false);
+
+            setNomeProduto('');
+            setSecaoId('');
+            setCategoriaId('');
+            setMarca('');
+            setMaterial('');
+            setDescricao('');
+            setCusto('');
+            setPorcentagemVenda('');
+            setPrecoVenda('');
+            setMargemLucro('');
+            setDescontoAtual('');
+            setDescontoMaximo('');
+            setRepresentanteId('');
+            setFabricaId('');
+
+            setAvatarUrl('');
         })
     }
 
@@ -113,12 +136,77 @@ export default function EditProduct({ section, category, representetive }: ListP
     async function hadleRegister(event: FormEvent){
         event.preventDefault();
 
-        alert('teste')
+        try {
+            const data = new FormData();
+
+            if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
+                setMessage('Preencha todos os campos!');
+                return;
+            }
+
+            // Validando desconto maximo e atual
+            const descAtual = parseInt(desconto_atual);
+            const descMaximo = parseInt(desconto_maximo)
+
+            if(descAtual > descMaximo){
+                setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
+                return;
+            }
+
+            data.append('produto_id', produto_id);
+            data.append('nome_produto', nome_produto);
+            data.append('marca', marca);
+            data.append('material', material);
+            data.append('file', imageAvatar || '');
+            data.append('descricao', descricao);
+            data.append('custo', custo);
+            data.append('porcentagem_venda', porcentagem_venda);
+            data.append('preco_venda', preco_venda);
+            data.append('margem_lucro', margem_lucro);
+            data.append('desconto_atual', desconto_atual);
+            data.append('desconto_maximo', desconto_maximo);
+            data.append('representante_id', representante_id);
+            data.append('fabrica_id', fabrica_id);
+            data.append('secao_id', secao_id);
+            data.append('categoria_id', categoria_id);
+            data.append('cor_produto', JSON.stringify(cor_produto));
+
+            await api.put('/produto/edit', data);
+            
+            toast.success('PRODUTO EDITADO COM SUCESSO!');
+
+            setProdutoId('');
+            setNomeProduto('');
+            setMarca('');
+            setMaterial('');
+            setAvatarUrl('');
+            setImageAvatar(null);
+            setDescricao('');
+            setCusto('');
+            setPorcentagemVenda('');
+            setPrecoVenda('');
+            setMargemLucro('');
+            setDescontoAtual('');
+            setDescontoMaximo('');
+            setRepresentanteId('');
+            setFabricaId('');
+            setSecaoId('');
+            setCategoriaId('');
+            setColorProduto([]);
+
+            setLoaging(false);
+
+
+        } catch (error: any) {
+            console.log(error);
+            setMessage('Ops, algo deu errado, atualize a pagina e tente novamente!');
+            setLoaging(false);
+        }
     }
 
     //FUNCAO QUE ATUALIZA E INCREMENTA COR E TAMANHO
     const handleAddColor = () => {
-        setColorProduto([...cor_produto, { cor: '', tamanhos_estoque: [] }]);
+        setColorProduto([...cor_produto, { cor: '', produto_tamanhos_estoque: [] }]);
     };
       
     const handleColorChange = (
@@ -136,7 +224,7 @@ export default function EditProduct({ section, category, representetive }: ListP
       
     const handleAddTamanhoEstoque = (index: number) => {
         const updatedColorsData = [...cor_produto];
-        updatedColorsData[index].tamanhos_estoque.push({ tamanho: '', estoque: 0 });
+        updatedColorsData[index].produto_tamanhos_estoque.push({ tamanho: '', estoque: 0 });
         setColorProduto(updatedColorsData);
     };
       
@@ -147,8 +235,8 @@ export default function EditProduct({ section, category, representetive }: ListP
         value: string | number
         ) => {
         const updatedColorsData = [...cor_produto];
-        updatedColorsData[colorIndex].tamanhos_estoque[tamanhoEstoqueIndex] = {
-            ...updatedColorsData[colorIndex].tamanhos_estoque[tamanhoEstoqueIndex],
+        updatedColorsData[colorIndex].produto_tamanhos_estoque[tamanhoEstoqueIndex] = {
+            ...updatedColorsData[colorIndex].produto_tamanhos_estoque[tamanhoEstoqueIndex],
             [field]: value,
         };
         setColorProduto(updatedColorsData);
@@ -164,7 +252,7 @@ export default function EditProduct({ section, category, representetive }: ListP
 
     const handleRemoveTamanhoEstoque = (colorIndex: number, tamanhoEstoqueIndex: number) => {
         const updatedColorsData = [...cor_produto];
-        updatedColorsData[colorIndex].tamanhos_estoque.splice(tamanhoEstoqueIndex, 1);
+        updatedColorsData[colorIndex].produto_tamanhos_estoque.splice(tamanhoEstoqueIndex, 1);
         setColorProduto(updatedColorsData);
     };
 
@@ -348,6 +436,7 @@ export default function EditProduct({ section, category, representetive }: ListP
                                     ))}
                                 </select>
                             </div>
+
                             
                             {/* ADICIONAR COR TAMANHO E ESTOQUE */}
                             <div className={styles.colorContainer}>
@@ -360,7 +449,7 @@ export default function EditProduct({ section, category, representetive }: ListP
                                         onChange={(e) => handleColorChange(index, 'cor', e.target.value)}
                                         />
 
-                                        {color.tamanhos_estoque.map((tamanho_estoque, subIndex) => (
+                                        {color.produto_tamanhos_estoque && color.produto_tamanhos_estoque.map((tamanho_estoque, subIndex) => (
                                         <div key={subIndex}>
                                             <Input
                                             placeholder='EX: P, M, G, GG, EXG'
