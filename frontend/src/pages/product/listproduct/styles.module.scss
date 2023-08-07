@@ -75,25 +75,15 @@ div.filterContainer div.filter{
     height: 40px;
 }
 
-div.filterContainer div.filter div.filterInativo{
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    margin-left: 10px;
-}
-
-div.filter div.filterInativo label.labelChecbox{
+div.filterContainer div.filter select.selectInput{
+    height: 40px;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: var(--dark-700);
     color: var(--white);
-    font-size: max(18px, 1.2vw);
-    font-family: 'Ubuntu', sans-serif;
-    text-shadow: 2px 2px 4px #2b2929;
-}
-
-div.filter div.filterInativo input.imputChecbox{
-    width: 22px;
-    height: 22px;
+    
     margin: 0 10px;
-    cursor: pointer;
+    margin-bottom: 1rem;
 }
 
 div.filterContainer div.filter button.buttonBuscar{

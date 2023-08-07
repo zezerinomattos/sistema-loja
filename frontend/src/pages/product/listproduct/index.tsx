@@ -24,6 +24,20 @@ type ProductProps = {
     nome_produto: string;
     marca: string;
     preco_venda: string;
+    secao: {
+        nome_secao: string;
+    };
+    categoria: {
+        nome_categoria: string;
+    };
+    representante: {
+        usuario: {
+            nome: string;
+        }
+    };
+    fabrica: {
+        empresa: string;
+    }
 }
 
 interface ListProps{
@@ -85,6 +99,7 @@ export default function ListProduct({ product }: ListProps){
 
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
+    const [selectedFilter, setSelectedFilter] = useState('PRODUTO');
 
     const [modalProduct, setModalProduct] = useState<ProductApiResponse[]>();
     const [modalVisible, setModalVisible] = useState(false);
@@ -148,8 +163,32 @@ export default function ListProduct({ product }: ListProps){
         }
 
         //FILTRANDO PELO NOME
-        if(!listId && listName){
+        if(!listId && listName && selectedFilter === 'PRODUTO'){
             const filterFactory = product.filter((prod) => prod.nome_produto.includes(listName));
+            setProductList(filterFactory);
+        }
+
+        //FILTRANDO PELO SECAO
+        if(!listId && listName && selectedFilter === 'SECAO'){
+            const filterFactory = product.filter((prod) => prod.secao.nome_secao.includes(listName));
+            setProductList(filterFactory);
+        }
+
+        //FILTRANDO PELO CATEGORIA
+        if(!listId && listName && selectedFilter === 'CATEGORIA'){
+            const filterFactory = product.filter((prod) => prod.categoria.nome_categoria.includes(listName));
+            setProductList(filterFactory);
+        }
+
+        //FILTRANDO PELO REPRESENTANTE
+        if(!listId && listName && selectedFilter === 'REPRESENTANTE'){
+            const filterFactory = product.filter((prod) => prod.representante.usuario.nome.includes(listName));
+            setProductList(filterFactory);
+        }
+
+        //FILTRANDO PELO FABRICA
+        if(!listId && listName && selectedFilter === 'FABRICA'){
+            const filterFactory = product.filter((prod) => prod.fabrica.empresa.includes(listName));
             setProductList(filterFactory);
         }
 
@@ -196,11 +235,27 @@ export default function ListProduct({ product }: ListProps){
                 <div className={styles.rigthContainer}>
                     <div className={styles.filterContainer}>
                         <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '300px'}}/>
                         </div>
 
                         <div className={styles.filter}>
-                            <Input placeholder='PRODUTO' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '380px'}}/>
+                            <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
+                        </div>
+
+                        <div className={styles.filter}>
+                            <select 
+                                name="product" 
+                                id="product"
+                                value={selectedFilter} 
+                                onChange={(e) => setSelectedFilter(e.target.value)}
+                                className={styles.selectInput}
+                            >
+                                <option value="PRODUTO">PRODUTO</option>
+                                <option value="SECAO">SEÇÃO</option>
+                                <option value="CATEGORIA">CATEGORIA</option>
+                                <option value="REPRESENTANTE">REPRESENTANTE</option>
+                                <option value="FABRICA">FÁBRICA</option>
+                            </select>
                         </div>
 
                         <div className={styles.filter}>
