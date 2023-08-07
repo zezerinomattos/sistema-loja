@@ -250,7 +250,7 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/"><BsPencilSquare size={28} style={{color: '#ce8730'}}/>
+                            <Link href="/product/editproduct"><BsPencilSquare size={28} style={{color: '#ce8730'}}/>
                                 <span><strong>EDITAR</strong><br /> PRODUTO</span>
                             </Link>
                         </li>

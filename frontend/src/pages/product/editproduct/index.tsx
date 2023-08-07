@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'r
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 
 //MY IMPORTS
@@ -10,59 +11,23 @@ import { Header } from '@/components/Header';
 import { Presentation } from '../../../components/Presentation';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
+import { ProductColorProps, FactoryProps, ProductSizeProps, ListProps } from '../newproduct';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 
+import { apiCep } from '@/services/apiCep';
 import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
-
-export type ProductSizeProps = {
-    tamanho: string;
-    estoque: number;
-};
-
-export type ProductColorProps = {
-    cor: string;
-    tamanhos_estoque: ProductSizeProps[];
-};
-
-type SectionProps = {
-    id: string;
-    nome_secao: string;
-}
-
-type CategoryProps = {
-    id: string;
-    nome_categoria: string;
-}
-
-type RepresentativeProps = {
-    id: string;
-    usuario: {
-        nome: string;
-    }
-}
-
-export type FactoryProps = {
-    id: string;
-    empresa: string;
-}
-
-export interface ListProps{
-    section: SectionProps[];
-    representetive: RepresentativeProps[];
-    category: CategoryProps[];
-    factory: FactoryProps[];
-}
-
-export default function NewProduct({ section, category, representetive }: ListProps){
+export default function EditProduct({ section, category, representetive }: ListProps){
+    const { user } = useContext(AuthContext);
 
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
     const [message, setMessage] = useState('');
 
+    const [produto_id, setProdutoId] = useState('');
     const [nome_produto, setNomeProduto] = useState('');
     const [marca, setMarca] = useState('');
     const [material, setMaterial] = useState('');
@@ -82,6 +47,7 @@ export default function NewProduct({ section, category, representetive }: ListPr
 
     const [avatarUrl, setAvatarUrl] = useState('');
     const [imageAvatar, setImageAvatar] = useState<null | File>(null);
+    const url = 'http://localhost:3333/files/';
 
     const [factory, setFactory] = useState<FactoryProps[]>([]);
 
@@ -102,78 +68,52 @@ export default function NewProduct({ section, category, representetive }: ListPr
         }
     }
 
-    //FUNCAO PARA CRIAR PRODUTO
+    //FUNCAO PARA BUSCAR O PRODUTO
+    async function handleFilter(){
+        if(!produto_id){
+            setMessage('Iforme o código do colaborador!');
+            return;
+        }
+
+        setLoaging(true);
+
+        await api.get('/produto/detail', {
+            params: {
+                produto_id: produto_id,
+            }
+        })
+        .then(response => {
+            setNomeProduto(response.data?.produto?.nome_produto);
+            setSecaoId(response.data?.produto?.secao);
+            setCategoriaId(response.data?.produto?.categoria_id);
+            setMarca(response.data?.produto?.marca);
+            setMaterial(response.data?.produto?.material);
+            setDescricao(response.data?.produto?.descricao);
+            setCusto(response.data?.produto?.custo.toString());
+            setPorcentagemVenda(response.data.produto.porcentagem_venda.toString());
+            setPrecoVenda(response.data.produto.preco_venda.toString());
+            setMargemLucro(response.data.produto.margem_lucro.toString());
+            setDescontoAtual(response.data.produto.desconto_atual.toString());
+            setDescontoMaximo(response.data.produto.desconto_maximo.toString());
+            setRepresentanteId(response.data?.produto?.representante_id);
+            setFabricaId(response.data?.produto?.fabrica_id);
+
+            setAvatarUrl(url + '/' + response.data?.produto?.foto);
+
+            setLoaging(false);
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error('ID do cliente inválido');
+            setLoaging(false);
+        })
+    }
+
+    //FUNCAO PARA EDITAR PRODUTO
     async function hadleRegister(event: FormEvent){
         event.preventDefault();
 
-        try {
-
-            const data = new FormData();
-
-            if(!nome_produto || !secao_id || !categoria_id || !marca || !material || !descricao || !custo || !porcentagem_venda || !preco_venda || !margem_lucro || !desconto_atual || !desconto_maximo || !fabrica_id || !representante_id){
-                setMessage('Preencha todos os campos!');
-                return;
-            }
-
-            // Validando desconto maximo e atual
-            const descAtual = parseInt(desconto_atual);
-            const descMaximo = parseInt(desconto_maximo)
-
-            if(descAtual > descMaximo){
-                setMessage('O seu Desconto maximo é de ' + descMaximo +'%');
-                return;
-            }
-
-            setLoaging(true);
-
-            data.append('nome_produto', nome_produto);
-            data.append('marca', marca);
-            data.append('material', material);
-            data.append('file', imageAvatar || '');
-            data.append('descricao', descricao);
-            data.append('custo', custo);
-            data.append('porcentagem_venda', porcentagem_venda);
-            data.append('preco_venda', preco_venda);
-            data.append('margem_lucro', margem_lucro);
-            data.append('desconto_atual', desconto_atual);
-            data.append('desconto_maximo', desconto_maximo);
-            data.append('representante_id', representante_id);
-            data.append('fabrica_id', fabrica_id);
-            data.append('secao_id', secao_id);
-            data.append('categoria_id', categoria_id);
-            data.append('cor_produto', JSON.stringify(cor_produto));
-
-            await api.post('/produto', data);
-
-            toast.success('PRODUTO CADSTRADO COM SUCESSO!');
-
-            setNomeProduto('');
-            setMarca('');
-            setMaterial('');
-            setAvatarUrl('');
-            setImageAvatar(null);
-            setDescricao('');
-            setCusto('');
-            setPorcentagemVenda('');
-            setPrecoVenda('');
-            setMargemLucro('');
-            setDescontoAtual('');
-            setDescontoMaximo('');
-            setRepresentanteId('');
-            setFabricaId('');
-            setSecaoId('');
-            setCategoriaId('');
-            setColorProduto([]);
-
-            setLoaging(false);
-            
-
-        } catch (error: any) {
-            console.log(error);
-            toast.error(error.response.data.erro);
-            setLoaging(false);
-        }
-
+        alert('teste')
     }
 
     //FUNCAO QUE ATUALIZA E INCREMENTA COR E TAMANHO
@@ -228,7 +168,6 @@ export default function NewProduct({ section, category, representetive }: ListPr
         setColorProduto(updatedColorsData);
     };
 
-    //---------------------------------------------------
 
     //ATUALIZA OS CAMPOS A MEDIDA QUE PREENCHE
     useEffect(() => {
@@ -283,7 +222,7 @@ export default function NewProduct({ section, category, representetive }: ListPr
 
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
-        setCarregando(false);   
+        setCarregando(false);
     }, [])
 
     if (carregando) {
@@ -292,12 +231,22 @@ export default function NewProduct({ section, category, representetive }: ListPr
 
     return(
         <div className={styles.container}>
-                <Header title={'NOVO PRODUTO'}/>
+                <Header title={'EDITAR PRODUTO'}/>
 
                 <main className={styles.containerBody}>
                     <Presentation />
 
                     <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={produto_id} onChange={(e) => setProdutoId(e.target.value)} style={{width:'350px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
+                        </div>
+
                         <form className={styles.formProduct} onSubmit={hadleRegister}>
                             <Input placeholder='NOME PRODUTO' type='text' className={styles.inputName} onChange={(e) => setNomeProduto(e.target.value)} value={nome_produto}/>
 
@@ -492,6 +441,7 @@ export const getServerSideProps = canSSRAuth(async(ctx) => {
 
     //@ts-ignore
     const apiSection = setupAPIClient(ctx);
+    
     const section = await apiSection.get('secao');
     const category = await apiSection.get('categoria');
     const representetive = await apiSection.get('representante');
@@ -504,4 +454,3 @@ export const getServerSideProps = canSSRAuth(async(ctx) => {
         }
     }
 });
-

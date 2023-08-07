@@ -110,6 +110,10 @@ export function Header({title}: HeaderProps){
                 setRenderPage('produto');
                 break;
 
+            case 'product/editproduct':
+                setRenderPage('produto');
+                break;
+
             case 'product/section/newsection':
                 setRenderPage('produto');
                 break;
