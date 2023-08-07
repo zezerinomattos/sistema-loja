@@ -108,9 +108,35 @@ export default function ListProduct({ product }: ListProps){
         setModalVisible(false);
     }
 
-    // FUNCAO PARA DELETAR FABRICA
+    // FUNCAO PARA DELETAR PRODUTO
     async function handleDelete(id: string){
-        alert(id)
+        if(!id){
+            toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+            return;
+        }
+
+        // Mostrar a caixa de diálogo de confirmação
+        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa fábrica?');
+
+        if (confirmDelete) {
+            // O usuário confirmou a exclusão, então faz a requisição para deletar a fábrica
+            await api.delete('produto/delete', {
+                params:{
+                    produto_id: id,
+                }
+            })
+            .then(() => {
+                toast.success('FABRICA DELETADA');
+                window.location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+                toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+            });
+        } else {
+            // O usuário cancelou a exclusão, não faz nada
+            return;
+        }
     }
 
     // FUNCAO FILTRO 

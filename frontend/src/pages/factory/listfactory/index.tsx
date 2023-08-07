@@ -103,6 +103,7 @@ export default function ListFactory({ factory }: ListProps){
                 window.location.reload();
             })
             .catch(error => {
+                console.log(error);
                 toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
             });
         } else {
