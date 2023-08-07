@@ -21,7 +21,7 @@ interface ProdutoRequest{
         cor: string;
         tamanhos_estoque: {
             tamanho: string;
-            estoque: number;
+            estoque: string;
         }[];
     }[];
 }
@@ -124,7 +124,7 @@ class EditProdutoService{
             // Criar os registros de tamanhos e estoque
             const tamanhosEstoque = cor.tamanhos_estoque.map((tamanhoEstoque) => ({
                 tamanho: tamanhoEstoque.tamanho,
-                estoque: tamanhoEstoque.estoque,
+                estoque: parseInt(tamanhoEstoque.estoque),
                 produtoCor_id: produtoCor.id,
             }));
         

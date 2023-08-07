@@ -39,6 +39,7 @@ class CreateProdutoController{
         const desconto_maximo = parseInt(req.body.desconto_maximo);
         const descricaoProduto = descricao.toUpperCase();
         const materialProduto = material.toUpperCase();
+        const marcaProduto = marca.toUpperCase();
 
         // Convertendo o array de cores para o formato esperado pelo serviço
         const corProduto = JSON.parse(cor_produto) as ProductColorProps[];
@@ -48,7 +49,7 @@ class CreateProdutoController{
 
             const produto = await createProdutoService.execute({
                 nome_produto: nomeProduto,
-                marca,
+                marca: marcaProduto,
                 cor_produto: corProduto,
                 material: materialProduto,
                 foto,
@@ -72,7 +73,7 @@ class CreateProdutoController{
 
             const produto = await createProdutoService.execute({
                 nome_produto: nomeProduto,
-                marca,
+                marca: marcaProduto,
                 cor_produto: corProduto,
                 material: materialProduto,
                 foto,
