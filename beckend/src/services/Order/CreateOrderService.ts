@@ -1,15 +1,15 @@
 import prismaClient from "../../prisma";
 
 interface OrederRequest{
-    status: boolean;
-    draft: boolean; // Rascunho
-    colaborado: string;
-    cliente: string
+    // status: boolean;
+    // draft: boolean; // Rascunho
+    colaborado_id: string;
+    cliente_id: string
     caixa_id: string
 }
 
 class CreateOrderService{
-    async execute({ status, draft, colaborado, cliente, caixa_id }: OrederRequest){
+    async execute({ colaborado_id, cliente_id, caixa_id }: OrederRequest){
 
         const caixaAberto = await prismaClient.caixa.findFirst({
             where: {
@@ -35,28 +35,61 @@ class CreateOrderService{
         // VERIFICANDO SE O COLABORADOR É GERENTE OU VENDEDOR
         const colaborador = await prismaClient.colaborador.findUnique({
             where:{
-                id: colaborado,
+                id: colaborado_id,
             },
             select: {
                 cargo: true,
+                usuario: {
+                    select:{
+                        nome: true,
+                    }
+                }
             }
-        })
-        
+        });
+
+        if(!colaborado_id){
+            throw new Error('Informe um colaborador');
+        }
+
+        if(!colaborador){
+            throw new Error('Colaborador inválido');
+        }
+
         if(colaborador.cargo === 'CAIXA'){
             throw new Error('Colaborador sem altorização para abrir um pedido');
         }
 
+        //VERIFICAR SE O CLIENTE ESTÁ CADASTRADO
+        const cliente = await prismaClient.cliente.findUnique({
+            where: {
+                id: cliente_id,
+            },
+            select: {
+                usuario: {
+                    select: {
+                        nome: true,
+                    }
+                }
+            }
+        })
+        
+        if(!cliente_id){
+            throw new Error('Informe um cliente');
+        }
+
+        if(!cliente){
+            throw new Error('Cliente inválido');
+        }
+
         const order = await prismaClient.order.create({
             data: {
-                status: status,
-                draft: draft,
-                colaborador_id: colaborado,
-                cliente_id: cliente,
+                colaborador_id: colaborado_id,
+                cliente_id: cliente_id,
                 caixa_id: caixa_id
             },
         });
 
-        return order;
+        return { order, colaborador, cliente };
     }
 }
 

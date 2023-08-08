@@ -254,8 +254,8 @@ model ProdutoCor {
 // TABELA DE ORDER
 model Order{
   id String @id @default(uuid())
-  status Boolean @default(false)
-  draft Boolean @default(true)
+  status Boolean @default(false) //ESTÁ ABERTO
+  draft Boolean @default(true) // É UM RASCUNHO
   valor_total Float @default(0)
   desconto Int @default(0)
   valor_pagar Float @default(0)
