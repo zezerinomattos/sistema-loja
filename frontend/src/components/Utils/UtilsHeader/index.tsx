@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
-import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList } from "react-icons/fc";
+import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList, FcPaid, FcList } from "react-icons/fc";
 import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill, BsTagsFill, BsReverseListColumnsReverse, BsPencilSquare, BsClipboardPlusFill, BsFillFileRuledFill, BsFillGrid1X2Fill, BsClipboard2Plus } from "react-icons/bs";
+import { FaPencilAlt } from "react-icons/fa";
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -354,6 +355,36 @@ export function UtilsHeader( param: string, title: string ){
             break;
         
         case 'pedidos':
+            return(
+                <>
+                    <ul className={styles.paginas}>
+                        <li>
+                            <Link href="/order/neworder">
+                                <FcPaid size={28}/>
+                                <span><strong>NOVO</strong><br />PEDIDO</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/factory/listfactory">
+                                <FcList size={28}/>
+                                <span><strong>LISTA</strong><br />PEDIDOS</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/factory/editfactory">
+                                <FaPencilAlt size={28} style={{color: '#e99a3b'}}/>
+                                <span><strong>EDITAR</strong><br />PEDIDO</span>
+                            </Link>
+                        </li>
+                    </ul>
+
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
+                </>
+            );
             break;
 
         case 'caixa':

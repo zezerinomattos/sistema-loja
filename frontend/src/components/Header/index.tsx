@@ -130,6 +130,20 @@ export function Header({title}: HeaderProps){
                 setRenderPage('produto');
                 break;
 
+            //------------
+            //Order
+            case 'order/neworder':
+                setRenderPage('pedidos');
+                break;
+
+            case 'order/listorder':
+                setRenderPage('pedidos');
+                break;
+
+            case 'order/editorder':
+                setRenderPage('pedidos');
+                break;
+
             //Default
             default:
                 //setRenderPage(currentPath);
@@ -138,7 +152,7 @@ export function Header({title}: HeaderProps){
 
     }, [router.pathname]);
 
-    //console.log(activeLink)
+    //console.log(activeLink) 
 
     return(
         <div className={styles.container}>
