@@ -77,6 +77,8 @@ import { CrateRetiradaCaixaController } from '../controllers/Caixa/CrateRetirada
 import { CreateEntradaCaixaController } from '../controllers/Caixa/CreateEntradaCaixaController';
 import { CreateQuebraCaixaController } from '../controllers/Caixa/CreateQuebraCaixaController';
 import { EditQuebraCaixaController } from '../controllers/Caixa/EditQuebraCaixaController';
+import { ListCaixaController } from '../controllers/Caixa/ListCaixaController';
+
 import { ListRelatorioFluxoCaixaController } from '../controllers/Caixa/ListRelatorioFluxoCaixaController';
 import { ListRelatorioFluxoCaixaMesController } from '../controllers/Caixa/ListRelatorioFluxoCaixaMesController';
 import { ListRelatorioFluxoCaixaFullController } from '../controllers/Caixa/ListRelatorioFluxoCaixaFullController';
@@ -191,6 +193,7 @@ router.get('/order/colaborador/date', isAuthenticated, new ListOrderColaboradorD
 
 // -- ROTAS CAIXA --
 router.post('/caixa', isAuthenticated, new CreateCaixaController().handle);
+router.get('/caixa', isAuthenticated, new ListCaixaController().handle);
 router.put('/close/caixa', isAuthenticated, new CloseCaixaController().handle);
 router.post('/registro/caixa', isAuthenticated, new CreateRegistroCaixaController().handle);
 router.put('/cancelar/registro', isAuthenticated, new CancelarRegistroCaixaController().handle);

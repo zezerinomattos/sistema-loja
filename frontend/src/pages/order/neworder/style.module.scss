@@ -76,3 +76,27 @@ div.filter{
         height: 40px;
     }
 }
+
+div.filterContainer div.filter select.selectInput{
+    height: 40px;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: var(--dark-700);
+    color: var(--white);
+    
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
+
+div.rigthContainer div.dadosOrder{
+    display: flex;
+    flex-flow: row wrap;
+
+    span{
+        color: var(--white);
+        font-size: 14px;
+        font-family: 'Roboto', sans-serif;
+        text-shadow: 2px 2px 4px var(--gray-900);
+        margin: 0 10px;
+    }
+}
