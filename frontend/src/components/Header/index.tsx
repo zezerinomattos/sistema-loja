@@ -11,10 +11,11 @@ import { AuthContext } from '@/contexts/AuthContext';
 
 interface HeaderProps{
     title: string
+    id?: string;
 }
 
 
-export function Header({title}: HeaderProps){
+export function Header({title, id}: HeaderProps){
     const { user, signOut } = useContext(AuthContext);
     const isGerente = user.cargo === 'GERENTE';
     const isAdmim = user.cargo === 'ADMIM';
@@ -151,6 +152,13 @@ export function Header({title}: HeaderProps){
         }
 
     }, [router.pathname]);
+
+    useEffect(() => {
+        //VERIFICANDO SE TEM ID NA ROTA SE TIVER É O ID DA ROTA DE ORDER
+        if(id){
+            setRenderPage('pedidos');
+        }
+    });
 
     //console.log(activeLink) 
 

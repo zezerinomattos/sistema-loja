@@ -227,7 +227,7 @@ export default function ListProduct({ product }: ListProps){
 
     return(
         <div className={styles.container}>
-            <Header title={'LISTA FABRICAS'}/>
+            <Header title={'LISTA PRODUTOS'}/>
 
             <main className={styles.containerFavorit}>
                 <Presentation />

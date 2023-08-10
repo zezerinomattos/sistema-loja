@@ -178,7 +178,7 @@ export default function ListCollaborator({ collaborator }: ListProps){
 
     return(
         <div className={styles.container}>
-            <Header title={'LISTA DE CLIENTES'}/>
+            <Header title={'LISTA DE COLABORADORES'}/>
 
             <main className={styles.containerFavorit}>
                 <Presentation />
