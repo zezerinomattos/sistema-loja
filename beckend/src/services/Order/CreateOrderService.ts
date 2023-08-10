@@ -33,7 +33,7 @@ class CreateOrderService{
         }
 
         // VERIFICANDO SE O COLABORADOR É GERENTE OU VENDEDOR
-        const colaborador = await prismaClient.colaborador.findUnique({
+        const colaborador = await prismaClient.colaborador.findFirst({
             where:{
                 id: colaborado_id,
             },
@@ -60,7 +60,7 @@ class CreateOrderService{
         }
 
         //VERIFICAR SE O CLIENTE ESTÁ CADASTRADO
-        const cliente = await prismaClient.cliente.findUnique({
+        const cliente = await prismaClient.cliente.findFirst({
             where: {
                 id: cliente_id,
             },
@@ -89,7 +89,7 @@ class CreateOrderService{
             },
         });
 
-        return { order, colaborador, cliente };
+        return order;
     }
 }
 

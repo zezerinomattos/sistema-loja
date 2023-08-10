@@ -143,6 +143,12 @@ article.listContainer ol.list{
     }
 }
 
+article.listContainer ol.list li.active{
+    background-color: var(--gray-700);
+    padding-left: 5px;
+    border-radius: 5px;
+}
+
 article.listContainer ol.list li span.idDetail{
     width: 320px;
 }

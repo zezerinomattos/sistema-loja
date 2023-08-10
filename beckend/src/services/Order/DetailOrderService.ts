@@ -30,7 +30,7 @@ class DetailOrderService {
                 }
             },
             preco: true,
-            qtd: true
+            qtd: true,
         }
     });
 
@@ -38,6 +38,39 @@ class DetailOrderService {
         where: {
             id: order_id,
         },
+        include:{
+            caixa: {
+                select:{
+                    colaborador: {
+                        select:{
+                            usuario: {
+                                select: {
+                                    nome: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            colaborado: {
+                select:{
+                    usuario: {
+                        select: {
+                            nome: true,
+                        },
+                    },
+                },
+            },
+            cliente: {
+                select:{
+                    usuario: {
+                        select: {
+                            nome: true,
+                        },
+                    },
+                },
+            },
+        }
     });
 
     return {

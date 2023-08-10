@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState  } from 'react';
+import React, { useContext, useEffect, useState, FormEvent } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { useRouter } from 'next/router';
@@ -55,15 +55,20 @@ export default function NewOrder({ cliente, caixa }: ListProps){
     const [clienteList, setClienteList] = useState(cliente || []);
     const [caixaList, setCaixaList] = useState(caixa || []);
 
-    //const [listFilter, setListfilter] = useState<ListProps[]>([]);
 
-    const [colaborado_id, setColaboradorId] = useState(user.colaborador_id);
-    const [colaboradorName, setColaboradoName] = useState(user.nome);
+    //const [colaborado_id, setColaboradorId] = useState(user.colaborador_id);
+    //const [colaboradorName, setColaboradoName] = useState(user.nome);
     const [cliente_id, setClienteId] = useState('');
     const [clienteName, setClienteName] = useState('');
     const [caixa_id, setCaixaId] = useState('');
     const [caixaName, setCaixaName] = useState('');
-    //const [buttonFilter, setButtonFilter] = useState('');
+
+    const [active, setActive] = useState(false);
+
+    //FUNCAO DE LI ATIVO
+    function handleLiActive(id: string){
+        setClienteId(id);
+    }
 
     // FUNCAO FILTRO ID
     async function handleFilterId(event: any){
@@ -152,9 +157,10 @@ export default function NewOrder({ cliente, caixa }: ListProps){
             return (
                 <ol className={styles.list}>
                     {clienteList.map(cli => (
-                        <li key={cli.id}>
+                        <li key={cli.id} className={cli.id === cliente_id ? styles.active : ''}>
                             <span className={styles.idDetail}>{cli.id}</span>
-                            <span onClick={() => setClienteId(cli.id)} className={styles.nameDetail}>{cli.usuario.nome}</span>
+                            <span onClick={() => handleLiActive(cli.id)} className={styles.nameDetail}>{cli.usuario.nome}</span>
+                            {/* <span onClick={() => setClienteId(cli.id)} className={styles.nameDetail}>{cli.usuario.nome}</span> */}
                             <span>{cli.situacao ? 'ATIVO' : 'INATIVO'}</span>          
                         </li>
                     ))}
@@ -165,7 +171,7 @@ export default function NewOrder({ cliente, caixa }: ListProps){
             return (
                 <ol className={styles.list}>
                     {caixaList.map(cax => (
-                        <li key={cax.id}>
+                        <li key={cax.id} className={cax.id === caixa_id ? styles.active : ''} >
                             <span className={styles.idDetail}>{cax.id}</span>
                             <span onClick={() => setCaixaId(cax.id)} className={styles.nameDetail}>{cax.colaborador?.usuario?.nome}</span>
                             <span>{cax?.status ? 'ABERTO' : 'FECHADO'}</span>          
@@ -177,6 +183,30 @@ export default function NewOrder({ cliente, caixa }: ListProps){
     
         // Retorna null quando nenhum filtro está selecionado
         return null;
+    }
+
+    //FUNCAO DE REGISTRO DE ORDER
+    async function handleRegisterOrder(event: FormEvent){
+        event.preventDefault();
+
+        try {
+            await api.post('/order', {
+                colaborado_id: user.colaborador_id,
+                cliente_id: cliente_id,
+                caixa_id: caixa_id,
+            })
+            .then(response => {
+                toast.success('PEDIDO ABERTO!');
+                //router.push(`/order/cupomfiscal/${response.data.order.id}`);
+                const id = response.data.id;
+                router.push(`/order/cupomfiscal/${id}`);
+            })
+
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error.response.data.erro);
+            setLoaging(false);
+        }
     }
 
     useEffect(() => {
@@ -235,7 +265,7 @@ export default function NewOrder({ cliente, caixa }: ListProps){
                             </div>
 
                             <div className={styles.filter}>
-                                <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}} />
+                                <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '300px'}} />
                             </div>
                             
                             <div className={styles.filter}>
@@ -261,12 +291,12 @@ export default function NewOrder({ cliente, caixa }: ListProps){
                             <span>CAIXA: {caixaName}</span>
                         </div>
 
-                        <Button type='submit' loading={loading}
-                        style={
-                            {width: '500px', 
-                            height: '50px', 
-                            marginTop: '1rem', 
-                            fontSize: '20px'
+                        <Button type='submit' loading={loading} onClick={handleRegisterOrder}
+                            style={
+                                {width: '500px', 
+                                height: '50px', 
+                                marginTop: '1rem', 
+                                fontSize: '20px'
                             }}>ABRIR PEDIDO
                         </Button>
                         
