@@ -50,6 +50,12 @@ export default function NewOrder({ cliente, caixa }: ListProps){
 
     const [selectedFilter, setSelectedFilter] = useState('CLIENTE');
     const [filterId, setFilterId] = useState('');
+    const [listName, setListName] = useState('');
+
+    const [clienteList, setClienteList] = useState(cliente || []);
+    const [caixaList, setCaixaList] = useState(caixa || []);
+
+    //const [listFilter, setListfilter] = useState<ListProps[]>([]);
 
     const [colaborado_id, setColaboradorId] = useState(user.colaborador_id);
     const [colaboradorName, setColaboradoName] = useState(user.nome);
@@ -95,18 +101,114 @@ export default function NewOrder({ cliente, caixa }: ListProps){
         }
     } 
 
-    //FUNCAO LISTAR CLIENTE OU CAIXA ABERTO
-    function handleFilterCliCax(){
-        
+    // FUNCAO FILTRO 
+    function handlefilterCliCax(){
+        //FILTRANDO SE TEM ID CLIENTE
+        if(filterId && selectedFilter === 'CLIENTE'){
+            const filterCliente = cliente.filter((cli) => cli?.id.includes(filterId));
+            setClienteList(filterCliente);
+            listFilterCliCax();
+        }
+
+        //FILTRANDO PELO NOME CLIENTE
+        if(!filterId && listName && selectedFilter === 'CLIENTE'){
+            const filterCliente = cliente.filter((cli) => cli?.usuario?.nome.includes(listName));
+            setClienteList(filterCliente);
+            listFilterCliCax();
+        }
+
+        //FILTRANDO SE TEM ID CAIXA
+        if(filterId && selectedFilter === 'CAIXA'){
+            const filterCaixa = caixa.filter((cxa) => cxa?.id.includes(filterId));
+            setCaixaList(filterCaixa);
+            listFilterCliCax();
+        }
+
+        //FILTRANDO PELO NOME CAIXA
+        if(!filterId && listName && selectedFilter === 'CAIXA'){
+            const filterCaixa = caixa.filter((cxa) => cxa?.colaborador.usuario?.nome.includes(listName));
+            setCaixaList(filterCaixa);
+            listFilterCliCax();
+        }
+
+        //FILTRANDO TODOS
+        if(!listName && !filterId){
+            clearFilter();
+        }
     }
 
-    // useEffect(() => {
-    //     const delayDebounceFn = setTimeout(() => {
-    //         handleFilterId();
-    //     }, 300);
+    // FUNÇÃO LIMPAR FILTRO
+    function clearFilter() {
+        setClienteList(cliente);
+        setCaixaList(caixa);
+        setFilterId('');
+        setListName('');
+    }
 
-    //     return () => clearTimeout(delayDebounceFn);
-    // }, [filterId]);
+    //FUNCAO LISTAR CLIENTE OU CAIXA ABERTO
+    function listFilterCliCax(){
+        if (selectedFilter === 'CLIENTE') {
+            // Renderiza a lista de clientes
+            return (
+                <ol className={styles.list}>
+                    {clienteList.map(cli => (
+                        <li key={cli.id}>
+                            <span className={styles.idDetail}>{cli.id}</span>
+                            <span onClick={() => setClienteId(cli.id)} className={styles.nameDetail}>{cli.usuario.nome}</span>
+                            <span>{cli.situacao ? 'ATIVO' : 'INATIVO'}</span>          
+                        </li>
+                    ))}
+                </ol>
+            );
+        } else if (selectedFilter === 'CAIXA') {
+            // Renderiza a lista de caixas
+            return (
+                <ol className={styles.list}>
+                    {caixaList.map(cax => (
+                        <li key={cax.id}>
+                            <span className={styles.idDetail}>{cax.id}</span>
+                            <span onClick={() => setCaixaId(cax.id)} className={styles.nameDetail}>{cax.colaborador?.usuario?.nome}</span>
+                            <span>{cax?.status ? 'ABERTO' : 'FECHADO'}</span>          
+                        </li>
+                    ))}
+                </ol>
+            );
+        }
+    
+        // Retorna null quando nenhum filtro está selecionado
+        return null;
+    }
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            handlefilterCliCax();
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [filterId, listName]);
+
+    //CARREGANDO NOME DE CLIENTE E CAIXA DA LISTA
+    function loadingList(){
+        if (selectedFilter === 'CLIENTE') {
+            const filterCliente = cliente.find(cli => cli.id === cliente_id);
+            if (filterCliente) {
+                setClienteName(filterCliente.usuario.nome);
+                setFilterId('');
+            }
+        }
+
+        if(selectedFilter === 'CAIXA'){
+            const filterCaixa = caixa.find(cax => cax.id === caixa_id);
+            const statusCaixa = filterCaixa?.status;
+            if (filterCaixa && statusCaixa) {
+                setCaixaName(filterCaixa?.colaborador?.usuario?.nome);
+                setFilterId('');
+            }
+        }
+    }
+    useEffect(() => {
+        loadingList()
+    }, [caixa_id, cliente_id]);
 
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
@@ -131,6 +233,10 @@ export default function NewOrder({ cliente, caixa }: ListProps){
                             <div className={styles.filter}>
                                 <Input placeholder='CÓDIGO' value={filterId} onChange={(e) => setFilterId(e.target.value)} style={{width: '250px'}} onKeyDown={handleFilterId}/>
                             </div>
+
+                            <div className={styles.filter}>
+                                <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}} />
+                            </div>
                             
                             <div className={styles.filter}>
                                 <select 
@@ -144,7 +250,7 @@ export default function NewOrder({ cliente, caixa }: ListProps){
                                     <option value="CAIXA">CAIXA</option>
                                 </select>
 
-                                <Button type='button' ><FcSearch  size={28}/></Button>
+                                <Button onClick={handlefilterCliCax}  type='button' ><FcSearch  size={28}/></Button>
                             </div>                       
                             
                         </div>
@@ -164,7 +270,9 @@ export default function NewOrder({ cliente, caixa }: ListProps){
                             }}>ABRIR PEDIDO
                         </Button>
                         
-                        
+                        <article className={styles.listContainer}>
+                            {listFilterCliCax()}
+                        </article>
                     </div>
                 </main>
         </div>
