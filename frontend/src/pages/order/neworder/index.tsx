@@ -197,9 +197,9 @@ export default function NewOrder({ cliente, caixa }: ListProps){
             })
             .then(response => {
                 toast.success('PEDIDO ABERTO!');
-                //router.push(`/order/cupomfiscal/${response.data.order.id}`);
+                //router.push(`/order/cart/${response.data.order.id}`);
                 const id = response.data.id;
-                router.push(`/order/cupomfiscal/${id}`);
+                router.push(`/order/cart/${id}`);
             })
 
         } catch (error: any) {

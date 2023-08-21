@@ -1,0 +1,116 @@
+div.loadingContainer{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.loadingContainer .loading{
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    top: 50%;
+
+    animation: animate 2s infinite;
+}
+
+//Avimando o Loading do button
+@keyframes animate{
+    from{
+        transform: rotate(0);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+div.container{
+    width: 100%;
+    height: 100vh;
+}
+
+main.containerBody{
+    width: 100%;
+    height: 79.5vh;
+    margin-top: .5vh;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+// RIGTH CONTAINER
+main.containerBody div.rigthContainer{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+}
+
+div.rigthContainer form.container{
+    width: 98%;
+    height: 98%;
+
+    background-color: var(--gray-900);
+}
+
+form.container div.nameContainer{
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+
+    label{
+        max-width: 145px;
+        margin-left: 20px;
+        z-index: 1;
+        color: var(--white);
+        font-size: 18px;
+        font-family: 'Ubuntu', sans-serif;
+    }  
+
+}
+
+form.container div.cartContainer{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: -20px;
+
+    background-color: blue;
+}
+
+div.cartContainer div.productConteiner{
+    width: 35%;
+    height: 90%;
+
+    background-color: aqua;
+}
+
+div.cartContainer div.taxCouponConteiner{
+    width: 60%;
+}
+
+div.div.taxCouponConteiner div.product{
+
+}
+
+div.product img.imgProduct{
+    border: 2px solid var(--green-700);
+    padding: 3px; 
+    max-width: 100%;
+    height: auto;
+    display: block;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
