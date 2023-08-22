@@ -51,23 +51,52 @@ export default function CupomFiscal() {
               {/* <h1 style={{color: '#FFF'}}>{id}</h1> */}
               <form className={styles.container}>
                 <div className={styles.nameContainer}>
-                  <label htmlFor="name">Nome do Produto</label>
-                  <Input type='text' placeholder='Produto' disabled />
+                  <label htmlFor="name">NOME DO PRODUTO</label>
+                  <Input type='text' id='name' placeholder='Produto' disabled />
                 </div>
 
                 <div className={styles.cartContainer}>
                   <div className={styles.productConteiner}>
                     <div className={styles.product}>
                       {/* <Image src={url + '/' + prod.produto.foto} alt='Imagem produto' width={80} height={100}/> */}
-                      <Image src={url + '/' + 'd379453d1bba09f4b7fcf039fe735219-camiseta-nike-preta.jpg'} alt='Imagem produto' width={140} height={190} className={styles.imgProduct}/>
+                      <Image src={url + '/' + 'd379453d1bba09f4b7fcf039fe735219-camiseta-nike-preta.jpg'} alt='Imagem produto' width={180} height={210} className={styles.imgProduct}/>
+
+                      <div className={styles.inputContainer}>
+                        <div className={styles.input}>
+                          <label htmlFor="cod" className={styles.labelInput}>CÓDIGO</label>
+                          <Input type='text' id='cod' />
+                        </div>
+
+                        <div className={styles.input}>
+                          <label htmlFor="qtd" className={styles.labelInput}>QUANTIDADE</label>
+                          <Input type='number' id='qtd' placeholder='0' />
+                        </div>
+
+                        <div className={styles.input}>
+                          <label htmlFor="valUnit" className={styles.labelInput}>VALOR UNIT.</label>
+                          <Input type='text' id='valUnit' placeholder='0' disabled />
+                        </div>
+
+                        <div className={styles.input}>
+                          <label htmlFor="valTot" className={styles.labelInput}>VALOR TOTAL.</label>
+                          <Input type='text' id='valTot' placeholder='0' disabled/>
+                        </div>
+                      </div>
                     </div>
 
-                    <div className={styles.menu}>
-                      <h5>Menu</h5>
-                      <span>F2 - Pesquisar Produtos</span>
-                      <span>F2 - Cancelar Produtos</span>
-                      <span>F2 - Cancelar Venda</span>
-                      <span>F2 - Finalizar Venda</span>
+                    <h5>Menu</h5>
+
+                    <div className={styles.containerMenu}>
+                      <div className={styles.menu}>
+                        <span>F2 - Pesquisar Produtos</span>
+                        <span>F3 - Excluir Produtos</span>
+                        <span>F4 - Alterar Quantidade</span>
+                      </div>
+
+                      <div className={styles.menu}>
+                        <span>F5 - Cancelar Venda</span>
+                        <span>F6 - Finalizar Venda</span>
+                      </div>
                     </div>
                   </div>
 

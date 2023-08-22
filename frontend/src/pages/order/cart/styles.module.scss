@@ -69,7 +69,6 @@ form.container div.nameContainer{
     flex-direction: column;
 
     label{
-        max-width: 145px;
         margin-left: 20px;
         z-index: 1;
         color: var(--white);
@@ -88,22 +87,69 @@ form.container div.cartContainer{
     justify-content: center;
     margin-top: -20px;
 
-    background-color: blue;
+    //background-color: blue;
 }
 
 div.cartContainer div.productConteiner{
     width: 35%;
-    height: 90%;
+    height: 100%;
 
-    background-color: aqua;
+    h5{
+        margin-top: 20px;
+        font-family: 'Ubuntu', sans-serif;
+        margin-left: 10px;
+    }
+
+    //background-color: aqua;
 }
 
-div.cartContainer div.taxCouponConteiner{
-    width: 60%;
+div.productConteiner div.product{
+    display: flex;
+    flex-flow: row wrap;
 }
 
-div.div.taxCouponConteiner div.product{
+div.product div.inputContainer{
+    display: flex;
+    flex-direction: column;
+}
 
+div.inputContainer div.input{
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+
+    input{
+        margin-left: -5px;
+        margin-bottom: 12px;
+    }
+}
+
+div.input label.labelInput{
+    font-family: 'Ubuntu', sans-serif;
+    margin-bottom: 3px;
+}
+
+div.productConteiner div.containerMenu{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-top: 10px;
+    background-color: var(--white);
+    width: 95%;
+    height: 5rem;
+    border: 2px solid var(--green-700);
+    border-radius: 0.4rem;
+}
+
+div.productConteiner div.menu{
+    display: flex;
+    flex-direction: column;
+
+    span{
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 14px;
+        margin: 5px 15px;
+    }
 }
 
 div.product img.imgProduct{
@@ -114,3 +160,12 @@ div.product img.imgProduct{
     display: block;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
+div.cartContainer div.taxCouponConteiner{
+    width: 60%;
+}
+
+div.div.taxCouponConteiner div.product{
+
+}
+
