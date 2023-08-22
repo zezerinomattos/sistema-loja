@@ -92,15 +92,13 @@ form.container div.cartContainer{
 
 div.cartContainer div.productConteiner{
     width: 35%;
-    height: 100%;
+    //height: 100%;
 
     h5{
         margin-top: 20px;
         font-family: 'Ubuntu', sans-serif;
         margin-left: 10px;
     }
-
-    //background-color: aqua;
 }
 
 div.productConteiner div.product{
@@ -163,9 +161,47 @@ div.product img.imgProduct{
 
 div.cartContainer div.taxCouponConteiner{
     width: 60%;
+    height: 100%;
+    border: 2px solid var(--green-700);
+    border-radius: 0.4rem;
+    background-color: #F0D8B7;
 }
 
-div.div.taxCouponConteiner div.product{
+div.taxCouponConteiner div.taxCuponTitle{
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(rgba(7,140,49,55) 0%, rgba(6,89,2,35)50%, rgba(6,89,2,35)100%);
+    border-bottom: 2px solid var(--green-700);;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    h1{
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 18px;
+        color: var(--white);
+    }
+}
+
+div.taxCouponConteiner div.taxCuponHeader{
+    width: 100%;
+    height: 20px;
+    border-top: 1px dashed;
+    border-bottom: 1px dashed ;
+    margin-top: 5px;
+    padding: 0 10px;
+
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    //justify-content: space-between;
+
+    span{
+        width: 100px;
+        display: flex;
+        justify-content: end;
+        margin-right: 5px;
+        font-size: 12px;
+    }
 }
 

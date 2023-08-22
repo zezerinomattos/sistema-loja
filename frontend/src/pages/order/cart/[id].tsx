@@ -100,7 +100,19 @@ export default function CupomFiscal() {
                     </div>
                   </div>
 
-                  <div className={styles.taxCouponConteiner}></div>
+                  <div className={styles.taxCouponConteiner}>
+                    <div className={styles.taxCuponTitle}>
+                      <h1>LISTA DE PRODUTOS</h1>
+                    </div>
+
+                    <div className={styles.taxCuponHeader}>
+                      <span style={{width: '150px', justifyContent:'left'}}>COD</span>
+                      <span style={{width: '260px', justifyContent:'left'}}>PRODUTO</span>
+                      <span style={{width: '50px'}}>QTDE</span>
+                      <span>V. UNIT</span>
+                      <span>V. TOTAL</span>
+                    </div>
+                  </div>
                 </div>
               </form>
             </div>
