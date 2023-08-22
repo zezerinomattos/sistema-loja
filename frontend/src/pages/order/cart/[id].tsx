@@ -59,7 +59,7 @@ export default function CupomFiscal() {
                   <div className={styles.productConteiner}>
                     <div className={styles.product}>
                       {/* <Image src={url + '/' + prod.produto.foto} alt='Imagem produto' width={80} height={100}/> */}
-                      <Image src={url + '/' + 'd379453d1bba09f4b7fcf039fe735219-camiseta-nike-preta.jpg'} alt='Imagem produto' width={180} height={210} className={styles.imgProduct}/>
+                      <Image src={url + '/' + 'd379453d1bba09f4b7fcf039fe735219-camiseta-nike-preta.jpg'} alt='Imagem produto' width={180} height={210} className={styles.imgProduct}/> 
 
                       <div className={styles.inputContainer}>
                         <div className={styles.input}>
