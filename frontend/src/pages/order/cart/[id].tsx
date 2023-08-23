@@ -64,7 +64,7 @@ export default function CupomFiscal() {
                       <div className={styles.inputContainer}>
                         <div className={styles.input}>
                           <label htmlFor="cod" className={styles.labelInput}>CÓDIGO</label>
-                          <Input type='text' id='cod' />
+                          <Input type='text' id='cod' disabled/>
                         </div>
 
                         <div className={styles.input}>
@@ -112,6 +112,51 @@ export default function CupomFiscal() {
                       <span>V. UNIT</span>
                       <span>V. TOTAL</span>
                     </div>
+
+                    <article className={styles.addProduct}>
+                      <ol className={styles.list}>
+                        <li>
+                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
+                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
+                          <span style={{width: '50px'}}>1</span>
+                          <span>{`R$ 78,98`}</span>
+                          <span>{`R$ 78,98`}</span>
+                        </li>
+
+                        <li>
+                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
+                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
+                          <span style={{width: '50px'}}>1</span>
+                          <span>{`R$ 78,98`}</span>
+                          <span>{`R$ 78,98`}</span>
+                        </li>
+
+                        <li>
+                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
+                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
+                          <span style={{width: '50px'}}>1</span>
+                          <span>{`R$ 78,98`}</span>
+                          <span>{`R$ 78,98`}</span>
+                        </li>
+
+                        <li>
+                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
+                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
+                          <span style={{width: '50px'}}>1</span>
+                          <span>{`R$ 78,98`}</span>
+                          <span>{`R$ 78,98`}</span>
+                        </li>
+
+                        <li>
+                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
+                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
+                          <span style={{width: '50px'}}>1</span>
+                          <span>{`R$ 78,98`}</span>
+                          <span>{`R$ 78,98`}</span>
+                        </li>
+                        
+                      </ol>
+                    </article>
                   </div>
                 </div>
               </form>
