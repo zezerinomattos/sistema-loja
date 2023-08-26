@@ -1,0 +1,15 @@
+div.container{
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h1{
+        margin: 1rem;
+        color: var(--white);
+        text-shadow: 1px 1px 2px #0a0a0a;
+        font-family: 'Ubuntu', sans-serif;
+    }
+}

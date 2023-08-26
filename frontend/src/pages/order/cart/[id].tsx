@@ -4,6 +4,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
+import Modal from 'react-modal';
 
 
 //MY IMPORTS
@@ -12,6 +13,8 @@ import { Header } from '@/components/Header';
 import { Presentation } from '../../../components/Presentation';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
+import { ModalListProductos } from '../../../components/ModalOrder/ModalListProductos';
+import { ProductDetailProps, ProductApiResponse } from '../../product/listproduct';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -29,7 +32,42 @@ export default function CupomFiscal() {
     const [loading, setLoaging] = useState(false);
     const [message, setMessage] = useState('');
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalProduct, setModalProduct] = useState<ProductApiResponse[]>();
+
     const url = 'http://localhost:3333/files/';
+
+    //FUNCAO PARA LISTAR PRODUTOS
+    const handleKeyDown = async (event: KeyboardEvent) => {
+      // Verificar se a tecla Shift e a tecla A foram pressionadas
+      // if (event.key === 'P' && event.shiftKey) {
+      //   await api.get('/produto/detail', {
+      //     params: {
+      //         produto_id: id,
+      //     }
+      //   })
+      //   .then(response => {
+      //       setModalProduct([response.data])
+      //       setModalVisible(true);
+      //   });
+      // }
+      if (event.key === 'P' && event.shiftKey) {
+        setModalVisible(true);
+      }
+      
+    };
+    
+    useEffect(() => {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, []);
+
+    // FUNCAO FECHAR MODAL
+    function handleCloseModal(){
+      setModalVisible(false);
+    }
 
     useEffect(() => {
       //Escondendo o loading quando ele montar completamente o componente
@@ -39,6 +77,8 @@ export default function CupomFiscal() {
     if (carregando) {
         return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
     }
+
+    Modal.setAppElement('#__next');
   
     return (
       <div className={styles.container}>
@@ -88,14 +128,14 @@ export default function CupomFiscal() {
 
                     <div className={styles.containerMenu}>
                       <div className={styles.menu}>
-                        <span>F2 - Pesquisar Produtos</span>
-                        <span>F3 - Excluir Produtos</span>
-                        <span>F4 - Alterar Quantidade</span>
+                        <span>Shif + P - Pesquisar Prod.</span>
+                        <span>Shif + X- Excluir Prod.</span>
+                        <span>Shif + A - Alterar Quant.</span>
                       </div>
 
                       <div className={styles.menu}>
-                        <span>F5 - Cancelar Venda</span>
-                        <span>F6 - Finalizar Venda</span>
+                        <span>Shif + C - Cancel. Venda</span>
+                        <span>Shif + F - Finalizar Venda</span>
                       </div>
                     </div>
                   </div>
@@ -162,6 +202,14 @@ export default function CupomFiscal() {
               </form>
             </div>
         </main>
+        {
+          modalVisible && (
+            <ModalListProductos 
+              isOpen={modalVisible}
+              onRequestClose={handleCloseModal}
+            />
+          )
+        }
       </div>
     );
 }

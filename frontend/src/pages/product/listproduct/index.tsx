@@ -12,7 +12,6 @@ import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
 import { ModalProduct } from '../../../components/ModalProduct';
-import { ModalFactory } from '../../../components/ModalFactory';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -117,7 +116,6 @@ export default function ListProduct({ product }: ListProps){
         });
     }
     
-    console.log(modalProduct);
     // FUNCAO FECHAR MODAL
     function handleCloseModal(){
         setModalVisible(false);
