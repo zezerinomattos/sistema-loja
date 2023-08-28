@@ -27,7 +27,7 @@ export function ModalListProductos({ isOpen, onRequestClose }: ModalProps){
     return(
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
             <div className={styles.container}>
-            <h1>PRODUTOS</h1>
+            
             </div>
         </Modal>
     )
