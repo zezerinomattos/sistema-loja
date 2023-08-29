@@ -23,6 +23,8 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
     const [listName, setListName] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('PRODUTO');
 
+    const [productList, setProductList] = useState(productLyList || []);
+
     //SELECIONANDO QUAL LINHA ESTA DA LISTA
     const [selectedItemIndex, setSelectedItemIndex] = useState(0);
     
@@ -39,9 +41,64 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
     };
 
     // FUNCAO FILTRO 
-    function filterFactory(){
-        alert('Ok');
+    function filterProduct(){
+        //FILTRANDO SE TEM ID
+        if(listId){
+            const filterProd = productLyList.filter((prod) => prod.lisProduct[0].id.includes(listId));
+            setProductList(filterProd);
+        }
+
+        //FILTRANDO PELO NOME
+        if(!listId && listName && selectedFilter === 'PRODUTO'){
+            const filterProduct = productLyList.filter((prod) => prod.lisProduct[0].nome_produto.includes(listName));
+            setProductList(filterProduct);
+        }
+
+        //FILTRANDO PELO SECAO
+        if(!listId && listName && selectedFilter === 'SECAO'){
+            const filterSection = productLyList.filter((prod) => prod.lisProduct[0].secao.nome_secao.includes(listName));
+            setProductList(filterSection);
+        }
+
+        //FILTRANDO PELO CATEGORIA
+        if(!listId && listName && selectedFilter === 'CATEGORIA'){
+            const filterCategory = productLyList.filter((prod) => prod.lisProduct[0].categoria.nome_categoria.includes(listName));
+            setProductList(filterCategory);
+        }
+
+        //FILTRANDO PELO REPRESENTANTE
+        if(!listId && listName && selectedFilter === 'REPRESENTANTE'){
+            const filterRepresentative = productLyList.filter((prod) => prod.lisProduct[0].representante.usuario.nome.includes(listName));
+            setProductList(filterRepresentative);
+        }
+
+        //FILTRANDO PELO FABRICA
+        if(!listId && listName && selectedFilter === 'FABRICA'){
+            const filterFactory = productLyList.filter((prod) => prod.lisProduct[0].fabrica.empresa.includes(listName));
+            setProductList(filterFactory);
+        }
+
+        //FILTRANDO TODOS
+        if(!listName && !listId){
+            clearFilter();
+        }
     }
+
+    // FUNÇÃO LIMPAR FILTRO
+    function clearFilter() {
+        setProductList(productLyList);
+        setListId('');
+        setListName('');
+    }
+
+    // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            filterProduct();
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [listName]);
 
     return(
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
@@ -74,14 +131,14 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
                     </div>
 
                     <div className={styles.filter}>
-                        <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                        <button onClick={filterProduct} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                     </div>
                 </div>
 
                 <article className={styles.listContainer}>
                     
                     <ol className={styles.list}>
-                        {productLyList.map((prod, index)=> (
+                        {productList.map((prod, index)=> (
                             <li 
                                 key={prod.lisProduct[0].id}
                                 className={index === 0 ? styles.firstItemHover : ''}
