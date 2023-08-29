@@ -122,6 +122,10 @@ article.listContainer ol.list{
             background-color: var(--green-700);
         }
     }
+
+    &.selectedItem {
+        background-color: var(--green-700);
+    }
 }
 
 article.listContainer ol.list li span.idDetail{
@@ -132,3 +136,4 @@ article.listContainer ol.list li span.nameDetail{
     width: 300px;
     cursor: pointer;
 }
+

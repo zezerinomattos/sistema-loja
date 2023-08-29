@@ -70,7 +70,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
         setModalProduct(list);
         setModalVisible(true);
       }
-      
+
     };
     
     useEffect(() => {
@@ -237,8 +237,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
   //@ts-ignore
   const apiProduct = setupAPIClient(ctx);
   const response = await apiProduct.get('produto');
-
-  console.log(response.data);
+  
   return{
       props: {
           lisProduct: response.data

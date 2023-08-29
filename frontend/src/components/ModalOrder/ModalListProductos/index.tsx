@@ -22,6 +22,9 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('PRODUTO');
+
+    //SELECIONANDO QUAL LINHA ESTA DA LISTA
+    const [selectedItemIndex, setSelectedItemIndex] = useState(0);
     
     const customStyles = {
         content: {
@@ -76,9 +79,13 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
                 </div>
 
                 <article className={styles.listContainer}>
+                    
                     <ol className={styles.list}>
-                        {productLyList.map(prod => (
-                            <li key={prod.lisProduct[0].id}>
+                        {productLyList.map((prod, index)=> (
+                            <li 
+                                key={prod.lisProduct[0].id}
+                                className={index === 0 ? styles.firstItemHover : ''}
+                            >
                                 <span className={styles.idDetail}>{prod.lisProduct[0].id}</span>
                                 <span className={styles.nameDetail}>{prod.lisProduct[0].nome_produto}</span>
                                 <span>{prod.lisProduct[0].marca}</span>
