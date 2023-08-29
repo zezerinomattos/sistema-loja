@@ -39,7 +39,7 @@ type ProductProps = {
     }
 }
 
-interface ListProps{
+export interface ListProps{
     product: ProductProps[];
 }
 

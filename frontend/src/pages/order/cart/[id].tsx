@@ -14,7 +14,8 @@ import { Presentation } from '../../../components/Presentation';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 import { ModalListProductos } from '../../../components/ModalOrder/ModalListProductos';
-import { ProductDetailProps, ProductApiResponse } from '../../product/listproduct';
+
+import { ProductDetailProps, ProductApiResponse} from '../../product/listproduct';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -22,7 +23,32 @@ import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth
 import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
-export default function CupomFiscal() {
+export type ProductProps = {
+  id: string;
+  nome_produto: string;
+  marca: string;
+  preco_venda: string;
+  secao: {
+      nome_secao: string;
+  };
+  categoria: {
+      nome_categoria: string;
+  };
+  representante: {
+      usuario: {
+          nome: string;
+      }
+  };
+  fabrica: {
+      empresa: string;
+  }
+}
+
+export interface ListProps{
+  lisProduct: ProductProps[];
+}
+
+export default function CupomFiscal({ lisProduct }: ListProps) {
     const router = useRouter();
     const id = router.query.id; // Acessando o parâmetro Id da URL
     const orderId = id?.toString();
@@ -33,25 +59,15 @@ export default function CupomFiscal() {
     const [message, setMessage] = useState('');
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalProduct, setModalProduct] = useState<ProductApiResponse[]>();
+    const [modalProduct, setModalProduct] = useState<ListProps[]>();
 
     const url = 'http://localhost:3333/files/';
 
-    //FUNCAO PARA LISTAR PRODUTOS
+    //FUNCAO PARA LISTAR PRODUTOS E ABRIR O MODAL
     const handleKeyDown = async (event: KeyboardEvent) => {
-      // Verificar se a tecla Shift e a tecla A foram pressionadas
-      // if (event.key === 'P' && event.shiftKey) {
-      //   await api.get('/produto/detail', {
-      //     params: {
-      //         produto_id: id,
-      //     }
-      //   })
-      //   .then(response => {
-      //       setModalProduct([response.data])
-      //       setModalVisible(true);
-      //   });
-      // }
       if (event.key === 'P' && event.shiftKey) {
+        const list: ListProps[] = lisProduct.map(prod => ({ lisProduct: [prod] })); 
+        setModalProduct(list);
         setModalVisible(true);
       }
       
@@ -203,10 +219,11 @@ export default function CupomFiscal() {
             </div>
         </main>
         {
-          modalVisible && (
+          modalVisible && modalProduct &&(
             <ModalListProductos 
               isOpen={modalVisible}
               onRequestClose={handleCloseModal}
+              productLyList={modalProduct}
             />
           )
         }
@@ -214,3 +231,17 @@ export default function CupomFiscal() {
     );
 }
 
+// Verificando pelo lado do servidor
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+
+  //@ts-ignore
+  const apiProduct = setupAPIClient(ctx);
+  const response = await apiProduct.get('produto');
+
+  console.log(response.data);
+  return{
+      props: {
+          lisProduct: response.data
+      }
+  }
+})
