@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState  } from 'react';
 import Modal from 'react-modal';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
+import { toast } from 'react-toastify';
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -10,6 +11,7 @@ import { ModalProduct } from '../../../components/ModalProduct';
 import { ProductDetailProps, ProductApiResponse } from '../../../pages/product/listproduct';
 
 import { ListProps, ProductProps } from '../../../pages/order/cart/[id]';
+import { api } from '../../../services/apiClient';
 
 interface ModalProps{
     isOpen: boolean;
@@ -22,6 +24,7 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('PRODUTO');
+    const [productSelected, setProductSelected] = useState<ProductApiResponse[]>();
 
     const [productList, setProductList] = useState(productLyList || []);
 
@@ -100,6 +103,22 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
         return () => clearTimeout(delayDebounceFn);
     }, [listName]);
 
+    //FUNCAO SELECIONA ITEM
+    async function handleSelectProduct(id: string){
+        await api.get('/produto/detail', {
+            params: {
+                produto_id: id,
+            }
+        })
+        .then(response => {
+            setProductSelected(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error(error.response.data.erro);
+        });
+    }
+
     return(
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
             <div className={styles.container}>
@@ -142,6 +161,7 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
                             <li 
                                 key={prod.lisProduct[0].id}
                                 className={index === 0 ? styles.firstItemHover : ''}
+                                onClick={() => handleSelectProduct(prod.lisProduct[0].id)}
                             >
                                 <span className={styles.idDetail}>{prod.lisProduct[0].id}</span>
                                 <span className={styles.nameDetail}>{prod.lisProduct[0].nome_produto}</span>
