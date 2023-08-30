@@ -10,6 +10,8 @@ import { Input } from '../../../components/Ui/Input';
 import { ModalProduct } from '../../../components/ModalProduct';
 import { ProductDetailProps, ProductApiResponse } from '../../../pages/product/listproduct';
 
+import { ModalOrderProducts } from '../../Utils/modalOrderproducts';
+
 import { ListProps, ProductProps } from '../../../pages/order/cart/[id]';
 import { api } from '../../../services/apiClient';
 
@@ -28,8 +30,9 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
 
     const [productList, setProductList] = useState(productLyList || []);
 
-    //SELECIONANDO QUAL LINHA ESTA DA LISTA
-    const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedColor ,setSelectedColor] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
     
     const customStyles = {
         content: {
@@ -111,13 +114,26 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
             }
         })
         .then(response => {
-            setProductSelected(response.data);
+            setProductSelected([response.data]);
+            setModalVisible(true);
+            //console.log([response.data]);
         })
         .catch(error => {
             console.log(error);
             toast.error(error.response.data.erro);
         });
     }
+
+    // FUNCAO FECHAR MODAL
+    function handleCloseModal(colorId: string, sizeId: string){
+        setSelectedColor(colorId);
+        setSelectedSize(sizeId);
+        setModalVisible(false);
+
+        alert(`Aqui ${sizeId}`);
+    }
+
+    Modal.setAppElement('#__next');
 
     return(
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
@@ -158,19 +174,30 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
                     
                     <ol className={styles.list}>
                         {productList.map((prod, index)=> (
-                            <li 
-                                key={prod.lisProduct[0].id}
-                                className={index === 0 ? styles.firstItemHover : ''}
-                                onClick={() => handleSelectProduct(prod.lisProduct[0].id)}
-                            >
-                                <span className={styles.idDetail}>{prod.lisProduct[0].id}</span>
-                                <span className={styles.nameDetail}>{prod.lisProduct[0].nome_produto}</span>
-                                <span>{prod.lisProduct[0].marca}</span>
-                                <span>{prod.lisProduct[0].preco_venda}</span>         
-                            </li>
+                            <>
+                                <li 
+                                    key={prod.lisProduct[0].id}
+                                    className={index === 0 ? styles.firstItemHover : ''}
+                                    onClick={() => handleSelectProduct(prod.lisProduct[0].id)}
+                                >
+                                    <span className={styles.idDetail}>{prod.lisProduct[0].id}</span>
+                                    <span className={styles.nameDetail}>{prod.lisProduct[0].nome_produto}</span>
+                                    <span>{prod.lisProduct[0].marca}</span>
+                                    <span>{prod.lisProduct[0].preco_venda}</span>       
+                                </li> 
+                            </>
                         ))}
                     </ol>
                 </article>
+                {
+                    productSelected && (
+                        <ModalOrderProducts 
+                            isOpen={modalVisible}
+                            onRequestClose={handleCloseModal}
+                            productSelected={productSelected}
+                        />
+                    )
+                }
             </div>
         </Modal>
     )

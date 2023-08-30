@@ -14,9 +14,11 @@ class DetailProdutoService{
             include:{
                 produto_cor:{
                     select: {
+                        id: true,
                         cor: true,
                         produto_tamanhos_estoque: {
                             select:{
+                                id: true,
                                 tamanho: true,
                                 estoque: true
                             },

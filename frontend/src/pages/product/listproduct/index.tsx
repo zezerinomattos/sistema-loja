@@ -61,8 +61,10 @@ export type ProductDetailProps = {
     fabrica_id: string;
     representante_id: string;
     produto_cor: Array<{
+        id: string;
         cor: string;
         produto_tamanhos_estoque: Array<{
+            id: string;
             tamanho: string;
             estoque: number;
         }>;
