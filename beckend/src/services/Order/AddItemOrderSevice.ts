@@ -109,13 +109,19 @@ class AddItemOrderSevice{
                 estoque: tamanhoEstoque.estoque - qtd,
             },
         });
+
+        const produtoInfo = {
+            nome_produto: produto.nome_produto,
+            preco_venda: produto.preco_venda,
+        };
         
         return{
             item,
             precoTotalItem,
             desconto_atual,
             desconto_maximo,
-            produtoEstoque,        
+            produtoEstoque,
+            produtoInfo          
         }
     }
 }

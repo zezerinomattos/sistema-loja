@@ -48,6 +48,31 @@ export interface ListProps{
   lisProduct: ProductProps[];
 }
 
+type ItemAddProps = {
+  item: {
+    id: string;
+    qtd: number;
+    preco: number;
+    order_id: string;
+    produto_id: string;
+    cor_id: string;
+    tamanho_id: string;
+  }
+  precoTotalItem: number;
+  desconto_atual: number;
+  desconto_maximo: number;
+  produtoEstoque: {
+    id: string;
+    tamanho: string;
+    estoque: number;
+    produtoCor_id: string;
+  }
+  produtoInfo:{
+    nome_produto: string;
+    preco_venda: string;
+  }
+}
+
 export default function CupomFiscal({ lisProduct }: ListProps) {
     const router = useRouter();
     const id = router.query.id; // Acessando o parâmetro Id da URL
@@ -65,6 +90,9 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     const [amount, setAmount] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0)
     const [selectedName, setSelectedName] = useState('');
+
+    const [responseItemAdd, setResponseItemAdd] = useState<ItemAddProps[]>([]);
+    const [addedItems, setAddedItems] = useState<ItemAddProps[]>([]);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalProduct, setModalProduct] = useState<ListProps[]>();
@@ -98,13 +126,61 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
       setModalVisible(false);
     }
-
+    //CALCULO DE VALOR TOTAL DE PRODUTO
     useEffect(() => {
       if (selectedProductId !== '') { // Alterado de null para uma string vazia
           const total = selectedPrice * amount; // Não é necessário parseInt para um número
           setTotalPrice(total);
       }
   }, [selectedPrice, amount]);
+
+  //FUNCAO QUE ADICIONA ITEM NO BANCO E CUPOM FISCAL
+  const handleQuantityInputKeyPress = async(event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+
+      if(!amount || amount < 1){
+        toast.error('INFORME A QUANTIDADE DO PRODUTO!');
+        return;
+      }
+
+      await api.post('/add/order', {
+        qtd: amount,
+        order_id: orderId,
+        produto_id: selectedProductId,
+        cor_id: selectedColorId,
+        tamanho_id: selectedSizeId
+      })
+      .then(response => {
+        const newItem: ItemAddProps = response.data;
+        setAddedItems([...addedItems, newItem]);
+        setResponseItemAdd([...addedItems, newItem]); // Atualize responseItemAdd também
+        toast.success('ITEM ADICIONADO!');
+
+        setSelectedProductId('');
+        setSelectedColorId('');
+        setSelectedSize('');
+        setAmount(0);
+        setSelectedName('');
+        setTotalPrice(0);
+        setSelectedPrice(0);
+
+      })
+      .catch(error => {
+        console.log(error);
+        toast.error(error.response.data.erro);
+
+        setSelectedProductId('');
+        setSelectedColorId('');
+        setSelectedSize('');
+        setAmount(0);
+        setSelectedName('');
+        setTotalPrice(0);
+        setSelectedPrice(0);
+      });
+      
+    }
+  } 
 
     useEffect(() => {
       //Escondendo o loading quando ele montar completamente o componente
@@ -146,7 +222,14 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
                         <div className={styles.input}>
                           <label htmlFor="qtd" className={styles.labelInput}>QUANTIDADE</label>
-                          <Input type='number' id='qtd' placeholder='0' value={amount} onChange={(e) => setAmount(Number(e.target.value))}/>
+                          <Input 
+                            type='number' 
+                            id='qtd' 
+                            placeholder='0' 
+                            value={amount} onChange={(e) => setAmount(Number(e.target.value))}
+                            onKeyDown={handleQuantityInputKeyPress}
+                          />
+                          {/* <Button type='submit' loading={loading} >ENTRAR</Button> */}
                         </div>
 
                         <div className={styles.input}>
@@ -192,46 +275,17 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
                     <article className={styles.addProduct}>
                       <ol className={styles.list}>
-                        <li>
-                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
-                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
-                          <span style={{width: '50px'}}>1</span>
-                          <span>{`R$ 78,98`}</span>
-                          <span>{`R$ 78,98`}</span>
+                      {addedItems.map((item) => (
+                        <li key={item.item.id}>
+                          <span className={styles.codProduct} style={{ width: '150px', justifyContent: 'left' }}>
+                            {item.item.id}
+                          </span>
+                          <span style={{ width: '260px', justifyContent: 'left' }}>{item.produtoInfo.nome_produto}</span>
+                          <span style={{ width: '50px' }}>{item.item.qtd}</span>
+                          <span>{`R$ ${item.item.preco}`}</span>
+                          <span>{`R$ ${item.precoTotalItem}`}</span>
                         </li>
-
-                        <li>
-                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
-                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
-                          <span style={{width: '50px'}}>1</span>
-                          <span>{`R$ 78,98`}</span>
-                          <span>{`R$ 78,98`}</span>
-                        </li>
-
-                        <li>
-                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
-                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
-                          <span style={{width: '50px'}}>1</span>
-                          <span>{`R$ 78,98`}</span>
-                          <span>{`R$ 78,98`}</span>
-                        </li>
-
-                        <li>
-                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
-                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
-                          <span style={{width: '50px'}}>1</span>
-                          <span>{`R$ 78,98`}</span>
-                          <span>{`R$ 78,98`}</span>
-                        </li>
-
-                        <li>
-                          <span className={styles.codProduct} style={{width: '150px', justifyContent:'left'}}>893a893b-1606-45d9-aaea-5d937a92d0dc</span>
-                          <span style={{width: '260px', justifyContent:'left'}}>CAMISETA  PASSEIO NIKE</span>
-                          <span style={{width: '50px'}}>1</span>
-                          <span>{`R$ 78,98`}</span>
-                          <span>{`R$ 78,98`}</span>
-                        </li>
-                        
+                      ))}
                       </ol>
                     </article>
                   </div>
