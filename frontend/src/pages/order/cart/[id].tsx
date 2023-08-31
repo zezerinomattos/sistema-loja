@@ -58,6 +58,14 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     const [loading, setLoaging] = useState(false);
     const [message, setMessage] = useState('');
 
+    const [selectedProductId, setSelectedProductId] = useState('');
+    const [selectedColorId ,setSelectedColorId] = useState('');
+    const [selectedSizeId, setSelectedSize] = useState('');
+    const [selectedPrice, setSelectedPrice] = useState<number>(0);
+    const [amount, setAmount] = useState<number>(0);
+    const [totalPrice, setTotalPrice] = useState<number>(0)
+    const [selectedName, setSelectedName] = useState('');
+
     const [modalVisible, setModalVisible] = useState(false);
     const [modalProduct, setModalProduct] = useState<ListProps[]>();
 
@@ -81,9 +89,22 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     }, []);
 
     // FUNCAO FECHAR MODAL
-    function handleCloseModal(){
+    function handleCloseModal(colorId: string, sizeId: string, productId: string, selectedName: string, selectedPrice: number){
+      setSelectedProductId(productId);
+      setSelectedColorId(colorId);
+      setSelectedSize(sizeId);
+      setSelectedPrice(selectedPrice);
+      setSelectedName(selectedName);
+
       setModalVisible(false);
     }
+
+    useEffect(() => {
+      if (selectedProductId !== '') { // Alterado de null para uma string vazia
+          const total = selectedPrice * amount; // Não é necessário parseInt para um número
+          setTotalPrice(total);
+      }
+  }, [selectedPrice, amount]);
 
     useEffect(() => {
       //Escondendo o loading quando ele montar completamente o componente
@@ -108,7 +129,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
               <form className={styles.container}>
                 <div className={styles.nameContainer}>
                   <label htmlFor="name">NOME DO PRODUTO</label>
-                  <Input type='text' id='name' placeholder='Produto' disabled />
+                  <Input value={selectedName} type='text' id='name' placeholder='Produto' disabled />
                 </div>
 
                 <div className={styles.cartContainer}>
@@ -120,22 +141,22 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
                       <div className={styles.inputContainer}>
                         <div className={styles.input}>
                           <label htmlFor="cod" className={styles.labelInput}>CÓDIGO</label>
-                          <Input type='text' id='cod' disabled/>
+                          <Input type='text' id='cod' disabled value={selectedProductId}/>
                         </div>
 
                         <div className={styles.input}>
                           <label htmlFor="qtd" className={styles.labelInput}>QUANTIDADE</label>
-                          <Input type='number' id='qtd' placeholder='0' />
+                          <Input type='number' id='qtd' placeholder='0' value={amount} onChange={(e) => setAmount(Number(e.target.value))}/>
                         </div>
 
                         <div className={styles.input}>
                           <label htmlFor="valUnit" className={styles.labelInput}>VALOR UNIT.</label>
-                          <Input type='text' id='valUnit' placeholder='0' disabled />
+                          <Input value={`R$ ${selectedPrice}`} type='text' id='valUnit' placeholder='0' disabled />
                         </div>
 
                         <div className={styles.input}>
                           <label htmlFor="valTot" className={styles.labelInput}>VALOR TOTAL.</label>
-                          <Input type='text' id='valTot' placeholder='0' disabled/>
+                          <Input value={`R$ ${totalPrice}`} type='text' id='valTot' placeholder='0' disabled/>
                         </div>
                       </div>
                     </div>

@@ -115,7 +115,7 @@ class AddItemOrderSevice{
             precoTotalItem,
             desconto_atual,
             desconto_maximo,
-            produtoEstoque,          
+            produtoEstoque,        
         }
     }
 }

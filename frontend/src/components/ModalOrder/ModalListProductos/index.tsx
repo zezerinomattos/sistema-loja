@@ -17,7 +17,7 @@ import { api } from '../../../services/apiClient';
 
 interface ModalProps{
     isOpen: boolean;
-    onRequestClose: () => void;
+    onRequestClose: (colorId: string, sizeId: string, productId: string, selectedName: string, selectedPrice: number) => void;
     productLyList: ListProps[];
 }
 
@@ -31,8 +31,12 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
     const [productList, setProductList] = useState(productLyList || []);
 
     const [modalVisible, setModalVisible] = useState(false);
+
+    const [selectedIdProduct, setSelectedIdProduct] = useState('');
     const [selectedColor ,setSelectedColor] = useState('');
     const [selectedSize, setSelectedSize] = useState('');
+    const [selectedPrice, setSelectedPrice] = useState<number>(0);
+    const [selectedName, setSelectedName] = useState('');
     
     const customStyles = {
         content: {
@@ -106,8 +110,10 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
         return () => clearTimeout(delayDebounceFn);
     }, [listName]);
 
-    //FUNCAO SELECIONA ITEM
+    //FUNCAO SELECIONA ITEM E ABRE MODAL DE COR
     async function handleSelectProduct(id: string){
+        setSelectedIdProduct(id);
+
         await api.get('/produto/detail', {
             params: {
                 produto_id: id,
@@ -124,19 +130,19 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
         });
     }
 
-    // FUNCAO FECHAR MODAL
+    // FUNCAO FECHAR MODAL DE COR E TAMANHO
     function handleCloseModal(colorId: string, sizeId: string){
         setSelectedColor(colorId);
         setSelectedSize(sizeId);
         setModalVisible(false);
 
-        alert(`Aqui ${sizeId}`);
+        onRequestClose(colorId, sizeId, selectedIdProduct, selectedName, selectedPrice);
     }
 
     Modal.setAppElement('#__next');
 
     return(
-        <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
+        <Modal isOpen={isOpen} onRequestClose={() => onRequestClose} style={customStyles}>
             <div className={styles.container}>
                 <h1>LISTA PRODUTOS</h1>
 
@@ -178,7 +184,12 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
                                 <li 
                                     key={prod.lisProduct[0].id}
                                     className={index === 0 ? styles.firstItemHover : ''}
-                                    onClick={() => handleSelectProduct(prod.lisProduct[0].id)}
+                                    // onClick={() => handleSelectProduct(prod.lisProduct[0].id)}
+                                    onClick={() => {
+                                        handleSelectProduct(prod.lisProduct[0].id);
+                                        setSelectedPrice(parseFloat(prod.lisProduct[0].preco_venda));
+                                        setSelectedName(prod.lisProduct[0].nome_produto);
+                                    }}
                                 >
                                     <span className={styles.idDetail}>{prod.lisProduct[0].id}</span>
                                     <span className={styles.nameDetail}>{prod.lisProduct[0].nome_produto}</span>
