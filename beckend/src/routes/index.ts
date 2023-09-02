@@ -56,6 +56,7 @@ import { ListByRepresentanteController } from '../controllers/Produto/ListByRepr
 import { CreateOrderController } from '../controllers/Order/CreateOrderController';
 import { DeleteOrderController } from '../controllers/Order/DeleteOrderController';
 import { AddItemOrderController } from '../controllers/Order/AddItemOrderController';
+import { EditItemOrderController } from '../controllers/Order/EditItemOrderController';
 import { DeleteItemController } from '../controllers/Order/DeleteItemController';
 import { EditOrderController } from '../controllers/Order/EditOrderController';
 import { SendOrderController } from '../controllers/Order/SendOrderController';
@@ -179,6 +180,7 @@ router.get('/representante/produto', isAuthenticated, new ListByRepresentanteCon
 router.post('/order', isAuthenticated, new CreateOrderController().handle);
 router.delete('/delete/order', isAuthenticated, new DeleteOrderController().handle);
 router.post('/add/order', isAuthenticated, new AddItemOrderController().handle);
+router.post('/edit/item', isAuthenticated, new EditItemOrderController().handle);
 router.delete('/delete/item', isAuthenticated, new DeleteItemController().handle);
 router.put('/edit/order', isAuthenticated, new EditOrderController().handle);
 router.put('/send/order', isAuthenticated, new SendOrderController().handle);
