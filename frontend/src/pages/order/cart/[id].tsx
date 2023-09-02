@@ -14,6 +14,7 @@ import { Presentation } from '../../../components/Presentation';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 import { ModalListProductos } from '../../../components/ModalOrder/ModalListProductos';
+import imgplaceholder from '../../../../public/placeholder.png'
 
 import { ProductDetailProps, ProductApiResponse} from '../../product/listproduct';
 
@@ -100,6 +101,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     const [modalProduct, setModalProduct] = useState<ListProps[]>();
 
     const url = 'http://localhost:3333/files/';
+    const [imgProduct, setImgProduct] = useState('');
 
     //FUNCAO PARA LISTAR PRODUTOS E ABRIR O MODAL
     const handleKeyDown = async (event: KeyboardEvent) => {
@@ -118,12 +120,13 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     }, []);
 
     // FUNCAO FECHAR MODAL
-    function handleCloseModal(colorId: string, sizeId: string, productId: string, selectedName: string, selectedPrice: number){
+    function handleCloseModal(colorId: string, sizeId: string, productId: string, selectedName: string, selectedPrice: number, imgProduct: string){
       setSelectedProductId(productId);
       setSelectedColorId(colorId);
       setSelectedSize(sizeId);
       setSelectedPrice(selectedPrice);
       setSelectedName(selectedName);
+      setImgProduct(imgProduct)
 
       setModalVisible(false);
     }
@@ -214,8 +217,8 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
                 <div className={styles.cartContainer}>
                   <div className={styles.productConteiner}>
                     <div className={styles.product}>
-                      {/* <Image src={url + '/' + prod.produto.foto} alt='Imagem produto' width={80} height={100}/> */}
-                      <Image src={url + '/' + 'd379453d1bba09f4b7fcf039fe735219-camiseta-nike-preta.jpg'} alt='Imagem produto' width={180} height={210} className={styles.imgProduct}/> 
+                      {/* <Image src={url + '/' + imgProduct} alt='Imagem produto' width={80} height={100}/> */}
+                      <Image src={imgProduct ? `${url}/${imgProduct}` : imgplaceholder} alt='Imagem produto' width={180} height={210} className={styles.imgProduct}/> 
 
                       <div className={styles.inputContainer}>
                         <div className={styles.input}>

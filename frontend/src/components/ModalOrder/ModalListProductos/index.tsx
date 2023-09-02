@@ -17,7 +17,7 @@ import { api } from '../../../services/apiClient';
 
 interface ModalProps{
     isOpen: boolean;
-    onRequestClose: (colorId: string, sizeId: string, productId: string, selectedName: string, selectedPrice: number) => void;
+    onRequestClose: (colorId: string, sizeId: string, productId: string, selectedName: string, selectedPrice: number, imgProduct: string) => void;
     productLyList: ListProps[];
 }
 
@@ -37,6 +37,8 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedPrice, setSelectedPrice] = useState<number>(0);
     const [selectedName, setSelectedName] = useState('');
+
+    const [imgProduct, setImgProduct] = useState('');
     
     const customStyles = {
         content: {
@@ -121,8 +123,9 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
         })
         .then(response => {
             setProductSelected([response.data]);
+            setImgProduct(response.data.produto.foto); 
             setModalVisible(true);
-            //console.log([response.data]);
+            //console.log(response.data.produto.foto);
         })
         .catch(error => {
             console.log(error);
@@ -136,7 +139,7 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
         setSelectedSize(sizeId);
         setModalVisible(false);
 
-        onRequestClose(colorId, sizeId, selectedIdProduct, selectedName, selectedPrice);
+        onRequestClose(colorId, sizeId, selectedIdProduct, selectedName, selectedPrice, imgProduct);
     }
 
     Modal.setAppElement('#__next');
