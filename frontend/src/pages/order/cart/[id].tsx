@@ -90,6 +90,8 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     const [amount, setAmount] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0)
     const [selectedName, setSelectedName] = useState('');
+    // Estado para rastrear o valor total dos itens
+    const [totalItemsValue, setTotalItemsValue] = useState<number>(0);
 
     const [responseItemAdd, setResponseItemAdd] = useState<ItemAddProps[]>([]);
     const [addedItems, setAddedItems] = useState<ItemAddProps[]>([]);
@@ -106,7 +108,6 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
         setModalProduct(list);
         setModalVisible(true);
       }
-
     };
     
     useEffect(() => {
@@ -155,6 +156,8 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
         const newItem: ItemAddProps = response.data;
         setAddedItems([...addedItems, newItem]);
         setResponseItemAdd([...addedItems, newItem]); // Atualize responseItemAdd também
+
+        setTotalItemsValue(totalItemsValue + newItem.precoTotalItem);
         toast.success('ITEM ADICIONADO!');
 
         setSelectedProductId('');
@@ -234,12 +237,12 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
                         <div className={styles.input}>
                           <label htmlFor="valUnit" className={styles.labelInput}>VALOR UNIT.</label>
-                          <Input value={`R$ ${selectedPrice}`} type='text' id='valUnit' placeholder='0' disabled />
+                          <Input value={`R$ ${selectedPrice.toFixed(2)}`} type='text' id='valUnit' placeholder='0' disabled />
                         </div>
 
                         <div className={styles.input}>
                           <label htmlFor="valTot" className={styles.labelInput}>VALOR TOTAL.</label>
-                          <Input value={`R$ ${totalPrice}`} type='text' id='valTot' placeholder='0' disabled/>
+                          <Input value={`R$ ${totalPrice.toFixed(2)}`} type='text' id='valTot' placeholder='0' disabled/>
                         </div>
                       </div>
                     </div>
@@ -287,8 +290,22 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
                         </li>
                       ))}
                       </ol>
+
+                      {/* VALOR TOTAL DE ITENS */}
+                      <div className={styles.valueOrderContainer}>
+                        <div className={styles.valueItens}>
+                          <label className={styles.itensLabel}>Itens</label>
+                          <span className={styles.itensValue}>{addedItems.length}</span>
+                        </div>
+
+                        <div className={`${styles.totalValue} ${styles.valueItens}`}>
+                          <label className={styles.itensLabel}>Sub Total</label>
+                          <span className={styles.itensValue}>{`R$ ${totalItemsValue.toFixed(2)}`}</span>
+                        </div>
+                      </div>
                     </article>
                   </div>
+
                 </div>
               </form>
             </div>

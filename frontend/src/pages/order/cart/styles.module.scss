@@ -161,7 +161,7 @@ div.product img.imgProduct{
 
 div.cartContainer div.taxCouponConteiner{
     width: 60%;
-    height: 100%;
+    height: 80%;
     border: 2px solid var(--green-700);
     border-radius: 0.4rem;
     background-color: #F0D8B7;
@@ -269,3 +269,47 @@ ol.list li span.codProduct{
     }
 }
 
+article.addProduct div.valueOrderContainer{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+div.valueOrderContainer div.valueItens, div.totalValue{
+    width: 150px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--green-700);
+    border-radius: 0.4rem;
+    padding: 0 10px;
+    margin-right: 20px;
+
+    position: relative;
+}
+
+div.valueItens label.itensLabel{
+    position: absolute;
+    left: 0;
+    top: -10px;
+    background-color: #F0D8B7;
+    color: var(--gray-900);
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+div.valueItens span.itensValue{
+    color: var(--gray-900);
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+div.valueOrderContainer div.totalValue{
+    width: 350px;
+}
