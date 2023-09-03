@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState  } from 'react';
+import React, { useEffect, useState  } from 'react';
 import Modal from 'react-modal';
 import { FcSearch } from "react-icons/fc";
-import { BsTrash } from "react-icons/bs";
 import { toast } from 'react-toastify';
 
 //MY IMPORTS

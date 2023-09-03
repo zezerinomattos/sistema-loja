@@ -14,6 +14,7 @@ import { Presentation } from '../../../components/Presentation';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 import { ModalListProductos } from '../../../components/ModalOrder/ModalListProductos';
+import { ModalDeleteItem } from '../../../components/ModalOrder/ModalDeleteItem';
 import imgplaceholder from '../../../../public/placeholder.png'
 
 import { ProductDetailProps, ProductApiResponse} from '../../product/listproduct';
@@ -100,18 +101,26 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalProduct, setModalProduct] = useState<ListProps[]>();
 
+    const [modalVisibleDelete, setModalVibleDelete] = useState(false);
+
     const url = 'http://localhost:3333/files/';
     const [imgProduct, setImgProduct] = useState('');
 
-    //FUNCAO PARA LISTAR PRODUTOS E ABRIR O MODAL
+    //FUNCAO PARA MENU TECLAS PRCIONADAS
     const handleKeyDown = async (event: KeyboardEvent) => {
+      //FUNCAO PARA LISTAR PRODUTOS E ABRIR O MODAL
       if (event.key === 'P' && event.shiftKey) {
         const list: ListProps[] = lisProduct.map(prod => ({ lisProduct: [prod] })); 
         setModalProduct(list);
         setModalVisible(true);
       }
+
+      //FUNCAO PARA EXCLUIR ITEM DE PRODUTO
+      if (event.key === 'X' && event.shiftKey) {
+        setModalVibleDelete(true);
+      }
     };
-    
+
     useEffect(() => {
       document.addEventListener('keydown', handleKeyDown);
       return () => {
@@ -119,7 +128,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
       };
     }, []);
 
-    // FUNCAO FECHAR MODAL
+    // FUNCAO FECHAR MODAL LISTA PRODUTO
     function handleCloseModal(colorId: string, sizeId: string, productId: string, selectedName: string, selectedPrice: number, imgProduct: string){
       setSelectedProductId(productId);
       setSelectedColorId(colorId);
@@ -130,10 +139,17 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
       setModalVisible(false);
     }
+
+    // FUNCAO FECHAR MODAL DELETE ITEM
+    function handleCloseModalDeleteItem(itemId: string){
+      alert(itemId);
+      setModalVibleDelete(false);
+    }
+
     //CALCULO DE VALOR TOTAL DE PRODUTO
     useEffect(() => {
       if (selectedProductId !== '') { // Alterado de null para uma string vazia
-          const total = selectedPrice * amount; // Não é necessário parseInt para um número
+          const total = selectedPrice * amount; 
           setTotalPrice(total);
       }
   }, [selectedPrice, amount]);
@@ -255,7 +271,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
                     <div className={styles.containerMenu}>
                       <div className={styles.menu}>
                         <span>Shif + P - Pesquisar Prod.</span>
-                        <span>Shif + X- Excluir Prod.</span>
+                        <span>Shif + X- Excluir Item</span>
                         <span>Shif + A - Alterar Quant.</span>
                       </div>
 
@@ -319,6 +335,15 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
               isOpen={modalVisible}
               onRequestClose={handleCloseModal}
               productLyList={modalProduct}
+            />
+          )
+        }
+
+        {
+          modalVisibleDelete && addedItems &&(
+            <ModalDeleteItem 
+              isOpen={modalVisibleDelete}
+              onRequestClose={handleCloseModalDeleteItem}
             />
           )
         }
