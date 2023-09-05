@@ -1,6 +1,7 @@
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
+
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -29,7 +30,6 @@ export function ModalDeleteItem({ isOpen, onRequestClose }: ModalProps){
     };
 
     const closeModal = () => {
-        alert(modalClosedByButton)
         // Feche o modal apenas quando o botão for clicado
         if (modalClosedByButton === true) {
           if(!selectedItemId){
@@ -41,9 +41,9 @@ export function ModalDeleteItem({ isOpen, onRequestClose }: ModalProps){
         }
 
         if (modalClosedByButton === false){
-            // setSelectedItemId('');
-            // await new Promise((resolve) => setTimeout(resolve, 5000)); // Aguarde 1 segundo 
-            // onRequestClose(selectedItemId);
+          //Se for false(fechar o modal de outra forma que não botao excluindo retorna vazio)
+            setSelectedItemId('');
+            onRequestClose('');
         }
     };
 
@@ -55,7 +55,7 @@ export function ModalDeleteItem({ isOpen, onRequestClose }: ModalProps){
         }
     
         handleAsyncCloseModal();
-      }, [modalClosedByButton]);
+    }, [modalClosedByButton]);
     
     function handleCloseModal() {
         // Feche o modal apenas quando o botão for clicado
@@ -68,7 +68,7 @@ export function ModalDeleteItem({ isOpen, onRequestClose }: ModalProps){
                 <h1>Excluir item</h1>
                 <div className={styles.inputContainer}>
                     <Input type='text' placeholder='CÓDIGO' onChange={(e) => setSelectedItemId(e.target.value)} value={selectedItemId}/>
-                    <Button type='button' onClick={handleCloseModal}>EXCLUIR ITEM</Button>
+                    <Button type='button' onClick={handleCloseModal} >EXCLUIR ITEM</Button>
                 </div>
             </div>
         </Modal>

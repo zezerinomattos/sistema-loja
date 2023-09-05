@@ -141,68 +141,97 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     }
 
     // FUNCAO FECHAR MODAL DELETE ITEM
-    function handleCloseModalDeleteItem(itemId: string){
-      alert(itemId);
-      setModalVibleDelete(false);
+    async function handleCloseModalDeleteItem(itemId: string){
+      //console.log(itemId);
+      if(itemId){
+        setModalVibleDelete(false);
+        await api.delete('/delete/item', {
+          params:{
+            item_id: itemId,
+          }
+        })
+        .then(response => {
+          toast.success('ITEM EXCLUIDO!');
+
+          // Atualize a lista de items após a exclusão bem-sucedida
+          updateAddedItemsAfterDelete(itemId);
+
+          // Calcule o novo valor total dos itens
+          setTotalItemsValue(totalItemsValue - response.data.deleteItem?.preco);
+        })
+        .catch(error => {
+          console.log(error);
+          toast.error(error.response.data.erro);
+        })
+      }else{
+        setModalVibleDelete(false);
+      }
+      
+    }
+
+    //FUNCAO QUE ATUALIZA O CUPOM AO DELETAR UM ITEM
+    function updateAddedItemsAfterDelete(itemIdToDelete: string) {
+      const updatedItems = addedItems.filter((item) => item.item.id !== itemIdToDelete);
+      setAddedItems(updatedItems);
     }
 
     //CALCULO DE VALOR TOTAL DE PRODUTO
     useEffect(() => {
-      if (selectedProductId !== '') { // Alterado de null para uma string vazia
-          const total = selectedPrice * amount; 
-          setTotalPrice(total);
+        if (selectedProductId !== '') { // Alterado de null para uma string vazia
+            const total = selectedPrice * amount; 
+            setTotalPrice(total);
+        }
+    }, [selectedPrice, amount]);
+
+    //FUNCAO QUE ADICIONA ITEM NO BANCO E CUPOM FISCAL
+    const handleQuantityInputKeyPress = async(event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+
+        if(!amount || amount < 1){
+          toast.error('INFORME A QUANTIDADE DO PRODUTO!');
+          return;
+        }
+
+        await api.post('/add/order', {
+          qtd: amount,
+          order_id: orderId,
+          produto_id: selectedProductId,
+          cor_id: selectedColorId,
+          tamanho_id: selectedSizeId
+        })
+        .then(response => {
+          const newItem: ItemAddProps = response.data;
+          setAddedItems([...addedItems, newItem]);
+          setResponseItemAdd([...addedItems, newItem]); // Atualize responseItemAdd também
+
+          setTotalItemsValue(totalItemsValue + newItem.precoTotalItem);
+          toast.success('ITEM ADICIONADO!');
+
+          setSelectedProductId('');
+          setSelectedColorId('');
+          setSelectedSize('');
+          setAmount(0);
+          setSelectedName('');
+          setTotalPrice(0);
+          setSelectedPrice(0);
+
+        })
+        .catch(error => {
+          console.log(error);
+          toast.error(error.response.data.erro);
+
+          setSelectedProductId('');
+          setSelectedColorId('');
+          setSelectedSize('');
+          setAmount(0);
+          setSelectedName('');
+          setTotalPrice(0);
+          setSelectedPrice(0);
+        });
+        
       }
-  }, [selectedPrice, amount]);
-
-  //FUNCAO QUE ADICIONA ITEM NO BANCO E CUPOM FISCAL
-  const handleQuantityInputKeyPress = async(event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-
-      if(!amount || amount < 1){
-        toast.error('INFORME A QUANTIDADE DO PRODUTO!');
-        return;
-      }
-
-      await api.post('/add/order', {
-        qtd: amount,
-        order_id: orderId,
-        produto_id: selectedProductId,
-        cor_id: selectedColorId,
-        tamanho_id: selectedSizeId
-      })
-      .then(response => {
-        const newItem: ItemAddProps = response.data;
-        setAddedItems([...addedItems, newItem]);
-        setResponseItemAdd([...addedItems, newItem]); // Atualize responseItemAdd também
-
-        setTotalItemsValue(totalItemsValue + newItem.precoTotalItem);
-        toast.success('ITEM ADICIONADO!');
-
-        setSelectedProductId('');
-        setSelectedColorId('');
-        setSelectedSize('');
-        setAmount(0);
-        setSelectedName('');
-        setTotalPrice(0);
-        setSelectedPrice(0);
-
-      })
-      .catch(error => {
-        console.log(error);
-        toast.error(error.response.data.erro);
-
-        setSelectedProductId('');
-        setSelectedColorId('');
-        setSelectedSize('');
-        setAmount(0);
-        setSelectedName('');
-        setTotalPrice(0);
-        setSelectedPrice(0);
-      });
-      
-    }
-  } 
+    } 
 
     useEffect(() => {
       //Escondendo o loading quando ele montar completamente o componente
