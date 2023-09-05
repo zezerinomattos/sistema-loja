@@ -182,23 +182,21 @@ export function ModalListProductos({ isOpen, onRequestClose, productLyList }: Mo
                     
                     <ol className={styles.list}>
                         {productList.map((prod, index)=> (
-                            <>
-                                <li 
-                                    key={prod.lisProduct[0].id}
-                                    className={index === 0 ? styles.firstItemHover : ''}
-                                    // onClick={() => handleSelectProduct(prod.lisProduct[0].id)}
-                                    onClick={() => {
-                                        handleSelectProduct(prod.lisProduct[0].id);
-                                        setSelectedPrice(parseFloat(prod.lisProduct[0].preco_venda));
-                                        setSelectedName(prod.lisProduct[0].nome_produto);
-                                    }}
-                                >
-                                    <span className={styles.idDetail}>{prod.lisProduct[0].id}</span>
-                                    <span className={styles.nameDetail}>{prod.lisProduct[0].nome_produto}</span>
-                                    <span>{prod.lisProduct[0].marca}</span>
-                                    <span>{prod.lisProduct[0].preco_venda}</span>       
-                                </li> 
-                            </>
+                            <li 
+                                key={prod.lisProduct[0].id}
+                                className={index === 0 ? styles.firstItemHover : ''}
+                                // onClick={() => handleSelectProduct(prod.lisProduct[0].id)}
+                                onClick={() => {
+                                    handleSelectProduct(prod.lisProduct[0].id);
+                                    setSelectedPrice(parseFloat(prod.lisProduct[0].preco_venda));
+                                    setSelectedName(prod.lisProduct[0].nome_produto);
+                                }}
+                            >
+                                <span className={styles.idDetail}>{prod.lisProduct[0].id}</span>
+                                <span className={styles.nameDetail}>{prod.lisProduct[0].nome_produto}</span>
+                                <span>{prod.lisProduct[0].marca}</span>
+                                <span>{prod.lisProduct[0].preco_venda}</span>       
+                            </li> 
                         ))}
                     </ol>
                 </article>

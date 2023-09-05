@@ -119,6 +119,37 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
       if (event.key === 'X' || event.key === 'x' && event.shiftKey) {
         setModalVibleDelete(true);
       }
+
+      //FUNCAO PARA EXCLUIR UMA ORDER => NÃO PODE TER ITEM PARA SER DELETADO A ORDER
+      if (event.key === 'C' || event.key === 'c' && event.shiftKey) {
+        await deleteOrder();
+      }
+    };
+
+    //FUNCAO PARA EXCLUIR UMA ORDER
+    const deleteOrder = async() => {
+      // Mostrar a caixa de diálogo de confirmação
+      const confirmDelete = window.confirm('Tem certeza que deseja cancelar esse pedido');
+
+      if (confirmDelete) {
+        setCarregando(true);
+        await api.delete('/delete/order', {
+          params:{
+            order_id: orderId
+          }
+        })
+        .then(response => {
+          router.push('/order/neworder');
+          setCarregando(true);
+        })
+        .catch(error => {
+          console.log(error);
+          toast.error(error.response.data.erro);
+          setCarregando(true);
+        })
+      }else{
+        return;
+      }
     };
 
     useEffect(() => {
@@ -313,13 +344,13 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
                     <div className={styles.containerMenu}>
                       <div className={styles.menu}>
                         <span>Shif + P - Pesquisar Prod.</span>
-                        <span>Shif + X- Excluir Item</span>
-                        <span>Shif + A - Alterar Quant.</span>
+                        <span>Shif + X- Excluir Item</span> 
                       </div>
 
                       <div className={styles.menu}>
                         <span>Shif + C - Cancel. Venda</span>
                         <span>Shif + F - Finalizar Venda</span>
+                        <span>Esc - Sair</span>
                       </div>
                     </div>
                   </div>
