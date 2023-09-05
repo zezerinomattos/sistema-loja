@@ -145,24 +145,36 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
       //console.log(itemId);
       if(itemId){
         setModalVibleDelete(false);
-        await api.delete('/delete/item', {
-          params:{
-            item_id: itemId,
-          }
-        })
-        .then(response => {
-          toast.success('ITEM EXCLUIDO!');
 
-          // Atualize a lista de items após a exclusão bem-sucedida
-          updateAddedItemsAfterDelete(itemId);
+        // Mostrar a caixa de diálogo de confirmação
+        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa esse Item?');
 
-          // Calcule o novo valor total dos itens
-          setTotalItemsValue(totalItemsValue - response.data.deleteItem?.preco);
-        })
-        .catch(error => {
-          console.log(error);
-          toast.error(error.response.data.erro);
-        })
+        if (confirmDelete) {
+          
+          await api.delete('/delete/item', {
+            params:{
+              item_id: itemId,
+            }
+          })
+          .then(response => {
+            toast.success('ITEM EXCLUIDO!');
+
+            // Atualize a lista de items após a exclusão bem-sucedida
+            updateAddedItemsAfterDelete(itemId);
+
+            // Calcule o novo valor total dos itens
+            setTotalItemsValue(totalItemsValue - response.data.deleteItem?.preco);
+          })
+          .catch(error => {
+            console.log(error);
+            toast.error(error.response.data.erro);
+          })
+        }
+        else {
+          // O usuário cancelou a exclusão, não faz nada
+          return;
+        }
+
       }else{
         setModalVibleDelete(false);
       }
@@ -215,6 +227,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
           setSelectedName('');
           setTotalPrice(0);
           setSelectedPrice(0);
+          setImgProduct('');
 
         })
         .catch(error => {

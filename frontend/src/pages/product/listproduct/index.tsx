@@ -131,7 +131,7 @@ export default function ListProduct({ product }: ListProps){
         }
 
         // Mostrar a caixa de diálogo de confirmação
-        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa fábrica?');
+        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa Produto?');
 
         if (confirmDelete) {
             // O usuário confirmou a exclusão, então faz a requisição para deletar a fábrica
