@@ -140,12 +140,12 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
         })
         .then(response => {
           router.push('/order/neworder');
-          setCarregando(true);
+          setCarregando(false);
         })
-        .catch(error => {
+        .catch(error => {  
           console.log(error);
-          toast.error(error.response.data.erro);
-          setCarregando(true);
+          toast.error(error.response.data.erro); 
+          setCarregando(false);
         })
       }else{
         return;
