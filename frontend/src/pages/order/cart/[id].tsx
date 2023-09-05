@@ -109,14 +109,14 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     //FUNCAO PARA MENU TECLAS PRCIONADAS
     const handleKeyDown = async (event: KeyboardEvent) => {
       //FUNCAO PARA LISTAR PRODUTOS E ABRIR O MODAL
-      if (event.key === 'P' && event.shiftKey) {
+      if (event.key === 'P' || event.key === 'p' && event.shiftKey) {
         const list: ListProps[] = lisProduct.map(prod => ({ lisProduct: [prod] })); 
         setModalProduct(list);
         setModalVisible(true);
       }
 
       //FUNCAO PARA EXCLUIR ITEM DE PRODUTO
-      if (event.key === 'X' && event.shiftKey) {
+      if (event.key === 'X' || event.key === 'x' && event.shiftKey) {
         setModalVibleDelete(true);
       }
     };
