@@ -108,28 +108,62 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
     //FUNCAO PARA MENU TECLAS PRCIONADAS
     const handleKeyDown = async (event: KeyboardEvent) => {
-      //FUNCAO PARA LISTAR PRODUTOS E ABRIR O MODAL
-      if (event.key === 'P' || event.key === 'p' && event.shiftKey) {
-        const list: ListProps[] = lisProduct.map(prod => ({ lisProduct: [prod] })); 
-        setModalProduct(list);
-        setModalVisible(true);
-      }
-
-      //FUNCAO PARA EXCLUIR ITEM DE PRODUTO
-      if (event.key === 'X' || event.key === 'x' && event.shiftKey) {
-        setModalVibleDelete(true);
-      }
-
-      //FUNCAO PARA EXCLUIR UMA ORDER => NÃO PODE TER ITEM PARA SER DELETADO A ORDER
-      if (event.key === 'C' || event.key === 'c' && event.shiftKey) {
-        await deleteOrder();
+      // Verificar se a tecla Shift está pressionada
+      if (event.shiftKey) {
+        // FUNCAO PARA LISTAR PRODUTOS E ABRIR O MODAL
+        if (event.key === 'P' || event.key === 'p') {
+          const list: ListProps[] = lisProduct.map(prod => ({ lisProduct: [prod] })); 
+          setModalProduct(list);
+          setModalVisible(true);
+        }
+    
+        // FUNCAO PARA EXCLUIR ITEM DE PRODUTO
+        if (event.key === 'X' || event.key === 'x') {
+          setModalVibleDelete(true);
+        }
+    
+        // FUNCAO PARA EXCLUIR UMA ORDER => NÃO PODE TER ITEM PARA SER DELETADO A ORDER
+        if (event.key === 'C' || event.key === 'c') {
+          await deleteOrder();
+        }
+    
+        // FUNCAO PARA FINALIZAR PEDIDO
+        if (event.key === 'F' || event.key === 'f') {
+          await sendOrder();
+        }
       }
     };
+
+    //FUNCAO QUE VAI FINALIZAR UMA ORDER DE PEDIDO(SALVAR E LIBERAR PARA SEPARAR PRODUTO E PAGAMENTO);
+    const sendOrder = async() => {
+
+      // Mostrar a caixa de diálogo de confirmação
+      const confirmSave = window.confirm('Tem certeza que deseja finalizar esse pedido?');
+
+      if (confirmSave) {
+        setCarregando(true);
+
+        await api.put('/send/order', {
+          order_id: orderId,
+        })
+        .then(response => {
+          router.push('/order/neworder');
+          setCarregando(false);
+        })
+        .catch(error => {
+          console.log(error);
+          toast.error(error.response.data.erro); 
+          setCarregando(false);
+        })
+      }else{
+        return
+      }
+    }
 
     //FUNCAO PARA EXCLUIR UMA ORDER
     const deleteOrder = async() => {
       // Mostrar a caixa de diálogo de confirmação
-      const confirmDelete = window.confirm('Tem certeza que deseja cancelar esse pedido');
+      const confirmDelete = window.confirm('Tem certeza que deseja cancelar esse pedido?');
 
       if (confirmDelete) {
         setCarregando(true);
