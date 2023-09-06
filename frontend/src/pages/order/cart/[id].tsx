@@ -131,8 +131,25 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
         if (event.key === 'F' || event.key === 'f') {
           await sendOrder();
         }
+      }else {
+        //FUNCAO DE SAIDA E PEDIDO FICA COMO RASCUNHO
+        if (event.key === 'Escape') {
+          await outOrder();
+        }
       }
     };
+
+    const outOrder = async() => {
+      // Mostrar a caixa de diálogo de confirmação
+      const confirmOut = window.confirm('Tem certeza que deseja sair sem finalizar esse pedido?');
+
+      if (confirmOut) {
+        setCarregando(true);
+        router.push('/order/neworder');
+        toast.success('Pedido Salvo em Rascunho');
+        setCarregando(false);
+      }
+    }
 
     //FUNCAO QUE VAI FINALIZAR UMA ORDER DE PEDIDO(SALVAR E LIBERAR PARA SEPARAR PRODUTO E PAGAMENTO);
     const sendOrder = async() => {
@@ -147,6 +164,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
           order_id: orderId,
         })
         .then(response => {
+          toast.success('Pedido Finalizado!');
           router.push('/order/neworder');
           setCarregando(false);
         })
@@ -173,6 +191,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
           }
         })
         .then(response => {
+          toast.success('Pedido Cancelado!');
           router.push('/order/neworder');
           setCarregando(false);
         })
