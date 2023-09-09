@@ -200,6 +200,8 @@ export default function NewOrder({ cliente, caixa }: ListProps){
                 //router.push(`/order/cart/${response.data.order.id}`);
                 const id = response.data.id;
                 router.push(`/order/cart/${id}`);
+
+                setCarregando(true);
             })
 
         } catch (error: any) {
