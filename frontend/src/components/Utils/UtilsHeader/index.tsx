@@ -366,7 +366,7 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/factory/listfactory">
+                            <Link href="/order/listorder">
                                 <FcList size={28}/>
                                 <span><strong>LISTA</strong><br />PEDIDOS</span>
                             </Link>
