@@ -74,6 +74,28 @@ div.filterContainer div.filter{
     height: 40px;
 }
 
+div.filterContainer div.inputRadioContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div.filterContainer div.inputRadioContainer div.filterRadio{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+
+    input{
+        margin-right: 5px;
+    }
+
+    label{
+        font-family: 'Ubuntu', sans-serif;
+        color: var(--white-700);
+        font-size: 14px;
+    }
+}
+
 div.filterContainer div.filter select.selectInput{
     height: 40px;
     border: 1px solid var(--green-700);

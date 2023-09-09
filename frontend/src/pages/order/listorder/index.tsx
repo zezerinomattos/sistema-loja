@@ -24,7 +24,8 @@ export default function ListOrder(){
 
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
-    const [selectedFilter, setSelectedFilter] = useState('PEDIDO');
+    const [selectedFilterOption, setSelectedFilterOption] = useState("TODOS");
+    const [selectedFilter, setSelectedFilter] = useState('TODOS');
 
     function filterOrder(){
         alert('ok button!');
@@ -59,6 +60,41 @@ export default function ListOrder(){
                                 <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
                             </div>
 
+                            <div className={styles.inputRadioContainer}>
+                                <div className={styles.filterRadio}>
+                                    <input
+                                    type="radio"
+                                    name="filterOption"
+                                    value="TODOS"
+                                    checked={selectedFilterOption === "TODOS"}
+                                    onChange={() => setSelectedFilterOption("TODOS")}
+                                    />
+                                    <label htmlFor="todos">TODOS</label>
+                                </div>
+
+                                <div className={styles.filterRadio}>
+                                    <input
+                                    type="radio"
+                                    name="filterOption"
+                                    value="FECHADOS"
+                                    checked={selectedFilterOption === "FECHADOS"}
+                                    onChange={() => setSelectedFilterOption("FECHADOS")}
+                                    />
+                                    <label htmlFor="fechados">FECHADOS</label>
+                                </div>
+
+                                <div className={styles.filterRadio}>
+                                    <input
+                                    type="radio"
+                                    name="filterOption"
+                                    value="RASCUNHOS"
+                                    checked={selectedFilterOption === "RASCUNHOS"}
+                                    onChange={() => setSelectedFilterOption("RASCUNHOS")}
+                                    />
+                                    <label htmlFor="rascunhos">RASCUNHOS</label>
+                                </div>
+                            </div>
+
                             <div className={styles.filter}>
                                 <select 
                                     name="product" 
@@ -67,11 +103,10 @@ export default function ListOrder(){
                                     onChange={(e) => setSelectedFilter(e.target.value)}
                                     className={styles.selectInput}
                                 >
-                                    <option value="PEDIDO">PEDIDO</option>
-                                    <option value="SECAO">SEÇÃO</option>
-                                    <option value="CATEGORIA">CATEGORIA</option>
-                                    <option value="REPRESENTANTE">REPRESENTANTE</option>
-                                    <option value="FABRICA">FÁBRICA</option>
+                                    <option value="TODOS">TODOS</option>
+                                    <option value="VENDEDOR">VENDEDOR</option>
+                                    <option value="CAIXA">CAIXA</option>
+                                    <option value="CLIENTE">CLIENTE</option>
                                 </select>
                             </div>
 
