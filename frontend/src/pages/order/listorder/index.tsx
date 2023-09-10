@@ -399,7 +399,6 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
-
     }
 
     // FUNÇÃO LIMPAR FILTRO
@@ -407,6 +406,8 @@ export default function ListOrder({ order }: ListOrder){
         setOrderList(order);
         setListId('');
         setListName('');
+        setListDateEnd('');
+        setListDateStart('');
     }
 
     // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
@@ -530,8 +531,12 @@ export default function ListOrder({ order }: ListOrder){
                         <div className={styles.filter}>
                             <Input type='date' value={listDateEnd} onChange={(e) => setListDateEnd(e.target.value)} style={{width: '150px', marginTop: '5px'}}/>
                         </div>
-                    </div>
 
+                        <div className={styles.filter}>
+                            <button onClick={clearFilter} className={styles.buttonBuscar} style={{marginTop: '5px'}}>LIMPAR</button>
+                        </div>
+                    </div>
+                    
                     <article className={styles.listContainer}>
                         <ol className={styles.list}>
                             {orderLyList.map(ord => (
