@@ -18,7 +18,7 @@ import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth
 import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
-type OrderProps = {
+export type OrderProps = {
     id: string;
     status: boolean;
     draft: boolean;
@@ -41,7 +41,7 @@ type OrderProps = {
         };
     };
     caixa:{
-        colaborado: {
+        colaborador: {
             usuario:{
                 nome: string;
             };
@@ -49,7 +49,7 @@ type OrderProps = {
     };
 }
 
-interface ListOrder{
+export interface ListOrder{
     order: OrderProps[];
 }
 
@@ -59,6 +59,9 @@ export default function ListOrder({ order }: ListOrder){
 
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
+    const [listOptions, setListOptions] = useState(false);
+    const [listSelected, setListSelected] = useState(false);
+
     const [selectedFilterOption, setSelectedFilterOption] = useState("TODOS");
     const [selectedFilter, setSelectedFilter] = useState('TODOS');
 
@@ -66,8 +69,127 @@ export default function ListOrder({ order }: ListOrder){
 
     //FUNCAO PARA FILTRAR AS ORDER
     function filterOrder(){
-        alert('ok button!');
+        //FILTRANDO SE TEM ID
+        if(listId){
+            const filterOrder = order.filter((ord) => ord.id.includes(listId));
+            setOrderList(filterOrder);
+        }
+
+        //FILTRANDO TODAS AS ORDENS
+        if(!listId && !listName && selectedFilterOption === 'TODOS' && selectedFilter === 'TODOS'){
+            setOrderList(order);
+        }
+
+        //FILTRANDO POR TODAS ORDENS FECHADAS
+        if(!listId && !listName && selectedFilterOption === 'FECHADOS' && selectedFilter === 'TODOS'){
+            const filteredOrders = order.filter((ord) => ord.status === true);
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO POR TODAS ORDENS ABERTOS
+        if(!listId && !listName && selectedFilterOption === 'ABERTOS' && selectedFilter === 'TODOS'){
+            const filteredOrders = order.filter((ord) => ord.status === false && ord.draft === false);
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO POR TODAS ORDENS EM RASCUNHOS
+        if(!listId && !listName && selectedFilterOption === 'RASCUNHOS' && selectedFilter === 'TODOS'){
+            const filteredOrders = order.filter((ord) => ord.draft === true);
+            setOrderList(filteredOrders);
+        }
+
+        //-------------------------------------------
+        //FILTRANDO TODOS PELO NOME DO VENDEDOR
+        if(!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'TODOS'){
+            const filteredOrders = order.filter((ord) => ord.colaborado.usuario.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E FECHADOS
+        if(!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'FECHADOS'){
+            const filteredOrders = order.filter((ord) => ord.status === true && ord.colaborado.usuario.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E ABERTOS
+        if(!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'ABERTOS'){
+            const filteredOrders = order.filter((ord) => ord.status === false && ord.draft === false && ord.colaborado.usuario.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO
+        if(!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'RASCUNHOS'){
+            const filteredOrders = order.filter((ord) => ord.draft === true && ord.colaborado?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //-------------------------------------------
+        //FILTRANDO TODOS PELO NOME DO CAIXA
+        if(!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'TODOS'){
+            const filteredOrders = order.filter((ord) => ord.caixa?.colaborador?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+         //FILTRANDO PELO NOME DO CAIXA E FECHADOS
+         if(!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'FECHADOS'){
+            const filteredOrders = order.filter((ord) => ord.status === true && ord.caixa?.colaborador?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO CAIXA E ABERTOS
+        if(!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'ABERTOS'){
+            const filteredOrders = order.filter((ord) => ord.status === false && ord.draft === false && ord.caixa?.colaborador?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO
+        if(!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'RASCUNHOS'){
+            const filteredOrders = order.filter((ord) => ord.draft === true && ord.caixa?.colaborador?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //-------------------------------------------
+        //FILTRANDO TODOS PELO NOME DO CLIENTE
+        if(!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'TODOS'){
+            const filteredOrders = order.filter((ord) => ord.cliente?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+         //FILTRANDO PELO NOME DO CAIXA E FECHADOS
+         if(!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'FECHADOS'){
+            const filteredOrders = order.filter((ord) => ord.status === true && ord.cliente?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO CAIXA E ABERTOS
+        if(!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'ABERTOS'){
+            const filteredOrders = order.filter((ord) => ord.status === false && ord.draft === false && ord.cliente?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO
+        if(!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'RASCUNHOS'){
+            const filteredOrders = order.filter((ord) => ord.draft === true && ord.cliente?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
     }
+
+    // FUNÇÃO LIMPAR FILTRO
+    function clearFilter() {
+        setOrderList(order);
+        setListId('');
+        setListName('');
+    }
+
+    // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            filterOrder();
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [listName, selectedFilterOption]);
 
     //FUNCAO PARA DELETAR ORDER
     async function handleDelete(id: string){
@@ -104,6 +226,21 @@ export default function ListOrder({ order }: ListOrder){
                         </div>
 
                         <div className={styles.filter}>
+                            <select 
+                                name="product" 
+                                id="product"
+                                value={selectedFilter} 
+                                onChange={(e) => setSelectedFilter(e.target.value)}
+                                className={styles.selectInput}
+                            >
+                                <option value="TODOS">TODOS</option>
+                                <option value="VENDEDOR">VENDEDOR</option>
+                                <option value="CAIXA">CAIXA</option>
+                                <option value="CLIENTE">CLIENTE</option>
+                            </select>
+                        </div>
+
+                        <div className={styles.filter}>
                             <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
                         </div>
 
@@ -134,27 +271,23 @@ export default function ListOrder({ order }: ListOrder){
                                 <input
                                 type="radio"
                                 name="filterOption"
+                                value="ABERTOS"
+                                checked={selectedFilterOption === "ABERTOS"}
+                                onChange={() => setSelectedFilterOption("ABERTOS")}
+                                />
+                                <label htmlFor="fechados">ABERTOS</label>
+                            </div>
+
+                            <div className={styles.filterRadio}>
+                                <input
+                                type="radio"
+                                name="filterOption"
                                 value="RASCUNHOS"
                                 checked={selectedFilterOption === "RASCUNHOS"}
                                 onChange={() => setSelectedFilterOption("RASCUNHOS")}
                                 />
                                 <label htmlFor="rascunhos">RASCUNHOS</label>
                             </div>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <select 
-                                name="product" 
-                                id="product"
-                                value={selectedFilter} 
-                                onChange={(e) => setSelectedFilter(e.target.value)}
-                                className={styles.selectInput}
-                            >
-                                <option value="TODOS">TODOS</option>
-                                <option value="VENDEDOR">VENDEDOR</option>
-                                <option value="CAIXA">CAIXA</option>
-                                <option value="CLIENTE">CLIENTE</option>
-                            </select>
                         </div>
 
                         <div className={styles.filter}>
@@ -197,7 +330,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
     const apiOrder = setupAPIClient(ctx);
     const response = await apiOrder.get('full/order');
 
-    console.log(response.data);
+    //console.log(response.data);
 
     return{
       props: {

@@ -84,6 +84,7 @@ div.filterContainer div.inputRadioContainer div.filterRadio{
     display: flex;
     flex-flow: row wrap;
     align-items: center;
+    margin-right: 10px;
 
     input{
         margin-right: 5px;
@@ -166,6 +167,7 @@ article.listContainer ol.list{
         display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
+        transition: 0.3s ease-in-out;
         
         span{
             font-family: 'Ubuntu', sans-serif;
@@ -184,9 +186,9 @@ article.listContainer ol.list{
             span{
                 color: var(--gray-700);
             }
-            border-bottom: 1px solid #1a1818;
-            border-top: 1px solid #1a1818;
-            padding: 5px 0;
+            border: 1px solid #1a1818;
+            border-radius: 0.4rem;
+            padding: 5px 5px;
         }
     }
 }
