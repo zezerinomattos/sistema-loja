@@ -61,6 +61,8 @@ export default function ListOrder({ order }: ListOrder){
     const [listName, setListName] = useState('');
     const [listOptions, setListOptions] = useState(false);
     const [listSelected, setListSelected] = useState(false);
+    const [listDateStart, setListDateStart] = useState('');
+    const [listDateEnd, setListDateEnd ] = useState('');
 
     const [selectedFilterOption, setSelectedFilterOption] = useState("TODOS");
     const [selectedFilter, setSelectedFilter] = useState('TODOS');
@@ -74,15 +76,43 @@ export default function ListOrder({ order }: ListOrder){
             const filterOrder = order.filter((ord) => ord.id.includes(listId));
             setOrderList(filterOrder);
         }
-
+        //-------------------------------------------
         //FILTRANDO TODAS AS ORDENS
         if(!listId && !listName && selectedFilterOption === 'TODOS' && selectedFilter === 'TODOS'){
             setOrderList(order);
         }
 
+        //FILTRANDO POR TODAS ORDENS COM FILTRO DE DATA
+        if (!listId && !listName && selectedFilterOption === 'TODOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate;
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
         //FILTRANDO POR TODAS ORDENS FECHADAS
         if(!listId && !listName && selectedFilterOption === 'FECHADOS' && selectedFilter === 'TODOS'){
             const filteredOrders = order.filter((ord) => ord.status === true);
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO POR TODAS ORDENS FECHADAS COM FILTRO DE DATA
+        if (!listId && !listName && selectedFilterOption === 'FECHADOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.status === true;
+            });
+        
             setOrderList(filteredOrders);
         }
 
@@ -92,9 +122,37 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
+        //FILTRANDO POR TODAS ORDENS ABERTOS COM FILTRO DE DATA
+        if (!listId && !listName && selectedFilterOption === 'ABERTOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.status === false && ord.draft === false;
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
         //FILTRANDO POR TODAS ORDENS EM RASCUNHOS
         if(!listId && !listName && selectedFilterOption === 'RASCUNHOS' && selectedFilter === 'TODOS'){
             const filteredOrders = order.filter((ord) => ord.draft === true);
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO POR TODAS ORDENS ABERTOS COM FILTRO DE DATA
+        if (!listId && !listName && selectedFilterOption === 'RASCUNHOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.draft === true;
+            });
+        
             setOrderList(filteredOrders);
         }
 
@@ -105,9 +163,37 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
+        //FILTRANDO TODOS PELO NOME DO VENDEDOR COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'TODOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.colaborado.usuario.nome.includes(listName);
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
         //FILTRANDO PELO NOME DO VENDEDOR E FECHADOS
         if(!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'FECHADOS'){
             const filteredOrders = order.filter((ord) => ord.status === true && ord.colaborado.usuario.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+         //FILTRANDO PELO NOME DO VENDEDOR E FECHADOS COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'FECHADOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.status === true && ord.colaborado.usuario.nome.includes(listName);
+            });
+        
             setOrderList(filteredOrders);
         }
 
@@ -117,9 +203,37 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
+        //FILTRANDO PELO NOME DO VENDEDOR E ABERTOS COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'ABERTOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.status === false && ord.draft === false && ord.colaborado.usuario.nome.includes(listName);
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
         //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO
         if(!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'RASCUNHOS'){
             const filteredOrders = order.filter((ord) => ord.draft === true && ord.colaborado?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'RASCUNHOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.draft === true && ord.colaborado.usuario.nome.includes(listName);
+            });
+        
             setOrderList(filteredOrders);
         }
 
@@ -130,9 +244,37 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
-         //FILTRANDO PELO NOME DO CAIXA E FECHADOS
-         if(!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'FECHADOS'){
+        //FILTRANDO TODOS PELO NOME DO CAIXA COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'TODOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.caixa?.colaborador?.usuario?.nome.includes(listName);
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO CAIXA E FECHADOS
+        if(!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'FECHADOS'){
             const filteredOrders = order.filter((ord) => ord.status === true && ord.caixa?.colaborador?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO CAIXA E FECHADOS COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'FECHADOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate &&  ord.status === true && ord.caixa?.colaborador?.usuario?.nome.includes(listName);
+            });
+        
             setOrderList(filteredOrders);
         }
 
@@ -142,9 +284,37 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
+        //FILTRANDO PELO NOME DO CAIXA E ABERTOS COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'ABERTOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate &&  ord.status === false && ord.draft === false && ord.caixa?.colaborador?.usuario?.nome.includes(listName);
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
         //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO
         if(!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'RASCUNHOS'){
             const filteredOrders = order.filter((ord) => ord.draft === true && ord.caixa?.colaborador?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'RASCUNHOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.draft === true && ord.caixa?.colaborador?.usuario?.nome.includes(listName);
+            });
+        
             setOrderList(filteredOrders);
         }
 
@@ -155,9 +325,37 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
-         //FILTRANDO PELO NOME DO CAIXA E FECHADOS
-         if(!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'FECHADOS'){
+        //FILTRANDO TODOS PELO NOME DO CLIENTE COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'TODOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.cliente?.usuario?.nome.includes(listName);
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO CAIXA E FECHADOS
+        if(!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'FECHADOS'){
             const filteredOrders = order.filter((ord) => ord.status === true && ord.cliente?.usuario?.nome.includes(listName));
+            setOrderList(filteredOrders);
+        }
+
+        //FILTRANDO PELO NOME DO CAIXA E FECHADOS COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'FECHADOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.status === true && ord.cliente?.usuario?.nome.includes(listName);
+            });
+        
             setOrderList(filteredOrders);
         }
 
@@ -167,11 +365,40 @@ export default function ListOrder({ order }: ListOrder){
             setOrderList(filteredOrders);
         }
 
+        //FILTRANDO PELO NOME DO CAIXA E ABERTOS COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'ABERTOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.status === false && ord.draft === false && ord.cliente?.usuario?.nome.includes(listName);
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
         //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO
         if(!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'RASCUNHOS'){
             const filteredOrders = order.filter((ord) => ord.draft === true && ord.cliente?.usuario?.nome.includes(listName));
             setOrderList(filteredOrders);
         }
+
+        //FILTRANDO PELO NOME DO VENDEDOR E RASCUNHO COM FILTRO DE DATA
+        if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'RASCUNHOS' && listDateStart && listDateEnd) {
+            const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
+            const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+        
+            // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
+            const filteredOrders = order.filter((ord) => {
+                const orderDate = new Date(ord.created_at); // Converte a data da ordem para um objeto Date
+                return orderDate >= startDate && orderDate <= endDate && ord.draft === true && ord.cliente?.usuario?.nome.includes(listName);
+            });
+        
+            setOrderList(filteredOrders);
+        }
+
 
     }
 
@@ -292,6 +519,16 @@ export default function ListOrder({ order }: ListOrder){
 
                         <div className={styles.filter}>
                             <button onClick={filterOrder} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                        </div>
+                    </div>
+
+                    <div className={styles.filterContainer}>
+                        <div className={styles.filter}>
+                            <Input type='date' value={listDateStart} onChange={(e) => setListDateStart(e.target.value)} style={{width: '150px', marginTop: '5px'}}/>
+                        </div>
+
+                        <div className={styles.filter}>
+                            <Input type='date' value={listDateEnd} onChange={(e) => setListDateEnd(e.target.value)} style={{width: '150px', marginTop: '5px'}}/>
                         </div>
                     </div>
 
