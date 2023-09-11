@@ -28,7 +28,7 @@ export function ModalDetailOrder({ isOpen, onRequestClose }: ModalOrderProduct){
     };
 
     return(
-        <Modal isOpen={isOpen} onRequestClose={() => onRequestClose} style={customStyles}>
+        <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
             <div className={styles.container}>
                 <h1 style={{color: '#FFF'}}>Modal</h1>
             </div>
