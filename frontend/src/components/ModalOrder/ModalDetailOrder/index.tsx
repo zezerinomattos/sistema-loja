@@ -7,13 +7,15 @@ import styles from './styles.module.scss';
 import { Input, TextArea } from '../../Ui/Input';
 import { Button } from '../../Ui/Button';
 
+import { OrderProps } from '../../../pages/order/listorder';
+
 interface ModalOrderProduct{
     isOpen: boolean;
     onRequestClose: () => void;
-    //productSelected: ProductApiResponse[];
+    detalOrder: OrderProps[];
 }
 
-export function ModalDetailOrder({ isOpen, onRequestClose }: ModalOrderProduct){
+export function ModalDetailOrder({ isOpen, onRequestClose, detalOrder }: ModalOrderProduct){
 
     const customStyles = {
         content: {
@@ -30,7 +32,68 @@ export function ModalDetailOrder({ isOpen, onRequestClose }: ModalOrderProduct){
     return(
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
             <div className={styles.container}>
-                <h1 style={{color: '#FFF'}}>Modal</h1>
+                <div className={styles.taxCouponConteiner}>
+                    <div className={styles.taxCuponTitle}>
+                        <h1>DETALHE DE PEDIDO</h1>
+                    </div>
+
+                    <div className={styles.taxCuponHeader}>
+                        <span style={{width: '150px', justifyContent:'left', marginLeft: '5px'}}>COD</span>
+                        <span style={{width: '260px', justifyContent:'left'}}>PRODUTO</span>
+                        <span style={{width: '200px', justifyContent:'left'}}>COR</span>
+                        <span style={{width: '50px', justifyContent:'left'}}>TAM</span>
+                        <span style={{width: '50px'}}>QTDE</span>
+                        <span>V. UNIT</span>
+                        <span>V. TOTAL</span>
+                    </div>
+                    <article className={styles.addProduct}>
+                        <ol className={styles.list}>
+                            {
+                                detalOrder.map(order => (
+                                    <>
+                                        {
+                                            order.items.map(item => (
+                                                <li key={order.id}>
+                                                    <span className={styles.codProduct} style={{ width: '150px', justifyContent: 'left', marginLeft: '5px' }}>
+                                                        {item.produto.id}
+                                                    </span>
+                                                    <span style={{ width: '260px', justifyContent: 'left' }}>{item.produto.nome_produto}</span>
+                                                    <span style={{ width: '200px', justifyContent: 'left', textTransform: 'uppercase'}}>{item.cor.cor}</span>
+                                                    <span style={{ width: '50px', justifyContent: 'left', textTransform: 'uppercase'}}>{item.tamanho.tamanho}</span>
+                                                    <span style={{ width: '50px' }}>{item.qtd}</span>
+                                                    <span >{item.produto.preco_venda}</span>
+                                                    <span >{item.preco}</span>
+                                                </li>
+                                            ))
+                                        }
+                                        <div className={styles.valueOrder}>
+                                            <span >
+                                                SITUAÇÃO:
+                                                    {order.status === false && order.draft === false && ' ABERTO'}
+                                                    {order.status === false && order.draft === true && ' RASCUNHO'}
+                                                    {order.status === true && order.draft === false && ' FECHADO'}
+                                            </span>
+                                            <span >|</span>
+                                            <span >VAL. TOTAL: R$ {order.valor_total}</span>
+                                            <span >|</span>
+                                            <span >DESCONTO: {order.desconto}%</span>
+                                            <span >|</span>
+                                            <span >VAL. PAGO: R$ {order.valor_total}</span>
+                                        </div>
+
+                                        <div className={styles.dateOrder}>
+                                            <span >CLIENTE: {order.cliente.usuario.nome}</span>
+                                            <span >VENDEDOR: {order.colaborado.usuario.nome}</span>
+                                            <span >CAIXA: {order.caixa.colaborador.usuario.nome}</span>
+                                        </div>
+                                    </>
+                                ))
+                            }
+                        </ol>
+                    </article>
+                    
+                </div>
+
             </div>
         </Modal>
     )

@@ -48,11 +48,31 @@ export type OrderProps = {
             };
         };
     };
+    items: Array<{
+        id: string;
+        produto: {
+            id: string;
+            nome_produto: string;
+            marca: string;
+            preco_venda: number;
+        };
+        cor:{
+            id: string;
+            cor: string;
+            produto_id: string;
+        };
+        tamanho:{
+            tamanho: string;
+        };
+        preco: number;
+        qtd: string;
+    }>
 }
 
 export interface ListOrder{
     order: OrderProps[];
 }
+
 
 export default function ListOrder({ order }: ListOrder){
     const [carregando, setCarregando] = useState(true);
@@ -70,7 +90,7 @@ export default function ListOrder({ order }: ListOrder){
 
     const [orderLyList, setOrderList] = useState(order || []);
 
-    //const [modalProduct, setModalProduct] = useState<ProductApiResponse[]>();
+    const [modalOrderDetail, setModalOrderDetail] = useState<OrderProps[]>();
     const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -431,7 +451,22 @@ export default function ListOrder({ order }: ListOrder){
 
     //FUNCAO DE DETALHE DE ORDER E ABRE MODAL
     async function handleDetailOrder(id: string){
-        setModalVisible(true);
+        await api.get('/detail/order', {
+            params:{
+                order_id: id,
+            }
+        })
+        .then(response => {
+            setModalOrderDetail(response.data?.detailOrder);
+            setModalVisible(true);
+            setCarregando(false);
+            console.log([response.data?.detailOrder]);
+        })
+        .catch(error => {
+            console.log(error);
+            setCarregando(false)
+        })
+        
     }
 
     // FUNCAO FECHAR MODAL
@@ -572,10 +607,11 @@ export default function ListOrder({ order }: ListOrder){
                 </div>
             </main>
             {
-                modalVisible && (
+                modalVisible && modalOrderDetail && (
                     <ModalDetailOrder 
                         isOpen={modalVisible}
                         onRequestClose={handleCloseModal}
+                        detalOrder={modalOrderDetail}
                     />
                 )
             }

@@ -11,28 +11,29 @@ class DetailOrderService {
         throw new Error('Order not found');
     }
 
-    const detailProduto = await prismaClient.item.findMany({
-        where:{
-            order_id: order_id,
-        },
-        select:{
-            produto: {
-                select:{
-                    nome_produto: true,
-                    marca: true,
-                    preco_venda: true
-                }
-            },
-            cor: true,
-            tamanho: {
-                select: {
-                    tamanho: true
-                }
-            },
-            preco: true,
-            qtd: true,
-        }
-    });
+    // const detailProduto = await prismaClient.item.findMany({
+    //     where:{
+    //         order_id: order_id,
+    //     },
+    //     select:{
+    //         produto: {
+    //             select:{
+    //                 id: true,
+    //                 nome_produto: true,
+    //                 marca: true,
+    //                 preco_venda: true
+    //             }
+    //         },
+    //         cor: true,
+    //         tamanho: {
+    //             select: {
+    //                 tamanho: true
+    //             }
+    //         },
+    //         preco: true,
+    //         qtd: true,
+    //     }
+    // });
 
     const detailOrder = await prismaClient.order.findMany({
         where: {
@@ -70,12 +71,33 @@ class DetailOrderService {
                     },
                 },
             },
+            items:{
+                select:{
+                    id: true,
+                    produto: {
+                        select:{
+                            id: true,
+                            nome_produto: true,
+                            marca: true,
+                            preco_venda: true
+                        }
+                    },
+                    cor: true,
+                    tamanho: {
+                        select: {
+                            tamanho: true
+                        }
+                    },
+                    preco: true,
+                    qtd: true,
+                }
+            }
         }
     });
 
     return {
         detailOrder,
-        detailProduto
+        //detailProduto
     };
   }
 }
