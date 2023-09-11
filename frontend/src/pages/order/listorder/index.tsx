@@ -11,7 +11,8 @@ import { Header } from '@/components/Header';
 import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
-import { ModalProduct } from '../../../components/ModalProduct';
+//import { ModalProduct } from '../../../components/ModalProduct';
+import { ModalDetailOrder } from '../../../components/ModalOrder/ModalDetailOrder';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -68,6 +69,10 @@ export default function ListOrder({ order }: ListOrder){
     const [selectedFilter, setSelectedFilter] = useState('TODOS');
 
     const [orderLyList, setOrderList] = useState(order || []);
+
+    //const [modalProduct, setModalProduct] = useState<ProductApiResponse[]>();
+    const [modalVisible, setModalVisible] = useState(false);
+
 
     //FUNCAO PARA FILTRAR AS ORDER
     function filterOrder(){
@@ -426,7 +431,12 @@ export default function ListOrder({ order }: ListOrder){
 
     //FUNCAO DE DETALHE DE ORDER E ABRE MODAL
     async function handleDetailOrder(id: string){
-        alert('detail order')
+        setModalVisible(true);
+    }
+
+    // FUNCAO FECHAR MODAL
+    function handleCloseModal(){
+        setModalVisible(false);
     }
 
     useEffect(() => {
@@ -561,6 +571,14 @@ export default function ListOrder({ order }: ListOrder){
                     </article>
                 </div>
             </main>
+            {
+                modalVisible && (
+                    <ModalDetailOrder 
+                        isOpen={modalVisible}
+                        onRequestClose={handleCloseModal}
+                    />
+                )
+            }
         </div>
     )
 }
