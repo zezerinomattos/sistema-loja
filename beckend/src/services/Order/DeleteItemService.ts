@@ -13,9 +13,9 @@ class DeleteItemService{
             },
             include:{
                 order: true,
-                produto: true,
-                tamanho: true,
-                cor: true,
+                //produto: true,
+                //tamanho: true,
+                //cor: true,
             },
         });
 
@@ -30,6 +30,9 @@ class DeleteItemService{
             }
         });
 
+        // Arredondar o valor para duas casas decimais
+        const roundedValue = Number(item.preco.toFixed(2));
+
         // Atualizar o valor_total no pedido
         const updatedOrder  = await prismaClient.order.update({
             where: {
@@ -37,10 +40,12 @@ class DeleteItemService{
             },
             data:{
                 valor_total: {
-                    decrement: item.qtd * item.preco,
+                    //decrement: item.qtd * item.preco,
+                    decrement: roundedValue,
                 },
                 valor_pagar: {
-                    decrement: item.qtd * item.preco,
+                    // decrement: item.qtd * item.preco,
+                    decrement: roundedValue,
                 },
             },
         });
@@ -48,10 +53,14 @@ class DeleteItemService{
         // Atualizar o estoque adicionando a quantidade do item de volta
         const updateTamanho = await prismaClient.produtoTamanhoEstoque.update({
             where: {
-                id: item.tamanho.id,
+                // id: item.tamanho.id,
+                id: item.tamanho_id
             },
             data: {
-                estoque: item.tamanho.estoque + item.qtd,
+                // estoque: item.tamanho.estoque + item.qtd,
+                estoque: {
+                    increment: item.qtd,
+                }
             },
         });
 

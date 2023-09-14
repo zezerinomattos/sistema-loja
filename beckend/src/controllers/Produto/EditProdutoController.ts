@@ -10,7 +10,7 @@ export type ProductSizeProps = {
   export type ProductColorProps = {
     cor: string;
     //tamanhos_estoque: ProductSizeProps[];
-    produto_tamanhos_estoque: ProductSizeProps[]
+    produto_tamanhos_estoque: ProductSizeProps[];
   }
 
 class EditProdutoController{

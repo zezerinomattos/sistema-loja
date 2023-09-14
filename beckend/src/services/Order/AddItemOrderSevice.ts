@@ -55,7 +55,7 @@ class AddItemOrderSevice{
         }
 
         const tamanhoEstoque = produtoCor.produto_tamanhos_estoque.find((te) => te.id === tamanho_id);       
-          if (!tamanhoEstoque) {
+        if (!tamanhoEstoque) {
             throw new Error("Tamanho não encontrado");
         }
 
@@ -69,6 +69,9 @@ class AddItemOrderSevice{
             throw new Error("Estoque insuficiente");
         }
 
+        const saveCorProd = await prismaClient.produtoCor.findFirst({where: {id: cor_id}, select: {cor: true}});
+        const saveTamanhoProd = await prismaClient.produtoTamanhoEstoque.findFirst({where: {id: tamanho_id}, select: {tamanho: true}})
+
         const preco = produto.preco_venda;
         const precoTotalItem = qtd * preco; 
         const desconto_atual = produto.desconto_atual;
@@ -78,10 +81,14 @@ class AddItemOrderSevice{
             data: {
               order_id: order_id,
               produto_id: produto_id,
+              produto_name: produto.nome_produto,
               qtd: qtd,
               preco: precoTotalItem,
+              preco_unit: preco,
               cor_id: cor_id,
+              color_name: saveCorProd.cor,
               tamanho_id: tamanho_id,
+              size_name: saveTamanhoProd.tamanho,
             },
         });
 

@@ -55,13 +55,13 @@ export function ModalDetailOrder({ isOpen, onRequestClose, detalOrder }: ModalOr
                                             order.items.map(item => (
                                                 <li key={order.id}>
                                                     <span className={styles.codProduct} style={{ width: '150px', justifyContent: 'left', marginLeft: '5px' }}>
-                                                        {item.produto.id}
+                                                        {item.id}
                                                     </span>
-                                                    <span style={{ width: '260px', justifyContent: 'left' }}>{item.produto.nome_produto}</span>
-                                                    <span style={{ width: '200px', justifyContent: 'left', textTransform: 'uppercase'}}>{item.cor.cor}</span>
-                                                    <span style={{ width: '50px', justifyContent: 'left', textTransform: 'uppercase'}}>{item.tamanho.tamanho}</span>
+                                                    <span style={{ width: '260px', justifyContent: 'left' }}>{item.produto_name}</span>
+                                                    <span style={{ width: '200px', justifyContent: 'left', textTransform: 'uppercase'}}>{item.color_name}</span>
+                                                    <span style={{ width: '50px', justifyContent: 'left', textTransform: 'uppercase'}}>{item.size_name}</span>
                                                     <span style={{ width: '50px' }}>{item.qtd}</span>
-                                                    <span >{item.produto.preco_venda}</span>
+                                                    <span >{item.preco_unit}</span>
                                                     <span >{item.preco}</span>
                                                 </li>
                                             ))

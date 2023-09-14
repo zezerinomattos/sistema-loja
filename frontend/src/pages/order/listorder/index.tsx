@@ -50,22 +50,15 @@ export type OrderProps = {
     };
     items: Array<{
         id: string;
-        produto: {
-            id: string;
-            nome_produto: string;
-            marca: string;
-            preco_venda: number;
-        };
-        cor:{
-            id: string;
-            cor: string;
-            produto_id: string;
-        };
-        tamanho:{
-            tamanho: string;
-        };
+        produto_id: string;
+        produto_name: string;
+        cor_id: string;
+        color_name: string;
+        tamanho_id: string;
+        size_name: string;
         preco: number;
-        qtd: string;
+        preco_unit: number;
+        qtd: number;
     }>
 }
 
@@ -460,7 +453,7 @@ export default function ListOrder({ order }: ListOrder){
             setModalOrderDetail(response.data?.detailOrder);
             setModalVisible(true);
             setCarregando(false);
-            console.log([response.data?.detailOrder]);
+            //console.log(response.data?.detailOrder);
         })
         .catch(error => {
             console.log(error);

@@ -93,6 +93,7 @@ class EditProdutoService{
         
         // Extrair os IDs dos produtoCor
         const produtoCorIds = produtoCoress.map((produtoCor) => produtoCor.id);
+        console.log(produtoCorIds);
         
         // Deletar os tamanhos e estoque relacionados aos produtoCor
         await prismaClient.produtoTamanhoEstoque.deleteMany({
@@ -141,7 +142,7 @@ class EditProdutoService{
 
         return {
             updatedProduto,
-            novasCores,
+            //novasCores,
         };
     }
 }

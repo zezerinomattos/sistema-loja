@@ -212,7 +212,7 @@ model Produto {
 
   produto_cor ProdutoCor[]
   
-  items Item[]
+  //items Item[]
 
   @@map("produtos")
 
@@ -232,7 +232,7 @@ model ProdutoTamanhoEstoque {
 
   produtoCor_id String
 
-  items Item[]
+  //items Item[]
 
   @@map("produto_tamanhos_estoque")
 }
@@ -244,7 +244,7 @@ model ProdutoCor {
 
   produto Produto @relation(fields: [produto_id], references: [id])
   produto_tamanhos_estoque ProdutoTamanhoEstoque[]
-  items Item[]
+  //items Item[]
 
   @@map("produto_cor")
 
@@ -280,20 +280,24 @@ model Item{
   id String @id @default(uuid())
   qtd Int
   preco Float
+  preco_unit Float?
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   order Order @relation(fields: [order_id], references: [id])
-  produto Produto @relation(fields: [produto_id], references: [id])
+  //produto Produto @relation(fields: [produto_id], references: [id])
   
-  tamanho ProdutoTamanhoEstoque @relation(fields: [tamanho_id], references: [id])
-  cor ProdutoCor @relation(fields: [cor_id], references: [id])
+  //tamanho ProdutoTamanhoEstoque @relation(fields: [tamanho_id], references: [id])
+  //cor ProdutoCor @relation(fields: [cor_id], references: [id])
 
   @@map("items")
   order_id String
   produto_id String
+  produto_name String?
   cor_id String
+  color_name String?
   tamanho_id String
+  size_name String?
 }
 
 // TABELA DE CAIXA
