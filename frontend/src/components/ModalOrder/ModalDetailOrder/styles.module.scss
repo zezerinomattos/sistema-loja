@@ -135,7 +135,7 @@ ol.list div.valueOrder{
     }
 }
 
-ol.list div.dateOrder{
+ol.list div.dataOrder{
     width: 100%;
     margin-top: 2rem;
     padding-top: 1rem;
@@ -148,5 +148,16 @@ ol.list div.dateOrder{
         margin-top: 5px;
         font-family: 'Ubuntu', sans-serif;
         font-size: 14px;
+    }
+}
+
+ol.list div.dataOrder div.infoDate{
+    margin-top: 0.5rem;
+    margin-bottom: 0.2rem;
+
+    span{
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 14px;
+        margin-right: 1rem;
     }
 }

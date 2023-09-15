@@ -4,8 +4,6 @@ import Modal from 'react-modal';
 
 //MY IMPORTS
 import styles from './styles.module.scss';
-import { Input, TextArea } from '../../Ui/Input';
-import { Button } from '../../Ui/Button';
 
 import { OrderProps } from '../../../pages/order/listorder';
 
@@ -34,7 +32,7 @@ export function ModalDetailOrder({ isOpen, onRequestClose, detalOrder }: ModalOr
             <div className={styles.container}>
                 <div className={styles.taxCouponConteiner}>
                     <div className={styles.taxCuponTitle}>
-                        <h1>DETALHE DE PEDIDO</h1>
+                        <h1>DETALHES DO PEDIDO</h1>
                     </div>
 
                     <div className={styles.taxCuponHeader}>
@@ -81,7 +79,11 @@ export function ModalDetailOrder({ isOpen, onRequestClose, detalOrder }: ModalOr
                                             <span >VAL. PAGO: R$ {order.valor_total}</span>
                                         </div>
 
-                                        <div className={styles.dateOrder}>
+                                        <div className={styles.dataOrder}>
+                                            <div className={styles.infoDate}>
+                                                <span >CRIAÇÃO: {new Date(order.created_at).toLocaleDateString()}</span>
+                                                <span >ATUALIZAÇÃO: {new Date(order.updated_at).toLocaleDateString()}</span>
+                                            </div>
                                             <span >CLIENTE: {order.cliente.usuario.nome}</span>
                                             <span >VENDEDOR: {order.colaborado.usuario.nome}</span>
                                             <span >CAIXA: {order.caixa.colaborador.usuario.nome}</span>
