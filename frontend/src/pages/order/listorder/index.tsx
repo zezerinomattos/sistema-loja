@@ -11,8 +11,8 @@ import { Header } from '@/components/Header';
 import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
-//import { ModalProduct } from '../../../components/ModalProduct';
 import { ModalDetailOrder } from '../../../components/ModalOrder/ModalDetailOrder';
+import { ModalDeleteItem } from '../../../components/ModalOrder/ModalDeleteItem';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -68,6 +68,8 @@ export interface ListOrder{
 
 
 export default function ListOrder({ order }: ListOrder){
+    const { user } = useContext(AuthContext);
+
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
 
@@ -86,6 +88,27 @@ export default function ListOrder({ order }: ListOrder){
     const [modalOrderDetail, setModalOrderDetail] = useState<OrderProps[]>();
     const [modalVisible, setModalVisible] = useState(false);
 
+    const [modalVisibleDelete, setModalVibleDelete] = useState(false);
+    const [deleteItems, setDeleteItems] = useState<OrderProps[]>();
+
+    //FUNCAO PARA MENU TECLAS PRECIONADAS
+    const handleKeyDown = async (event: KeyboardEvent) => {
+        // Verificar se a tecla Shift está pressionada
+      if (event.shiftKey) {
+        // FUNCAO PARA EXCLUIR ITEM DE PRODUTO
+        if (event.key === 'X' || event.key === 'x') {
+            setModalVibleDelete(true);
+          }
+      }
+    }
+
+    //VAI FICAR ESCUTANDO SE FOI PRECIONADO ALGUM BOTÃO DO TECLADO.
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+          document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     //FUNCAO PARA FILTRAR AS ORDER
     function filterOrder(){
@@ -104,6 +127,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && !listName && selectedFilterOption === 'TODOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -124,6 +151,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && !listName && selectedFilterOption === 'FECHADOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -144,6 +175,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && !listName && selectedFilterOption === 'ABERTOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -164,6 +199,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && !listName && selectedFilterOption === 'RASCUNHOS' && selectedFilter === 'TODOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -185,6 +224,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'TODOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -205,6 +248,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'FECHADOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -225,6 +272,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'ABERTOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -245,6 +296,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'VENDEDOR' && selectedFilterOption === 'RASCUNHOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -266,6 +321,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'TODOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -286,6 +345,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'FECHADOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -306,6 +369,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'ABERTOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -326,6 +393,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CAIXA' && selectedFilterOption === 'RASCUNHOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -347,6 +418,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'TODOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -367,6 +442,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'FECHADOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -387,6 +466,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'ABERTOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -407,6 +490,10 @@ export default function ListOrder({ order }: ListOrder){
         if (!listId && listName && selectedFilter === 'CLIENTE' && selectedFilterOption === 'RASCUNHOS' && listDateStart && listDateEnd) {
             const startDate = new Date(listDateStart); // Converte a data de início para um objeto Date
             const endDate = new Date(listDateEnd); // Converte a data de término para um objeto Date
+
+            // Subtrai 3 horas das datas
+            startDate.setHours(startDate.getHours() + 3);
+            endDate.setHours(endDate.getHours() + 3);
         
             // Filtre as ordens com datas dentro do intervalo [startDate, endDate]
             const filteredOrders = order.filter((ord) => {
@@ -439,8 +526,65 @@ export default function ListOrder({ order }: ListOrder){
 
     //FUNCAO PARA DELETAR ORDER
     async function handleDelete(id: string){
-        alert('button delete');
+        if(user.cargo !== 'GERENTE' && user.cargo !== 'ADMIM'){
+            toast.warning('ATENÇÃO, VOCÊ NÃO TEM ALTORIZAÇÃO PARA DELETAR UMA ORDER!')
+            return;
+        }
+
+        // Mostrar a caixa de diálogo de confirmação
+        const confirmDelete = window.confirm('Você já deletou os Itens do PEDIDO? Se não deletou cancele.');
+
+        if (confirmDelete) {
+            setCarregando(true);
+            await api.delete('/delete/order', {
+            params:{
+                order_id: id
+            }
+            })
+            .then(response => {
+                toast.success('Pedido Cancelado!');
+                setCarregando(false);
+                window.location.reload();
+            })
+            .catch(error => {  
+                console.log(error);
+                toast.error(error.response.data.erro); 
+                setCarregando(false);
+            })
+        }else{
+            //return;
+            setCarregando(true);
+            await api.get('/detail/order', {
+                params:{
+                    order_id: id,
+                }
+            })
+            .then(response => {
+                setDeleteItems(response.data?.detailOrder);
+            })
+        }
     }
+    //ATUALIZA O ESTADO DE DELETAR O ITEM E DELETA O ITEM
+    useEffect(() => {
+        deleteItems?.map(ord => ord.items.map(async(item) => {
+            await api.delete('/delete/item', {
+                params:{
+                  item_id: item.id,
+                }
+            })
+            .then(response => {
+                setCarregando(false);
+            })
+            .catch(error => {
+                console.log(error);
+                toast.error(error.response.data.erro);
+                setCarregando(false);
+            })
+            toast.success('ITENS EXCLUIDOS!');
+        }))
+
+        
+    }, [deleteItems]);
 
     //FUNCAO DE DETALHE DE ORDER E ABRE MODAL
     async function handleDetailOrder(id: string){
@@ -588,6 +732,7 @@ export default function ListOrder({ order }: ListOrder){
                                     <span className={ord.status === true ? styles.spanStatus : ''}>{ord.status === true ? 'FINALIZADO' : "ABERTO"}</span>
                                     <span className={ord.draft === true ? styles.spanDraft : ''}>{ord.draft === true ? 'RASCUNHO' : 'PEDIDO'}</span>
                                     <span>{ord.valor_pagar}</span>
+                                    <span>{new Date(ord.updated_at).toLocaleDateString()}</span>
                                     <BsTrash 
                                         size={20} 
                                         style={{color: '#FF3F4B', cursor: 'pointer'}}
@@ -608,6 +753,7 @@ export default function ListOrder({ order }: ListOrder){
                     />
                 )
             }
+
         </div>
     )
 }

@@ -106,7 +106,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     const url = 'http://localhost:3333/files/';
     const [imgProduct, setImgProduct] = useState('');
 
-    //FUNCAO PARA MENU TECLAS PRCIONADAS
+    //FUNCAO PARA MENU TECLAS PRECIONADAS
     const handleKeyDown = async (event: KeyboardEvent) => {
       // Verificar se a tecla Shift está pressionada
       if (event.shiftKey) {
