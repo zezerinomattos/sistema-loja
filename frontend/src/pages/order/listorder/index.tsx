@@ -12,7 +12,7 @@ import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
 import { ModalDetailOrder } from '../../../components/ModalOrder/ModalDetailOrder';
-import { ModalDeleteItem } from '../../../components/ModalOrder/ModalDeleteItem';
+import { ModalAlert } from '../../../components/Utils/ModalAlert';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -88,7 +88,10 @@ export default function ListOrder({ order }: ListOrder){
     const [modalOrderDetail, setModalOrderDetail] = useState<OrderProps[]>();
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [modalVisibleDelete, setModalVibleDelete] = useState(false);
+    const [modalVisibleAlert, setModalVibleAlert] = useState(false);
+    const [alertIdOrder, setAlertIdOrder] = useState('');
+    const [titleAlert, setTitleAlert] = useState('Excluir Pedido');
+    const [menssageAlert, setMenssageAlert] = useState('Deseja realmente DELETAR esse pedido???');
     const [deleteItems, setDeleteItems] = useState<OrderProps[]>();
 
     //FUNCAO PARA FILTRAR AS ORDER
@@ -506,34 +509,42 @@ export default function ListOrder({ order }: ListOrder){
     }, [listName, selectedFilterOption]);
 
     //FUNCAO PARA DELETAR ORDER
-    async function handleDelete(id: string){
+    async function handleDelete(res: string, id: string){
         if(user.cargo !== 'GERENTE' && user.cargo !== 'ADMIM'){
             toast.warning('ATENÇÃO, VOCÊ NÃO TEM ALTORIZAÇÃO PARA DELETAR UM PEDIDO!')
             return;
         }
 
-        //Filtra a lista de orders pelo id passado
-        const idOrder = order.filter((ord) => ord.id === id);
-
-        //Pega o status da order filtrada
-        const statusOrder = order[0].status;
-
-        // Encontre a ordem com o ID correspondente
-        const ordemEncontrada = order.find(ord => ord.id === id);
-
-        if(ordemEncontrada?.status){
-            toast.warning('ATENÇÃO, VOCÊ NÃO PODE DELETAR UM PEDIDO FINALIZADO!')
-            return;
-        }else{
-            await api.get('/detail/order', {
-                params: {
-                    order_id: id,
-                }
-            })
-            .then(response => {
-                setDeleteItems(response.data?.detailOrder);
-            })
+        if(res === 'sim'){
             
+            // //Filtra a lista de orders pelo id passado
+            const idOrder = order.filter((ord) => ord.id === id);
+            
+            setModalVibleAlert(false)
+
+            //Pega o status da order filtrada
+            const statusOrder = order[0].status;
+
+            // Encontre a ordem com o ID correspondente
+            const ordemEncontrada = order.find(ord => ord.id === id);
+
+            if(ordemEncontrada?.status){
+                toast.warning('ATENÇÃO, VOCÊ NÃO PODE DELETAR UM PEDIDO FINALIZADO!')  
+                return;
+            }else{
+                await api.get('/detail/order', {
+                    params: {
+                        order_id: id,
+                    }
+                })
+                .then(response => {
+                    setDeleteItems(response.data?.detailOrder);
+                })     
+            }
+
+        }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
         }
     }
     //ATUALIZA O ESTADO DE DELETAR O ITEM E DELETA O ORDER
@@ -576,6 +587,11 @@ export default function ListOrder({ order }: ListOrder){
         }
         
     }, [deleteItems]);
+
+    function alertConfirm(id: string ){
+        setAlertIdOrder(id);
+        setModalVibleAlert(true);
+    }
 
     //FUNCAO DE DETALHE DE ORDER E ABRE MODAL
     async function handleDetailOrder(id: string){
@@ -727,7 +743,8 @@ export default function ListOrder({ order }: ListOrder){
                                     <BsTrash 
                                         size={20} 
                                         style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => handleDelete(ord.id)}
+                                        // onClick={() => handleDelete(ord.id)}
+                                        onClick={() => alertConfirm(ord.id)}
                                     />           
                                 </li>
                             ))}
@@ -741,6 +758,18 @@ export default function ListOrder({ order }: ListOrder){
                         isOpen={modalVisible}
                         onRequestClose={handleCloseModal}
                         detalOrder={modalOrderDetail}
+                    />
+                )
+            }
+
+            {
+                modalVisibleAlert && (
+                    <ModalAlert 
+                        isOpen={modalVisibleAlert}
+                        onRequestClose={handleDelete}
+                        idOrder={alertIdOrder}
+                        titleAlert={titleAlert}
+                        menssageAlert={menssageAlert}
                     />
                 )
             }

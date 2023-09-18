@@ -1,11 +1,47 @@
 div.container{
     width: 500px;
     height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     h1{
         color: var(--red-900);
         font-family: 'Roboto', sans-serif;
         margin-bottom: 1rem;
         margin-left: 10px;
+
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+div.container div.alertContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    span{
+        color: var(--white-700);
+        text-shadow: 1px 1px 2px #161515cc;
+        font-family: 'Roboto', sans-serif;
+        margin-bottom: 1rem;
+        margin-left: 10px;
+    }
+}
+
+div.alertContainer div.alertButton{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+
+    button{
+        width: 150px;
+        margin: 10px;
     }
 }

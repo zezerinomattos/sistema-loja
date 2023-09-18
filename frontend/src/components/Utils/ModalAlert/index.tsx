@@ -9,13 +9,17 @@ import { Button } from '@/components/Ui/Button';
 
 interface ModalProps{
     isOpen: boolean;
-    onRequestClose: ( res: string ) => void;
+    idOrder: string;
+    titleAlert: string;
+    menssageAlert: string;
+    onRequestClose: ( res: string, id: string ) => void;
 }
 
-export function ModalAlert({ isOpen, onRequestClose }: ModalProps){
+export function ModalAlert({ isOpen, idOrder, titleAlert, menssageAlert, onRequestClose }: ModalProps){
 
-    const [selectOption, setSelectoption] = useState('');;
+    // const [selectOption, setSelectoption] = useState('');;
     const [modalClosedByButton, setModalClosedByButton] = useState(false);
+    const [alertIdOrder, setAlertIdOrder] = useState('');
 
     const customStyles = {
         content: {
@@ -29,19 +33,24 @@ export function ModalAlert({ isOpen, onRequestClose }: ModalProps){
         },
     };
 
-    const closeModal = () => {
-        onRequestClose(selectOption)
+    const closeModal = (option: string) => {
+        //onRequestClose(selectOption, alertIdOrder)
+        onRequestClose(option, idOrder);
     }
 
-    <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
-        <div className={styles.container}>
-            <h1><FcCancel width={80}/> Excluir Pedido</h1>
-            <div className={styles.inputContainer}>
-                <span>Você tem certeza que deseja DELETAR essa order?</span>
-                <Button type='button' onClick={() => setSelectoption('sim')} >SIM</Button>
-                <Button type='button' onClick={() => setSelectoption('nao')} >NÃO</Button>
+    return(
+        <Modal isOpen={isOpen} style={customStyles}>
+            <div className={styles.container}>
+                <h1><FcCancel width={100} style={{marginRight: '5px'}}/> {titleAlert}</h1>
+                <div className={styles.alertContainer}>
+                    <span>{menssageAlert}</span>
+                    <div className={styles.alertButton}>
+                        <Button type='button' onClick={() => closeModal('sim')} >SIM</Button>
+                        <Button type='button' onClick={() => closeModal('nao')} >NÃO</Button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </Modal>
+        </Modal>
+    )
 
 }
