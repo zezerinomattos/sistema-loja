@@ -91,25 +91,6 @@ export default function ListOrder({ order }: ListOrder){
     const [modalVisibleDelete, setModalVibleDelete] = useState(false);
     const [deleteItems, setDeleteItems] = useState<OrderProps[]>();
 
-    //FUNCAO PARA MENU TECLAS PRECIONADAS
-    const handleKeyDown = async (event: KeyboardEvent) => {
-        // Verificar se a tecla Shift está pressionada
-      if (event.shiftKey) {
-        // FUNCAO PARA EXCLUIR ITEM DE PRODUTO
-        if (event.key === 'X' || event.key === 'x') {
-            setModalVibleDelete(true);
-          }
-      }
-    }
-
-    //VAI FICAR ESCUTANDO SE FOI PRECIONADO ALGUM BOTÃO DO TECLADO.
-    useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-          document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
-
     //FUNCAO PARA FILTRAR AS ORDER
     function filterOrder(){
         //FILTRANDO SE TEM ID
@@ -527,62 +508,72 @@ export default function ListOrder({ order }: ListOrder){
     //FUNCAO PARA DELETAR ORDER
     async function handleDelete(id: string){
         if(user.cargo !== 'GERENTE' && user.cargo !== 'ADMIM'){
-            toast.warning('ATENÇÃO, VOCÊ NÃO TEM ALTORIZAÇÃO PARA DELETAR UMA ORDER!')
+            toast.warning('ATENÇÃO, VOCÊ NÃO TEM ALTORIZAÇÃO PARA DELETAR UM PEDIDO!')
             return;
         }
 
-        // Mostrar a caixa de diálogo de confirmação
-        const confirmDelete = window.confirm('Você já deletou os Itens do PEDIDO? Se não deletou cancele.');
+        //Filtra a lista de orders pelo id passado
+        const idOrder = order.filter((ord) => ord.id === id);
 
-        if (confirmDelete) {
-            setCarregando(true);
-            await api.delete('/delete/order', {
-            params:{
-                order_id: id
-            }
-            })
-            .then(response => {
-                toast.success('Pedido Cancelado!');
-                setCarregando(false);
-                window.location.reload();
-            })
-            .catch(error => {  
-                console.log(error);
-                toast.error(error.response.data.erro); 
-                setCarregando(false);
-            })
+        //Pega o status da order filtrada
+        const statusOrder = order[0].status;
+
+        // Encontre a ordem com o ID correspondente
+        const ordemEncontrada = order.find(ord => ord.id === id);
+
+        if(ordemEncontrada?.status){
+            toast.warning('ATENÇÃO, VOCÊ NÃO PODE DELETAR UM PEDIDO FINALIZADO!')
+            return;
         }else{
-            //return;
-            setCarregando(true);
             await api.get('/detail/order', {
-                params:{
+                params: {
                     order_id: id,
                 }
             })
             .then(response => {
                 setDeleteItems(response.data?.detailOrder);
             })
+            
         }
     }
-    //ATUALIZA O ESTADO DE DELETAR O ITEM E DELETA O ITEM
-    useEffect(() => {
-        deleteItems?.map(ord => ord.items.map(async(item) => {
-            await api.delete('/delete/item', {
-                params:{
-                  item_id: item.id,
+    //ATUALIZA O ESTADO DE DELETAR O ITEM E DELETA O ORDER
+    useEffect(() => {        
+        try {
+            deleteItems?.map(async (ord) => {
+                if (ord.items.length === 0) {
+                    await api.delete('/delete/order', {
+                        params: {
+                            order_id: ord.id
+                        }
+                    });
+                    toast.success('PEDIDO EXCLUÍDO!');
+                    window.location.reload();
+                } else {
+                    for (const item of ord.items) {
+                        await api.delete('/delete/item', {
+                            params: {
+                                item_id: item.id
+                            }
+                        });
+                    }
+                    await api.delete('/delete/order', {
+                        params: {
+                            order_id: ord.id
+                        }
+                    });
+                    toast.success('PEDIDO EXCLUÍDO!');
+                    window.location.reload();
                 }
-            })
-            .then(response => {
-                setCarregando(false);
-            })
-            .catch(error => {
-                console.log(error);
+            });
+        }catch (error: any) {
+            console.error(error);
+            if (error.response) {
                 toast.error(error.response.data.erro);
-                setCarregando(false);
-            })
-            toast.success('ITENS EXCLUIDOS!');
-        }))
-
+            } else {
+                toast.error('Ocorreu um erro na solicitação.');
+            }
+            setCarregando(false);
+        }
         
     }, [deleteItems]);
 
