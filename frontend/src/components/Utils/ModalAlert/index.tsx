@@ -45,8 +45,8 @@ export function ModalAlert({ isOpen, idOrder, titleAlert, menssageAlert, onReque
                 <div className={styles.alertContainer}>
                     <span>{menssageAlert}</span>
                     <div className={styles.alertButton}>
-                        <Button type='button' onClick={() => closeModal('sim')} >SIM</Button>
-                        <Button type='button' onClick={() => closeModal('nao')} >NÃO</Button>
+                        <Button type='button' onClick={() => closeModal('sim')} style={{background: '#FF3F4B'}}>SIM</Button>
+                        <Button type='button' onClick={() => closeModal('nao')} style={{background: '#D9D9D9', color: '#000'}}>NÃO</Button>
                     </div>
                 </div>
             </div>
