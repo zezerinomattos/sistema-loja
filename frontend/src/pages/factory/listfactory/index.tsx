@@ -13,6 +13,7 @@ import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
 import { ModalFactory } from '../../../components/ModalFactory';
+import { ModalAlert } from '../../../components/Utils/ModalAlert';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -68,6 +69,11 @@ export default function ListFactory({ factory }: ListProps){
     const [modalFactory, setModalFactory] = useState<FactoryDetailProps[]>();
     const [modalVisible, setModalVisible] = useState(false);
 
+    const [modalVisibleAlert, setModalVibleAlert] = useState(false);
+    const [alertIdOrder, setAlertIdOrder] = useState('');
+    const [titleAlert, setTitleAlert] = useState('Excluir fabrica');
+    const [menssageAlert, setMenssageAlert] = useState('Deseja realmente DELETAR esse fabrica???');
+
     //FUNCAO PARA DETALHAR FABRICA SELECIONADO
     async function handleOpenModalView(id: string){
         await api.get('/fabrica/detail', {
@@ -81,17 +87,20 @@ export default function ListFactory({ factory }: ListProps){
         });
     }
 
+    //FUNCAO QUE ABRE MODAL DE ALERT
+    function alertConfirm(id: string ){
+        setAlertIdOrder(id);
+        setModalVibleAlert(true);
+    }
+
     // FUNCAO PARA DELETAR FABRICA
-    async function handleDelete(id: string){
+    async function handleDelete(res: string, id: string){
         if(!id){
             toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
             return;
         }
 
-        // Mostrar a caixa de diálogo de confirmação
-        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa fábrica?');
-
-        if (confirmDelete) {
+        if(res === 'sim'){
             // O usuário confirmou a exclusão, então faz a requisição para deletar a fábrica
             await api.delete('fabrica/delete', {
                 params:{
@@ -104,11 +113,12 @@ export default function ListFactory({ factory }: ListProps){
             })
             .catch(error => {
                 console.log(error);
-                toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+                toast.error('ALGO DEU ERRADO, A FABRICA NÃO PODE SER EXCLUIDA SE ESTIVER EM UM PRODUTO!');
+                setModalVibleAlert(false)
             });
-        } else {
-            // O usuário cancelou a exclusão, não faz nada
-            return;
+        }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
         }
     }
 
@@ -196,7 +206,7 @@ export default function ListFactory({ factory }: ListProps){
                                     <BsTrash 
                                         size={20} 
                                         style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => handleDelete(fac.id)}
+                                        onClick={() => alertConfirm(fac.id)}
                                     />           
                                 </li>
                             ))}
@@ -211,6 +221,18 @@ export default function ListFactory({ factory }: ListProps){
                         isOpen={modalVisible}
                         onRequestClose={handleCloseModal}
                         factory={modalFactory}
+                    />
+                )
+            }
+
+            {
+                modalVisibleAlert && (
+                    <ModalAlert 
+                        isOpen={modalVisibleAlert}
+                        onRequestClose={handleDelete}
+                        idOrder={alertIdOrder}
+                        titleAlert={titleAlert}
+                        menssageAlert={menssageAlert}
                     />
                 )
             }
