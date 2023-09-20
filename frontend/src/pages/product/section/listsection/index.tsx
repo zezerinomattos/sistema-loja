@@ -3,6 +3,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { toast } from 'react-toastify';
+import Modal from 'react-modal';
 
 // MY IMPORTS
 import styles from './styles.module.scss';

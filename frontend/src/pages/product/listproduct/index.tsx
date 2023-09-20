@@ -12,6 +12,7 @@ import { Presentation } from '../../../components/Presentation';
 
 import { Input } from '../../../components/Ui/Input';
 import { ModalProduct } from '../../../components/ModalProduct';
+import { ModalAlert } from '../../../components/Utils/ModalAlert';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -105,6 +106,11 @@ export default function ListProduct({ product }: ListProps){
     const [modalProduct, setModalProduct] = useState<ProductApiResponse[]>();
     const [modalVisible, setModalVisible] = useState(false);
 
+    const [modalVisibleAlert, setModalVibleAlert] = useState(false);
+    const [alertIdOrder, setAlertIdOrder] = useState('');
+    const [titleAlert, setTitleAlert] = useState('Excluir produto');
+    const [menssageAlert, setMenssageAlert] = useState('Deseja realmente DELETAR esse produto???');
+
     //FUNCAO PARA DETALHAR FABRICA SELECIONADO
     async function handleOpenModalView(id: string){
         await api.get('/produto/detail', {
@@ -123,17 +129,20 @@ export default function ListProduct({ product }: ListProps){
         setModalVisible(false);
     }
 
+    //FUNCAO QUE ABRE MODAL DE ALERT
+    function alertConfirm(id: string ){
+        setAlertIdOrder(id);
+        setModalVibleAlert(true);
+    }
+
     // FUNCAO PARA DELETAR PRODUTO
-    async function handleDelete(id: string){
+    async function handleDelete(res: string, id: string){
         if(!id){
             toast.success('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
             return;
         }
 
-        // Mostrar a caixa de diálogo de confirmação
-        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa Produto?');
-
-        if (confirmDelete) {
+        if(res === 'sim'){
             // O usuário confirmou a exclusão, então faz a requisição para deletar a fábrica
             await api.delete('produto/delete', {
                 params:{
@@ -148,10 +157,11 @@ export default function ListProduct({ product }: ListProps){
                 console.log(error);
                 toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
             });
-        } else {
-            // O usuário cancelou a exclusão, não faz nada
-            return;
+        }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
         }
+
     }
 
     // FUNCAO FILTRO 
@@ -274,7 +284,7 @@ export default function ListProduct({ product }: ListProps){
                                     <BsTrash 
                                         size={20} 
                                         style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => handleDelete(prod.id)}
+                                        onClick={() => alertConfirm(prod.id)}
                                     />           
                                 </li>
                             ))}
@@ -289,6 +299,18 @@ export default function ListProduct({ product }: ListProps){
                         isOpen={modalVisible}
                         onRequestClose={handleCloseModal}
                         product={modalProduct}
+                    />
+                )
+            }
+
+            {
+                modalVisibleAlert && (
+                    <ModalAlert 
+                        isOpen={modalVisibleAlert}
+                        onRequestClose={handleDelete}
+                        idOrder={alertIdOrder}
+                        titleAlert={titleAlert}
+                        menssageAlert={menssageAlert}
                     />
                 )
             }

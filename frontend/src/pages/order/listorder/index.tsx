@@ -75,8 +75,6 @@ export default function ListOrder({ order }: ListOrder){
 
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
-    const [listOptions, setListOptions] = useState(false);
-    const [listSelected, setListSelected] = useState(false);
     const [listDateStart, setListDateStart] = useState('');
     const [listDateEnd, setListDateEnd ] = useState('');
 
@@ -588,6 +586,7 @@ export default function ListOrder({ order }: ListOrder){
         
     }, [deleteItems]);
 
+    //FUNCAO QUE ABRE MODAL DE ALERT
     function alertConfirm(id: string ){
         setAlertIdOrder(id);
         setModalVibleAlert(true);
@@ -743,7 +742,6 @@ export default function ListOrder({ order }: ListOrder){
                                     <BsTrash 
                                         size={20} 
                                         style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        // onClick={() => handleDelete(ord.id)}
                                         onClick={() => alertConfirm(ord.id)}
                                     />           
                                 </li>
