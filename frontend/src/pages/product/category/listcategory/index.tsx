@@ -3,12 +3,15 @@ import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
 import { toast } from 'react-toastify';
+import Modal from 'react-modal';
 
 // MY IMPORTS
 import styles from './styles.module.scss';
 import { Header } from '@/components/Header';
 import { Presentation } from '../../../../components/Presentation';
 import { Input } from '../../../../components/Ui/Input';
+
+import { ModalAlert } from '../../../../components/Utils/ModalAlert';
 
 import { canSSRAuth } from '../../../../components/Utils/serverSideProps/canSSRAuth';
 import { setupAPIClient } from '../../../../services/api';
@@ -28,25 +31,31 @@ interface ListProps{
 export default function ListCategory({ category }: ListProps){
 
     const [carregando, setCarregando] = useState(true);
-    const [loading, setLoaging] = useState(false);
 
     const [categorynList, setCategoryList] = useState(category || []);
 
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
 
+    const [modalVisibleAlert, setModalVibleAlert] = useState(false);
+    const [alertIdOrder, setAlertIdOrder] = useState('');
+    const [titleAlert, setTitleAlert] = useState('Excluir categoria');
+    const [menssageAlert, setMenssageAlert] = useState('Deseja realmente DELETAR esse categoria???');
+
+    //FUNCAO QUE ABRE MODAL DE ALERT
+    function alertConfirm(id: string ){
+        setAlertIdOrder(id);
+        setModalVibleAlert(true);
+    }
+
     // FUNCAO PARA DELETAR SECAO
-    async function handleDelete(id: string){
+    async function handleDelete(res: string, id: string){
         if(!id){
             toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
             return;
         }
 
-        // Mostrar a caixa de diálogo de confirmação
-        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa categoria?');
-
-        if (confirmDelete) {
-
+        if(res === 'sim'){
             await api.delete('/categoria', {
                 params:{
                     categoria_id: id,
@@ -58,11 +67,14 @@ export default function ListCategory({ category }: ListProps){
             })
             .catch(error => {
                 console.log(error);
-                toast.error('ALGO DEU ERRADO, ATUALIZE A PAGINA E TENTE NOVAMENTE');
+                toast.error('ALGO DEU ERRADO, A CATEGORIA NÃO PODE SER EXCLUIDA SE ESTIVER EM UM PRODUTO!');
+                setModalVibleAlert(false)
             })
-        }else{
-            return;
+        }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
         }
+
     }
 
     // FUNCAO FILTRO 
@@ -143,7 +155,7 @@ export default function ListCategory({ category }: ListProps){
                                     <BsTrash 
                                         size={20} 
                                         style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => handleDelete(cat.id)}
+                                        onClick={() => alertConfirm(cat.id)}
                                     />           
                                 </li>
                             ))}
@@ -152,6 +164,18 @@ export default function ListCategory({ category }: ListProps){
                     
                 </div>
             </main>
+
+            {
+                modalVisibleAlert && (
+                    <ModalAlert 
+                        isOpen={modalVisibleAlert}
+                        onRequestClose={handleDelete}
+                        idOrder={alertIdOrder}
+                        titleAlert={titleAlert}
+                        menssageAlert={menssageAlert}
+                    />
+                )
+            }
         </div>
     );
 }

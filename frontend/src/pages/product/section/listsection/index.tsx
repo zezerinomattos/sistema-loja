@@ -30,7 +30,6 @@ interface ListProps{
 export default function ListSection({ section }: ListProps){
 
     const [carregando, setCarregando] = useState(true);
-    const [loading, setLoaging] = useState(false);
 
     const [sectionList, setSectionList] = useState(section || []);
 
@@ -39,8 +38,8 @@ export default function ListSection({ section }: ListProps){
 
     const [modalVisibleAlert, setModalVibleAlert] = useState(false);
     const [alertIdOrder, setAlertIdOrder] = useState('');
-    const [titleAlert, setTitleAlert] = useState('Excluir produto');
-    const [menssageAlert, setMenssageAlert] = useState('Deseja realmente DELETAR esse produto???');
+    const [titleAlert, setTitleAlert] = useState('Excluir seção');
+    const [menssageAlert, setMenssageAlert] = useState('Deseja realmente DELETAR esse seção???');
 
     //FUNCAO QUE ABRE MODAL DE ALERT
     function alertConfirm(id: string ){
