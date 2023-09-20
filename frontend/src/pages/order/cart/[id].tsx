@@ -15,7 +15,7 @@ import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 import { ModalListProductos } from '../../../components/ModalOrder/ModalListProductos';
 import { ModalDeleteItem } from '../../../components/ModalOrder/ModalDeleteItem';
-import imgplaceholder from '../../../../public/placeholder.png'
+import imgplaceholder from '../../../../public/placeholder.png';
 
 import { ProductDetailProps, ProductApiResponse} from '../../product/listproduct';
 
