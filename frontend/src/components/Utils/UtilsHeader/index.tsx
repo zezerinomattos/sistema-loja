@@ -373,7 +373,7 @@ export function UtilsHeader( param: string, title: string ){
                         </li>
 
                         <li>
-                            <Link href="/factory/editfactory">
+                            <Link href="/order/editorder">
                                 <FaPencilAlt size={28} style={{color: '#e99a3b'}}/>
                                 <span><strong>EDITAR</strong><br />PEDIDO</span>
                             </Link>
