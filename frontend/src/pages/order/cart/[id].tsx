@@ -129,13 +129,17 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
           // setModalVibleDelete(true);
           setTitleAlert('Excluir item')
           setMenssageAlert('Deseja realmente DELETAR esse item???');
-          setAlertIdOrder('');
+          setAlertIdOrder('1');
           setModalVibleAlert(true);
         }
     
         // FUNCAO PARA EXCLUIR UMA ORDER => NÃO PODE TER ITEM PARA SER DELETADO A ORDER
         if (event.key === 'C' || event.key === 'c') {
-          await deleteOrder();
+          //await deleteOrder();
+          setTitleAlert('Cancelar pedido')
+          setMenssageAlert('Deseja realmente CANCELAR esse pedido???');
+          setAlertIdOrder('2');
+          setModalVibleAlert(true);
         }
     
         // FUNCAO PARA FINALIZAR PEDIDO
@@ -191,11 +195,7 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
     //FUNCAO PARA EXCLUIR UMA ORDER
     const deleteOrder = async() => {
-      // Mostrar a caixa de diálogo de confirmação
-      const confirmDelete = window.confirm('Tem certeza que deseja cancelar esse pedido?');
-
-      if (confirmDelete) {
-        setCarregando(true);
+      setCarregando(true);
         await api.delete('/delete/order', {
           params:{
             order_id: orderId
@@ -211,9 +211,29 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
           toast.error(error.response.data.erro); 
           setCarregando(false);
         })
-      }else{
-        return;
-      }
+      // Mostrar a caixa de diálogo de confirmação
+      // const confirmDelete = window.confirm('Tem certeza que deseja cancelar esse pedido?');
+
+      // if (confirmDelete) {
+      //   setCarregando(true);
+      //   await api.delete('/delete/order', {
+      //     params:{
+      //       order_id: orderId
+      //     }
+      //   })
+      //   .then(response => {
+      //     toast.success('Pedido Cancelado!');
+      //     router.push('/order/neworder');
+      //     setCarregando(false);
+      //   })
+      //   .catch(error => {  
+      //     console.log(error);
+      //     toast.error(error.response.data.erro); 
+      //     setCarregando(false);
+      //   })
+      // }else{
+      //   return;
+      // }
     };
 
     useEffect(() => {
@@ -235,14 +255,31 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
       setModalVisible(false);
     }
 
-    // FUNCAO FECHAR MODAL DE ALERT DELETE ITEM
-    function handleDelete(res: string, id: string){
-      if(res === 'sim'){
-        setModalVibleAlert(false)
-        setModalVibleDelete(true);
-      }else if(res === 'nao'){
-        setModalVibleAlert(false)
-        return
+    // FUNCAO FECHAR MODAL DE ALERT DELETE 
+    async function handleDelete(res: string, id: string){
+      switch (id) {
+        case '1':
+          if(res === 'sim'){
+            setModalVibleAlert(false)
+            setModalVibleDelete(true);
+          }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
+          }
+          break;
+        
+        case '2':
+          if(res === 'sim'){
+            setModalVibleAlert(false)
+            await deleteOrder()
+          }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
+          }
+          break;
+      
+        default:
+          break;
       }
     }
     
