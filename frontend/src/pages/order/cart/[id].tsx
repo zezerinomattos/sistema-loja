@@ -15,6 +15,7 @@ import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 import { ModalListProductos } from '../../../components/ModalOrder/ModalListProductos';
 import { ModalDeleteItem } from '../../../components/ModalOrder/ModalDeleteItem';
+import { ModalAlert } from '../../../components/Utils/ModalAlert';
 import imgplaceholder from '../../../../public/placeholder.png';
 
 import { ProductDetailProps, ProductApiResponse} from '../../product/listproduct';
@@ -103,6 +104,12 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
 
     const [modalVisibleDelete, setModalVibleDelete] = useState(false);
 
+    //MODAL DE ALERT
+    const [modalVisibleAlert, setModalVibleAlert] = useState(false);
+    const [alertIdOrder, setAlertIdOrder] = useState('');
+    const [titleAlert, setTitleAlert] = useState('Excluir seção');
+    const [menssageAlert, setMenssageAlert] = useState('Deseja realmente DELETAR esse seção???');
+
     const url = 'http://localhost:3333/files/';
     const [imgProduct, setImgProduct] = useState('');
 
@@ -119,7 +126,11 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     
         // FUNCAO PARA EXCLUIR ITEM DE PRODUTO
         if (event.key === 'X' || event.key === 'x') {
-          setModalVibleDelete(true);
+          // setModalVibleDelete(true);
+          setTitleAlert('Excluir item')
+          setMenssageAlert('Deseja realmente DELETAR esse item???');
+          setAlertIdOrder('');
+          setModalVibleAlert(true);
         }
     
         // FUNCAO PARA EXCLUIR UMA ORDER => NÃO PODE TER ITEM PARA SER DELETADO A ORDER
@@ -224,40 +235,41 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
       setModalVisible(false);
     }
 
+    // FUNCAO FECHAR MODAL DE ALERT DELETE ITEM
+    function handleDelete(res: string, id: string){
+      if(res === 'sim'){
+        setModalVibleAlert(false)
+        setModalVibleDelete(true);
+      }else if(res === 'nao'){
+        setModalVibleAlert(false)
+        return
+      }
+    }
+    
     // FUNCAO FECHAR MODAL DELETE ITEM
     async function handleCloseModalDeleteItem(itemId: string){
       //console.log(itemId);
       if(itemId){
         setModalVibleDelete(false);
 
-        // Mostrar a caixa de diálogo de confirmação
-        const confirmDelete = window.confirm('Tem certeza que deseja deletar essa esse Item?');
+        await api.delete('/delete/item', {
+          params:{
+            item_id: itemId,
+          }
+        })
+        .then(response => {
+          toast.success('ITEM EXCLUIDO!');
 
-        if (confirmDelete) {
-          
-          await api.delete('/delete/item', {
-            params:{
-              item_id: itemId,
-            }
-          })
-          .then(response => {
-            toast.success('ITEM EXCLUIDO!');
+          // Atualize a lista de items após a exclusão bem-sucedida
+          updateAddedItemsAfterDelete(itemId);
 
-            // Atualize a lista de items após a exclusão bem-sucedida
-            updateAddedItemsAfterDelete(itemId);
-
-            // Calcule o novo valor total dos itens
-            setTotalItemsValue(totalItemsValue - response.data.deleteItem?.preco);
-          })
-          .catch(error => {
-            console.log(error);
-            toast.error(error.response.data.erro);
-          })
-        }
-        else {
-          // O usuário cancelou a exclusão, não faz nada
-          return;
-        }
+          // Calcule o novo valor total dos itens
+          setTotalItemsValue(totalItemsValue - response.data.deleteItem?.preco);
+        })
+        .catch(error => {
+          console.log(error);
+          toast.error(error.response.data.erro);
+        })
 
       }else{
         setModalVibleDelete(false);
@@ -473,6 +485,18 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
             />
           )
         }
+
+        {
+          modalVisibleAlert && (
+              <ModalAlert 
+                  isOpen={modalVisibleAlert}
+                  onRequestClose={handleDelete}
+                  idOrder={alertIdOrder}
+                  titleAlert={titleAlert}
+                  menssageAlert={menssageAlert}
+              />
+          )
+      }
       </div>
     );
 }
