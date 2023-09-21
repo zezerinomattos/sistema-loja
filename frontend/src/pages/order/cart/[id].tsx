@@ -144,96 +144,70 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     
         // FUNCAO PARA FINALIZAR PEDIDO
         if (event.key === 'F' || event.key === 'f') {
-          await sendOrder();
+          //await sendOrder();
+          setTitleAlert('Finalizar pedido')
+          setMenssageAlert('Deseja realmente Finalizar o pedido???');
+          setAlertIdOrder('3');
+          setModalVibleAlert(true);
         }
       }else {
         //FUNCAO DE SAIDA E PEDIDO FICA COMO RASCUNHO
         if (event.key === 'Escape') {
-          await outOrder();
+          //await outOrder();
+          setTitleAlert('Sair do pedido')
+          setMenssageAlert('Tem certeza que deseja sair sem finalizar esse pedido???');
+          setAlertIdOrder('4');
+          setModalVibleAlert(true);
         }
       }
     };
 
+    //FUNCAO PARA SAIR DO PEDIDO -> DEIXAR EM RASCUNHO
     const outOrder = async() => {
-      // Mostrar a caixa de diálogo de confirmação
-      const confirmOut = window.confirm('Tem certeza que deseja sair sem finalizar esse pedido?');
-
-      if (confirmOut) {
-        setCarregando(true);
-        router.push('/order/neworder');
-        toast.success('Pedido Salvo em Rascunho');
-        setCarregando(false);
-      }
+      setCarregando(true);
+      router.push('/order/neworder');
+      toast.success('Pedido Salvo em Rascunho');
+      setCarregando(false);
     }
 
     //FUNCAO QUE VAI FINALIZAR UMA ORDER DE PEDIDO(SALVAR E LIBERAR PARA SEPARAR PRODUTO E PAGAMENTO);
     const sendOrder = async() => {
 
-      // Mostrar a caixa de diálogo de confirmação
-      const confirmSave = window.confirm('Tem certeza que deseja finalizar esse pedido?');
+      setCarregando(true);
 
-      if (confirmSave) {
-        setCarregando(true);
-
-        await api.put('/send/order', {
-          order_id: orderId,
-        })
-        .then(response => {
-          toast.success('Pedido Finalizado!');
-          router.push('/order/neworder');
-          setCarregando(false);
-        })
-        .catch(error => {
-          console.log(error);
-          toast.error(error.response.data.erro); 
-          setCarregando(false);
-        })
-      }else{
-        return
-      }
+      await api.put('/send/order', {
+        order_id: orderId,
+      })
+      .then(response => {
+        toast.success('Pedido Finalizado!');
+        router.push('/order/neworder');
+        setCarregando(false);
+      })
+      .catch(error => {
+        console.log(error);
+        toast.error(error.response.data.erro); 
+        setCarregando(false);
+      })
     }
 
     //FUNCAO PARA EXCLUIR UMA ORDER
     const deleteOrder = async() => {
       setCarregando(true);
-        await api.delete('/delete/order', {
-          params:{
-            order_id: orderId
-          }
-        })
-        .then(response => {
-          toast.success('Pedido Cancelado!');
-          router.push('/order/neworder');
-          setCarregando(false);
-        })
-        .catch(error => {  
-          console.log(error);
-          toast.error(error.response.data.erro); 
-          setCarregando(false);
-        })
-      // Mostrar a caixa de diálogo de confirmação
-      // const confirmDelete = window.confirm('Tem certeza que deseja cancelar esse pedido?');
-
-      // if (confirmDelete) {
-      //   setCarregando(true);
-      //   await api.delete('/delete/order', {
-      //     params:{
-      //       order_id: orderId
-      //     }
-      //   })
-      //   .then(response => {
-      //     toast.success('Pedido Cancelado!');
-      //     router.push('/order/neworder');
-      //     setCarregando(false);
-      //   })
-      //   .catch(error => {  
-      //     console.log(error);
-      //     toast.error(error.response.data.erro); 
-      //     setCarregando(false);
-      //   })
-      // }else{
-      //   return;
-      // }
+      await api.delete('/delete/order', {
+        params:{
+          order_id: orderId
+        }
+      })
+      .then(response => {
+        toast.success('Pedido Cancelado!');
+        router.push('/order/neworder');
+        setCarregando(false);
+      })
+      .catch(error => {  
+        console.log(error);
+        toast.error(error.response.data.erro); 
+        setCarregando(false);
+      })
     };
 
     useEffect(() => {
@@ -277,7 +251,25 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
             return
           }
           break;
-      
+        
+        case '3':
+          if(res === 'sim'){
+            setModalVibleAlert(false)
+            await sendOrder();
+          }else if(res === 'nao'){
+            setModalVibleAlert(false);
+            return
+          }
+          break;
+
+        case '4':
+          if(res === 'sim'){
+            setModalVibleAlert(false);
+            await outOrder();
+          }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
+          }
         default:
           break;
       }
