@@ -17,7 +17,22 @@ import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth
 import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
-export default function EditOrder(){
+type CaixaProps = {
+    id: string;
+    status: boolean;
+    colaborador: {
+        id: string;
+        usuario: {
+            nome: string;
+        };
+    };
+}
+
+interface ListProps{
+    caixa: CaixaProps[];
+}
+
+export default function EditOrder({ caixa }: ListProps){
     const { user } = useContext(AuthContext);
     
     const [carregando, setCarregando] = useState(true);
@@ -27,13 +42,19 @@ export default function EditOrder(){
     const [order_id, setOrderId] = useState('');
     const [desconto, setDesconto] = useState(0);
     const [caixa_id, setCaixa_id] = useState('');
+    
     const [clieteName, setClieteName] = useState('');
     const [vendedorName, setVendedorName] = useState('');
+    const [caixaName, setCaixaName] = useState('');
+
+    const [caixasAbertos, setCaixasAbertos] = useState(caixa || []);
+
 
     //const [caixaList, setCaixaList] = useState(caixa || []);
 
     //FUNCAO PARA EDITAR ORDER
     async function hadleRegister(event: FormEvent){
+        event.preventDefault()
         alert('ok');
     }
 
@@ -41,6 +62,14 @@ export default function EditOrder(){
     async function handleFilter(){
         alert('filter')
     }
+
+    useEffect(() => {
+        // Filtrar os caixas abertos (status true)
+        const caixasFiltrados = caixa.filter((cxa) => cxa.status === true);
+        setCaixasAbertos(caixasFiltrados);
+
+        //console.log(caixasAbertos)
+    }, [caixa]);
 
     useEffect(() => {
         //Escondendo o loading quando ele montar completamente o componente
@@ -71,32 +100,73 @@ export default function EditOrder(){
 
                     <form className={styles.formOrder} onSubmit={hadleRegister}>
                         <div className={styles.inputData}>
-                            <Input placeholder='NOME CLIENTE' type='text' className={styles.inputName} value={clieteName}/>
-                            <Input placeholder='NOME VENDEDOR' type='text' className={styles.inputName} value={vendedorName}/>
+                            <span>{`CLIENTE: ${clieteName}`}</span>
+                            <span>|</span>
+                            <span>{`VENDEDOR: ${vendedorName}`}</span>
+                            <span>|</span>
+                            <span>{`CAIXA: ${caixaName}`}</span>
                         </div>
 
                         <div className={styles.inputDataEdit}>
-                            <Input placeholder='NOME CLIENTE' type='text' className={styles.inputName} value={clieteName}/>
-                            <Input placeholder='NOME CLIENTE' type='text' className={styles.inputName} value={clieteName}/>
-                            {/* <Input placeholder='NOME CLIENTE' type='text' className={styles.inputName} value={clieteName}/> */}
+                            <div className={styles.desconto}>
+                                <label htmlFor="desc">DESCONTO</label>
+                                <Input 
+                                    id='desc' 
+                                    type='number' 
+                                    className={styles.inputName} 
+                                    value={desconto? desconto : 0} onChange={(e) => setDesconto(parseInt(e.target.value))}
+                                    style={{width: '80px'}}
+                                />
+                            </div>
+                            
+                            
                             <div className={styles.filter}>
                                 <select 
                                     name="product" 
                                     id="product"
                                     value={''} 
-                                    // onChange={(e) => setSelectedFilter(e.target.value)}
+                                    onChange={(e) => setCaixa_id(e.target.value)}
                                     className={styles.selectInput}
                                 >
-                                    <option value="CLIENTE">CLIENTE</option>
-                                    <option value="CAIXA">CAIXA</option>
+                                    <option value="" disabled>TROCAR CAIXA</option>
+                                    {caixasAbertos.map((cxa) => (
+                                        <option key={cxa.id} value={cxa.id}>{cxa.colaborador.usuario.nome}</option>
+                                    ))}
                                 </select>
 
                                 <Button  type='button' ><FcSearch  size={28}/></Button>
                             </div> 
                         </div>
+
+                        <Button type='submit' loading={loading}
+                            style={
+                                {width: '500px', 
+                                height: '50px', 
+                                marginTop: '1.5rem', 
+                                fontSize: '20px',
+                                margin: 'auto'
+                            }}>ALTERAR PEDIDO
+                        </Button>
+
                     </form>
                 </div>
             </main>
         </div>
     )
 }
+
+// Verificando pelo lado do servidor
+export const getServerSideProps = canSSRAuth(async(ctx) => {
+
+    //@ts-ignore
+    const apiCaixa = setupAPIClient(ctx);
+
+    const caixa = await apiCaixa.get('caixa');
+    //console.log(caixa.data);
+
+    return{
+        props:{
+            caixa: caixa.data
+        }
+    }
+})

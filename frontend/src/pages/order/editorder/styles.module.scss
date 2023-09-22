@@ -107,10 +107,11 @@ form.formOrder{
     display: flex;
     flex-direction: column;
     max-width: 90%;
-    height: 100%;
+    //height: 100%;
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 10px;
+    background-color: #F0D8B7;
 
     box-shadow: 2px 2px 4px var(--white);
     overflow-y: auto;
@@ -127,6 +128,17 @@ form.formOrder{
 form.formOrder div.inputData{
     display: flex;
     flex-flow: row wrap;
+    border-bottom: 2px solid var(--dark-900);
+    margin-bottom: 2rem;
+
+    span{
+        max-width: 400px;
+        height: 40px;
+        color: var(--dark-900);
+        margin: 0 10px;
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 15px;
+    }
 }
 
 input.inputName{   
@@ -144,6 +156,20 @@ input.inputName{
 form.formOrder div.inputDataEdit{
     display: flex;
     flex-direction: column;
+}
+
+div.desconto{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+
+    label{
+        height: 40px;
+        color: var(--dark-900);
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 15px;
+        margin-left: 15px;
+    }
 }
 
 form.formOrder div.filter{

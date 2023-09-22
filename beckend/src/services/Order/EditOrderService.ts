@@ -3,7 +3,7 @@ import prismaClient from "../../prisma";
 interface OrderRequest{
     order_id: string;
     desconto: number;
-    caixa_id: string;
+    caixa_id?: string;
 }
 
 class EditOrderService{
