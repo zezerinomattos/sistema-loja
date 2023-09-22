@@ -37,7 +37,7 @@ export default function EditOrder({ caixa }: ListProps){
     
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
-    const [message, setMessage] = useState('');
+    //const [message, setMessage] = useState('');
 
     const [order_id, setOrderId] = useState('');
     const [desconto, setDesconto] = useState(0);
@@ -60,7 +60,31 @@ export default function EditOrder({ caixa }: ListProps){
 
     //FUNCAO PARA BUSCAR O ORDER
     async function handleFilter(){
-        alert('filter')
+        if(!order_id){
+            toast.warning('Iforme o código do Pedido!')
+            return;
+        }
+
+        setLoaging(true);
+
+        await api.get('/detail/order', {
+            params:{
+                order_id: order_id,
+            }
+        })
+        .then(response => {
+            setClieteName(response.data?.detailOrder[0]?.cliente?.usuario?.nome);
+            setVendedorName(response.data?.detailOrder[0]?.colaborado.usuario?.nome);
+            setCaixaName(response.data?.detailOrder[0].caixa?.colaborador.usuario?.nome);
+            setDesconto(response.data?.detailOrder[0]?.desconto);
+            //console.log(response.data?.detailOrder[0]?.desconto);
+            setLoaging(false);
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error('ID do cliente inválido');
+            setLoaging(false);
+        })
     }
 
     useEffect(() => {
@@ -114,8 +138,15 @@ export default function EditOrder({ caixa }: ListProps){
                                     id='desc' 
                                     type='number' 
                                     className={styles.inputName} 
-                                    value={desconto? desconto : 0} onChange={(e) => setDesconto(parseInt(e.target.value))}
+                                    value={desconto? desconto : 0} 
+                                    //onChange={(e) => setDesconto(parseInt(e.target.value))}
                                     style={{width: '80px'}}
+                                    onChange={(e) => {
+                                        const newValue = parseInt(e.target.value);
+                                        if (!isNaN(newValue) && newValue >= 0) {
+                                          setDesconto(newValue);
+                                        }
+                                    }}
                                 />
                             </div>
                             
