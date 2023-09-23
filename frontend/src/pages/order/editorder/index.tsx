@@ -46,6 +46,7 @@ export default function EditOrder({ caixa }: ListProps){
     const [clieteName, setClieteName] = useState('');
     const [vendedorName, setVendedorName] = useState('');
     const [caixaName, setCaixaName] = useState('');
+    const [status, setStatus] = useState<boolean>()
 
     const [caixasAbertos, setCaixasAbertos] = useState(caixa || []);
 
@@ -55,7 +56,53 @@ export default function EditOrder({ caixa }: ListProps){
     //FUNCAO PARA EDITAR ORDER
     async function hadleRegister(event: FormEvent){
         event.preventDefault()
-        alert('ok');
+        
+        if(!order_id){
+            toast.warning('Iforme o código do Pedido!')
+            return;
+        }
+
+        if(status === true){
+            toast.warning('Você não pode editar um pedido que já foi FINALIZADO!')
+            return;
+        }
+
+        setLoaging(true);
+
+        if(caixa_id){
+            await api.put('/edit/order', {
+                order_id: order_id,
+                desconto: desconto,
+                caixa_id:caixa_id
+            })
+            .then(() => {
+                toast.success('Pedido editado!');
+                setLoaging(false);
+            })
+            .catch(error => {
+                console.log(error);
+                toast.error(error.response.data.erro);
+                setLoaging(false);
+            });
+        }else{
+            await api.put('/edit/order', {
+                order_id: order_id,
+                desconto: desconto
+                //caixa_id:caixa_id
+            })
+            .then(() => {
+                toast.success('Pedido editado!');
+                setLoaging(false);
+            })
+            .catch(error => {
+                console.log(error);
+                toast.error(error.response.data.erro);
+                setLoaging(false);
+            });
+        }
+
+        setLoaging(true);
+
     }
 
     //FUNCAO PARA BUSCAR O ORDER
@@ -77,12 +124,17 @@ export default function EditOrder({ caixa }: ListProps){
             setVendedorName(response.data?.detailOrder[0]?.colaborado.usuario?.nome);
             setCaixaName(response.data?.detailOrder[0].caixa?.colaborador.usuario?.nome);
             setDesconto(response.data?.detailOrder[0]?.desconto);
+            setStatus(response.data?.detailOrder[0]?.status);
             //console.log(response.data?.detailOrder[0]?.desconto);
             setLoaging(false);
         })
         .catch(error => {
             console.log(error);
             toast.error('ID do cliente inválido');
+            setClieteName('');
+            setVendedorName('');
+            setCaixaName('');
+            setDesconto(0);
             setLoaging(false);
         })
     }
@@ -165,7 +217,7 @@ export default function EditOrder({ caixa }: ListProps){
                                     ))}
                                 </select>
 
-                                <Button  type='button' ><FcSearch  size={28}/></Button>
+                                {/* <Button  type='button' ><FcSearch  size={28}/></Button> */}
                             </div> 
                         </div>
 
