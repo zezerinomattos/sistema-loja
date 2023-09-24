@@ -89,15 +89,13 @@ export default function EditOrder({ caixa }: ListProps){
                     caixa_id:caixa_id
                 })
                 .then(() => {
-                    toast.success('Pedido editado!');
-                    setLoaging(false);
                     setModalVibleAlert(false)
+                    toast.success('Pedido editado!');
                 })
                 .catch(error => {
-                    console.log(error);
-                    toast.error(error.response.data.erro);
-                    setLoaging(false);
                     setModalVibleAlert(false)
+                    console.log(error);
+                    toast.error(error.response.data.erro);       
                 });
             }else{
                 await api.put('/edit/order', {
@@ -106,19 +104,17 @@ export default function EditOrder({ caixa }: ListProps){
                     //caixa_id:caixa_id
                 })
                 .then(() => {
-                    toast.success('Pedido editado!');
-                    setLoaging(false);
                     setModalVibleAlert(false)
+                    toast.success('Pedido editado!');
                 })
                 .catch(error => {
-                    console.log(error);
-                    toast.error(error.response.data.erro);
-                    setLoaging(false);
                     setModalVibleAlert(false)
+                    console.log(error);
+                    toast.error(error.response.data.erro); 
                 });
             }
     
-            setLoaging(true);
+            setLoaging(false);
         }else if(res === 'nao'){
             setModalVibleAlert(false)
             return
