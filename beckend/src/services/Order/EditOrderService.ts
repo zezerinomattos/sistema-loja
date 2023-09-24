@@ -50,6 +50,7 @@ class EditOrderService{
                   valor_pagar: valor_pagar_com_desconto,
                   updated_at: new Date(), // Atualizar a data de atualização para a data atual
                   caixa_id: caixa_id,
+                  draft: false,
                 },
             });
     
@@ -82,6 +83,7 @@ class EditOrderService{
               desconto: desconto,
               valor_pagar: valor_pagar_com_desconto,
               updated_at: new Date(), // Atualizar a data de atualização para a data atual
+              draft: false,
             },
         });
 
