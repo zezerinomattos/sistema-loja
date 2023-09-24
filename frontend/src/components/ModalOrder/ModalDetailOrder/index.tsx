@@ -76,7 +76,7 @@ export function ModalDetailOrder({ isOpen, onRequestClose, detalOrder }: ModalOr
                                             <span >|</span>
                                             <span >DESCONTO: {order.desconto}%</span>
                                             <span >|</span>
-                                            <span >VAL. PAGO: R$ {order.valor_total}</span>
+                                            <span >VAL. PAGO: R$ {order.valor_pagar}</span>
                                         </div>
 
                                         <div className={styles.dataOrder}>
