@@ -11,6 +11,8 @@ import { Presentation } from '../../../components/Presentation';
 import { Input, TextArea } from '@/components/Ui/Input';
 import { Button } from '@/components/Ui/Button';
 
+import { ModalAlert } from '../../../components/Utils/ModalAlert';
+
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 
@@ -50,58 +52,77 @@ export default function EditOrder({ caixa }: ListProps){
 
     const [caixasAbertos, setCaixasAbertos] = useState(caixa || []);
 
+    const [modalVisibleAlert, setModalVibleAlert] = useState(false);
+    const [alertIdOrder, setAlertIdOrder] = useState('');
+    const [titleAlert, setTitleAlert] = useState('Editar pedido');
+    const [menssageAlert, setMenssageAlert] = useState('Você tem certeza de que deseja EDITAR este pedido? Lembre-se de que, se o pedido for um rascunho, ele será atualizado para um pedido em aberto e não poderá mais ser considerado um rascunho.');
+    // const [deleteItems, setDeleteItems] = useState<OrderProps[]>();
 
-    //const [caixaList, setCaixaList] = useState(caixa || []);
+    //FUNCAO QUE ABRE MODAL DE ALERT
+    function alertConfirm(id: string ){
+        setAlertIdOrder(id);
+        setModalVibleAlert(true);
+    }
 
     //FUNCAO PARA EDITAR ORDER
-    async function hadleRegister(event: FormEvent){
-        event.preventDefault()
-        
-        if(!order_id){
-            toast.warning('Iforme o código do Pedido!')
-            return;
+    async function hadleRegister(res: string, id: string){
+
+        if(res === 'sim'){
+            if(!order_id){
+                toast.warning('Iforme o código do Pedido!');
+                setModalVibleAlert(false)
+                return;
+            }
+    
+            if(status === true){
+                toast.warning('Você não pode editar um pedido que já foi FINALIZADO!');
+                setModalVibleAlert(false)
+                return;
+            }
+    
+            setLoaging(true);
+    
+            if(caixa_id){
+                await api.put('/edit/order', {
+                    order_id: order_id,
+                    desconto: desconto,
+                    caixa_id:caixa_id
+                })
+                .then(() => {
+                    toast.success('Pedido editado!');
+                    setLoaging(false);
+                    setModalVibleAlert(false)
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error(error.response.data.erro);
+                    setLoaging(false);
+                    setModalVibleAlert(false)
+                });
+            }else{
+                await api.put('/edit/order', {
+                    order_id: order_id,
+                    desconto: desconto
+                    //caixa_id:caixa_id
+                })
+                .then(() => {
+                    toast.success('Pedido editado!');
+                    setLoaging(false);
+                    setModalVibleAlert(false)
+                })
+                .catch(error => {
+                    console.log(error);
+                    toast.error(error.response.data.erro);
+                    setLoaging(false);
+                    setModalVibleAlert(false)
+                });
+            }
+    
+            setLoaging(true);
+        }else if(res === 'nao'){
+            setModalVibleAlert(false)
+            return
         }
-
-        if(status === true){
-            toast.warning('Você não pode editar um pedido que já foi FINALIZADO!')
-            return;
-        }
-
-        setLoaging(true);
-
-        if(caixa_id){
-            await api.put('/edit/order', {
-                order_id: order_id,
-                desconto: desconto,
-                caixa_id:caixa_id
-            })
-            .then(() => {
-                toast.success('Pedido editado!');
-                setLoaging(false);
-            })
-            .catch(error => {
-                console.log(error);
-                toast.error(error.response.data.erro);
-                setLoaging(false);
-            });
-        }else{
-            await api.put('/edit/order', {
-                order_id: order_id,
-                desconto: desconto
-                //caixa_id:caixa_id
-            })
-            .then(() => {
-                toast.success('Pedido editado!');
-                setLoaging(false);
-            })
-            .catch(error => {
-                console.log(error);
-                toast.error(error.response.data.erro);
-                setLoaging(false);
-            });
-        }
-
-        setLoaging(true);
 
     }
 
@@ -174,7 +195,7 @@ export default function EditOrder({ caixa }: ListProps){
                         </div>
                     </div>
 
-                    <form className={styles.formOrder} onSubmit={hadleRegister}>
+                    <form className={styles.formOrder}>
                         <div className={styles.inputData}>
                             <span>{`CLIENTE: ${clieteName}`}</span>
                             <span>|</span>
@@ -221,19 +242,34 @@ export default function EditOrder({ caixa }: ListProps){
                             </div> 
                         </div>
 
-                        <Button type='submit' loading={loading}
+                        <Button type='button' loading={loading}
                             style={
                                 {width: '500px', 
                                 height: '50px', 
                                 marginTop: '1.5rem', 
                                 fontSize: '20px',
                                 margin: 'auto'
-                            }}>ALTERAR PEDIDO
+                            }}
+                            onClick={() => alertConfirm('')}
+                            >ALTERAR PEDIDO
                         </Button>
 
                     </form>
                 </div>
             </main>
+
+            {
+                modalVisibleAlert && (
+                    <ModalAlert 
+                        isOpen={modalVisibleAlert}
+                        onRequestClose={hadleRegister}
+                        idOrder={alertIdOrder}
+                        titleAlert={titleAlert}
+                        menssageAlert={menssageAlert}
+                    />
+                )
+            }
+
         </div>
     )
 }
