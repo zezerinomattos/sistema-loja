@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
-import { FiUpload } from 'react-icons/fi';
+//import { FiUpload } from 'react-icons/fi';
 import { FcSearch } from "react-icons/fc";
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
 
@@ -139,56 +140,62 @@ export default function EditFactory({ representative }: ListProps){
     }
 
     return(
-        <div className={styles.container}>
-            <Header title={'EDITAR FABRICAS'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerBody}>
-                <Presentation />
+                <title>Sistema - edit factory</title>
+            </Head>
+            <div className={styles.container}>
+                <Header title={'EDITAR FABRICAS'}/>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={fabrica_id} onChange={(e) => setFabricaId(e.target.value)} style={{width:'350px'}}/>
+                <main className={styles.containerBody}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={fabrica_id} onChange={(e) => setFabricaId(e.target.value)} style={{width:'350px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                        </div>
+                        <form className={styles.formFabrica} onSubmit={hadleEdit}>
+                            <Input placeholder='EMPRESA' type='text' className={styles.inputName} onChange={(e) => setEmpresa(e.target.value)} value={empresa}/>
+
+                            <div className={styles.inputsBasicData}>                               
+                                <Input placeholder='INSCRIÇÃO ESTADUAL' type='text' onChange={(e) => setIe(e.target.value)} value={ie}/>
+                                <Input placeholder='RAZÃO SOCIAL' style={{width: '400px'}} type='text' onChange={(e) => setRazaosocial(e.target.value)} value={razaosocial}/>
+
+                                <Input placeholder='CONTATO' type='text' onChange={(e) => setContato(e.target.value)} value={contato}/>
+
+                                <select 
+                                    name="representative" 
+                                    id="representative"
+                                    onChange={(e) => setRepresentanteId(e.target.value)}
+                                    value={representante_id}
+                                    className={styles.selectInput}
+                                >
+                                    <option value="" disabled>REPRESENTANTE</option>
+                                    {representative.map((rep) => (
+                                        <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
+                                    ))}
+                                </select>
+                                
+                            </div>
+
+                            <div className={styles.buttonForm}>
+                                <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
+                            </div>
+                        </form>
+                        {message && <span>{message}</span>}
+                        
                     </div>
-
-                    <form className={styles.formFabrica} onSubmit={hadleEdit}>
-                        <Input placeholder='EMPRESA' type='text' className={styles.inputName} onChange={(e) => setEmpresa(e.target.value)} value={empresa}/>
-
-                        <div className={styles.inputsBasicData}>                               
-                            <Input placeholder='INSCRIÇÃO ESTADUAL' type='text' onChange={(e) => setIe(e.target.value)} value={ie}/>
-                            <Input placeholder='RAZÃO SOCIAL' style={{width: '400px'}} type='text' onChange={(e) => setRazaosocial(e.target.value)} value={razaosocial}/>
-
-                            <Input placeholder='CONTATO' type='text' onChange={(e) => setContato(e.target.value)} value={contato}/>
-
-                            <select 
-                                name="representative" 
-                                id="representative"
-                                onChange={(e) => setRepresentanteId(e.target.value)}
-                                value={representante_id}
-                                className={styles.selectInput}
-                            >
-                                <option value="" disabled>REPRESENTANTE</option>
-                                {representative.map((rep) => (
-                                    <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
-                                ))}
-                            </select>
-                            
-                        </div>
-
-                        <div className={styles.buttonForm}>
-                            <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
-                        </div>
-                    </form>
-                    {message && <span>{message}</span>}
-                    
-                </div>
-            </main>
-        </div>
+                </main>
+            </div>
+        </>
     );
     
 }

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
@@ -236,85 +237,91 @@ export default function ListProduct({ product }: ListProps){
     Modal.setAppElement('#__next');
 
     return(
-        <div className={styles.container}>
-            <Header title={'LISTA PRODUTOS'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerFavorit}>
-                <Presentation />
+                <title>Sistema - list product</title>
+            </Head>
+            <div className={styles.container}>
+                <Header title={'LISTA PRODUTOS'}/>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '300px'}}/>
+                <main className={styles.containerFavorit}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '300px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <select 
+                                    name="product" 
+                                    id="product"
+                                    value={selectedFilter} 
+                                    onChange={(e) => setSelectedFilter(e.target.value)}
+                                    className={styles.selectInput}
+                                >
+                                    <option value="PRODUTO">PRODUTO</option>
+                                    <option value="SECAO">SEÇÃO</option>
+                                    <option value="CATEGORIA">CATEGORIA</option>
+                                    <option value="REPRESENTANTE">REPRESENTANTE</option>
+                                    <option value="FABRICA">FÁBRICA</option>
+                                </select>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <select 
-                                name="product" 
-                                id="product"
-                                value={selectedFilter} 
-                                onChange={(e) => setSelectedFilter(e.target.value)}
-                                className={styles.selectInput}
-                            >
-                                <option value="PRODUTO">PRODUTO</option>
-                                <option value="SECAO">SEÇÃO</option>
-                                <option value="CATEGORIA">CATEGORIA</option>
-                                <option value="REPRESENTANTE">REPRESENTANTE</option>
-                                <option value="FABRICA">FÁBRICA</option>
-                            </select>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                        </div>
+                        <article className={styles.listContainer}>
+                            <ol className={styles.list}>
+                                {productLyList.map(prod => (
+                                    <li key={prod.id}>
+                                        <span className={styles.idDetail}>{prod.id}</span>
+                                        <span onClick={() => handleOpenModalView(prod.id)} className={styles.nameDetail}>{prod.nome_produto}</span>
+                                        <span>{prod.marca}</span>
+                                        <span>{prod.preco_venda}</span>
+                                        <BsTrash 
+                                            size={20} 
+                                            style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                            onClick={() => alertConfirm(prod.id)}
+                                        />           
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
+                        
                     </div>
+                </main>
+                {
+                    modalVisible && modalProduct && modalProduct.length > 0 && (
+                        <ModalProduct
+                            isOpen={modalVisible}
+                            onRequestClose={handleCloseModal}
+                            product={modalProduct}
+                        />
+                    )
+                }
 
-                    <article className={styles.listContainer}>
-                        <ol className={styles.list}>
-                            {productLyList.map(prod => (
-                                <li key={prod.id}>
-                                    <span className={styles.idDetail}>{prod.id}</span>
-                                    <span onClick={() => handleOpenModalView(prod.id)} className={styles.nameDetail}>{prod.nome_produto}</span>
-                                    <span>{prod.marca}</span>
-                                    <span>{prod.preco_venda}</span>
-                                    <BsTrash 
-                                        size={20} 
-                                        style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => alertConfirm(prod.id)}
-                                    />           
-                                </li>
-                            ))}
-                        </ol>
-                    </article>
-                    
-                </div>
-            </main>
-            {
-                modalVisible && modalProduct && modalProduct.length > 0 && (
-                    <ModalProduct
-                        isOpen={modalVisible}
-                        onRequestClose={handleCloseModal}
-                        product={modalProduct}
-                    />
-                )
-            }
-
-            {
-                modalVisibleAlert && (
-                    <ModalAlert 
-                        isOpen={modalVisibleAlert}
-                        onRequestClose={handleDelete}
-                        idOrder={alertIdOrder}
-                        titleAlert={titleAlert}
-                        menssageAlert={menssageAlert}
-                    />
-                )
-            }
-        </div>
+                {
+                    modalVisibleAlert && (
+                        <ModalAlert 
+                            isOpen={modalVisibleAlert}
+                            onRequestClose={handleDelete}
+                            idOrder={alertIdOrder}
+                            titleAlert={titleAlert}
+                            menssageAlert={menssageAlert}
+                        />
+                    )
+                }
+            </div>
+        </>
     );
 }
 

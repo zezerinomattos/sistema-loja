@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { toast } from 'react-toastify';
@@ -150,7 +151,13 @@ export default function ListRepresentative({ representative }: ListProps){
     Modal.setAppElement('#__next');
 
     return(
-        <div className={styles.container}>
+        <>
+            <Head>
+
+                <title>Sistema - list representative</title>
+            </Head>
+
+            <div className={styles.container}>
                 <Header title={'LISTA REPRESENTANTE'}/>
 
                 <main className={styles.containerFavorit}>
@@ -195,7 +202,8 @@ export default function ListRepresentative({ representative }: ListProps){
                         />
                     )
                 }
-        </div>
+            </div>
+        </>
     );
 }
 

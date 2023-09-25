@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
@@ -175,68 +176,75 @@ export default function ListFactory({ factory }: ListProps){
     Modal.setAppElement('#__next');
 
     return(
-        <div className={styles.container}>
-            <Header title={'LISTA FABRICAS'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerFavorit}>
-                <Presentation />
+                <title>Sistema - list factory</title>
+            </Head>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+            <div className={styles.container}>
+                <Header title={'LISTA FABRICAS'}/>
+
+                <main className={styles.containerFavorit}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <Input placeholder='EMPRESA' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <Input placeholder='EMPRESA' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                        </div>
+                        <article className={styles.listContainer}>
+                            <ol className={styles.list}>
+                                {FactoryList.map(fac => (
+                                    <li key={fac.id}>
+                                        <span className={styles.idDetail}>{fac.id}</span>
+                                        <span onClick={() => handleOpenModalView(fac.id)} className={styles.nameDetail}>{fac.empresa}</span>
+                                        <span>{fac.representante.usuario.nome}</span>
+                                        <BsTrash 
+                                            size={20} 
+                                            style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                            onClick={() => alertConfirm(fac.id)}
+                                        />           
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
+                        
                     </div>
+                </main>
+                {
+                    modalVisible && modalFactory && modalFactory.length > 0 && (
+                        <ModalFactory
+                            isOpen={modalVisible}
+                            onRequestClose={handleCloseModal}
+                            factory={modalFactory}
+                        />
+                    )
+                }
 
-                    <article className={styles.listContainer}>
-                        <ol className={styles.list}>
-                            {FactoryList.map(fac => (
-                                <li key={fac.id}>
-                                    <span className={styles.idDetail}>{fac.id}</span>
-                                    <span onClick={() => handleOpenModalView(fac.id)} className={styles.nameDetail}>{fac.empresa}</span>
-                                    <span>{fac.representante.usuario.nome}</span>
-                                    <BsTrash 
-                                        size={20} 
-                                        style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => alertConfirm(fac.id)}
-                                    />           
-                                </li>
-                            ))}
-                        </ol>
-                    </article>
-                    
-                </div>
-            </main>
-            {
-                modalVisible && modalFactory && modalFactory.length > 0 && (
-                    <ModalFactory
-                        isOpen={modalVisible}
-                        onRequestClose={handleCloseModal}
-                        factory={modalFactory}
-                    />
-                )
-            }
-
-            {
-                modalVisibleAlert && (
-                    <ModalAlert 
-                        isOpen={modalVisibleAlert}
-                        onRequestClose={handleDelete}
-                        idOrder={alertIdOrder}
-                        titleAlert={titleAlert}
-                        menssageAlert={menssageAlert}
-                    />
-                )
-            }
-        </div>
+                {
+                    modalVisibleAlert && (
+                        <ModalAlert 
+                            isOpen={modalVisibleAlert}
+                            onRequestClose={handleDelete}
+                            idOrder={alertIdOrder}
+                            titleAlert={titleAlert}
+                            menssageAlert={menssageAlert}
+                        />
+                    )
+                }
+            </div>
+        </>
     );
 }
 

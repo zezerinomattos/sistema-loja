@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
@@ -383,150 +384,157 @@ export default function CupomFiscal({ lisProduct }: ListProps) {
     Modal.setAppElement('#__next');
   
     return (
-      <div className={styles.container}>
-        <Header title={'CUPOM FISCAL'} id={orderId}/>
+      <>
+        <Head>
 
-        <main className={styles.containerBody}>
-            <Presentation />
+          <title>Sistema - order coupon</title>
+        </Head>
 
-            <div className={styles.rigthContainer}>
-              {/* <h1 style={{color: '#FFF'}}>{id}</h1> */}
-              <form className={styles.container}>
-                <div className={styles.nameContainer}>
-                  <label htmlFor="name">NOME DO PRODUTO</label>
-                  <Input value={selectedName} type='text' id='name' placeholder='Produto' disabled />
-                </div>
+        <div className={styles.container}>
+          <Header title={'CUPOM FISCAL'} id={orderId}/>
 
-                <div className={styles.cartContainer}>
-                  <div className={styles.productConteiner}>
-                    <div className={styles.product}>
-                      {/* <Image src={url + '/' + imgProduct} alt='Imagem produto' width={80} height={100}/> */}
-                      <Image src={imgProduct ? `${url}/${imgProduct}` : imgplaceholder} alt='Imagem produto' width={180} height={210} className={styles.imgProduct}/> 
+          <main className={styles.containerBody}>
+              <Presentation />
 
-                      <div className={styles.inputContainer}>
-                        <div className={styles.input}>
-                          <label htmlFor="cod" className={styles.labelInput}>CÓDIGO</label>
-                          <Input type='text' id='cod' disabled value={selectedProductId}/>
-                        </div>
-
-                        <div className={styles.input}>
-                          <label htmlFor="qtd" className={styles.labelInput}>QUANTIDADE</label>
-                          <Input 
-                            type='number' 
-                            id='qtd' 
-                            placeholder='0' 
-                            value={amount} onChange={(e) => setAmount(Number(e.target.value))}
-                            onKeyDown={handleQuantityInputKeyPress}
-                          />
-                          {/* <Button type='submit' loading={loading} >ENTRAR</Button> */}
-                        </div>
-
-                        <div className={styles.input}>
-                          <label htmlFor="valUnit" className={styles.labelInput}>VALOR UNIT.</label>
-                          <Input value={`R$ ${selectedPrice.toFixed(2)}`} type='text' id='valUnit' placeholder='0' disabled />
-                        </div>
-
-                        <div className={styles.input}>
-                          <label htmlFor="valTot" className={styles.labelInput}>VALOR TOTAL.</label>
-                          <Input value={`R$ ${totalPrice.toFixed(2)}`} type='text' id='valTot' placeholder='0' disabled/>
-                        </div>
-                      </div>
-                    </div>
-
-                    <h5>Menu</h5>
-
-                    <div className={styles.containerMenu}>
-                      <div className={styles.menu}>
-                        <span>Shif + P - Pesquisar Prod.</span>
-                        <span>Shif + X- Excluir Item</span> 
-                      </div>
-
-                      <div className={styles.menu}>
-                        <span>Shif + C - Cancel. Venda</span>
-                        <span>Shif + F - Finalizar Venda</span>
-                        <span>Esc - Sair</span>
-                      </div>
-                    </div>
+              <div className={styles.rigthContainer}>
+                {/* <h1 style={{color: '#FFF'}}>{id}</h1> */}
+                <form className={styles.container}>
+                  <div className={styles.nameContainer}>
+                    <label htmlFor="name">NOME DO PRODUTO</label>
+                    <Input value={selectedName} type='text' id='name' placeholder='Produto' disabled />
                   </div>
 
-                  <div className={styles.taxCouponConteiner}>
-                    <div className={styles.taxCuponTitle}>
-                      <h1>LISTA DE PRODUTOS</h1>
-                    </div>
+                  <div className={styles.cartContainer}>
+                    <div className={styles.productConteiner}>
+                      <div className={styles.product}>
+                        {/* <Image src={url + '/' + imgProduct} alt='Imagem produto' width={80} height={100}/> */}
+                        <Image src={imgProduct ? `${url}/${imgProduct}` : imgplaceholder} alt='Imagem produto' width={180} height={210} className={styles.imgProduct}/> 
 
-                    <div className={styles.taxCuponHeader}>
-                      <span style={{width: '150px', justifyContent:'left'}}>COD</span>
-                      <span style={{width: '260px', justifyContent:'left'}}>PRODUTO</span>
-                      <span style={{width: '50px'}}>QTDE</span>
-                      <span>V. UNIT</span>
-                      <span>V. TOTAL</span>
-                    </div>
+                        <div className={styles.inputContainer}>
+                          <div className={styles.input}>
+                            <label htmlFor="cod" className={styles.labelInput}>CÓDIGO</label>
+                            <Input type='text' id='cod' disabled value={selectedProductId}/>
+                          </div>
 
-                    <article className={styles.addProduct}>
-                      <ol className={styles.list}>
-                      {addedItems.map((item) => (
-                        <li key={item.item.id}>
-                          <span className={styles.codProduct} style={{ width: '150px', justifyContent: 'left' }}>
-                            {item.item.id}
-                          </span>
-                          <span style={{ width: '260px', justifyContent: 'left' }}>{item.produtoInfo.nome_produto}</span>
-                          <span style={{ width: '50px' }}>{item.item.qtd}</span>
-                          <span>{`R$ ${item.item.preco}`}</span>
-                          <span>{`R$ ${item.precoTotalItem}`}</span>
-                        </li>
-                      ))}
-                      </ol>
+                          <div className={styles.input}>
+                            <label htmlFor="qtd" className={styles.labelInput}>QUANTIDADE</label>
+                            <Input 
+                              type='number' 
+                              id='qtd' 
+                              placeholder='0' 
+                              value={amount} onChange={(e) => setAmount(Number(e.target.value))}
+                              onKeyDown={handleQuantityInputKeyPress}
+                            />
+                            {/* <Button type='submit' loading={loading} >ENTRAR</Button> */}
+                          </div>
 
-                      {/* VALOR TOTAL DE ITENS */}
-                      <div className={styles.valueOrderContainer}>
-                        <div className={styles.valueItens}>
-                          <label className={styles.itensLabel}>Itens</label>
-                          <span className={styles.itensValue}>{addedItems.length}</span>
-                        </div>
+                          <div className={styles.input}>
+                            <label htmlFor="valUnit" className={styles.labelInput}>VALOR UNIT.</label>
+                            <Input value={`R$ ${selectedPrice.toFixed(2)}`} type='text' id='valUnit' placeholder='0' disabled />
+                          </div>
 
-                        <div className={`${styles.totalValue} ${styles.valueItens}`}>
-                          <label className={styles.itensLabel}>Sub Total</label>
-                          <span className={styles.itensValue}>{`R$ ${totalItemsValue.toFixed(2)}`}</span>
+                          <div className={styles.input}>
+                            <label htmlFor="valTot" className={styles.labelInput}>VALOR TOTAL.</label>
+                            <Input value={`R$ ${totalPrice.toFixed(2)}`} type='text' id='valTot' placeholder='0' disabled/>
+                          </div>
                         </div>
                       </div>
-                    </article>
+
+                      <h5>Menu</h5>
+
+                      <div className={styles.containerMenu}>
+                        <div className={styles.menu}>
+                          <span>Shif + P - Pesquisar Prod.</span>
+                          <span>Shif + X- Excluir Item</span> 
+                        </div>
+
+                        <div className={styles.menu}>
+                          <span>Shif + C - Cancel. Venda</span>
+                          <span>Shif + F - Finalizar Venda</span>
+                          <span>Esc - Sair</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.taxCouponConteiner}>
+                      <div className={styles.taxCuponTitle}>
+                        <h1>LISTA DE PRODUTOS</h1>
+                      </div>
+
+                      <div className={styles.taxCuponHeader}>
+                        <span style={{width: '150px', justifyContent:'left'}}>COD</span>
+                        <span style={{width: '260px', justifyContent:'left'}}>PRODUTO</span>
+                        <span style={{width: '50px'}}>QTDE</span>
+                        <span>V. UNIT</span>
+                        <span>V. TOTAL</span>
+                      </div>
+
+                      <article className={styles.addProduct}>
+                        <ol className={styles.list}>
+                        {addedItems.map((item) => (
+                          <li key={item.item.id}>
+                            <span className={styles.codProduct} style={{ width: '150px', justifyContent: 'left' }}>
+                              {item.item.id}
+                            </span>
+                            <span style={{ width: '260px', justifyContent: 'left' }}>{item.produtoInfo.nome_produto}</span>
+                            <span style={{ width: '50px' }}>{item.item.qtd}</span>
+                            <span>{`R$ ${item.item.preco}`}</span>
+                            <span>{`R$ ${item.precoTotalItem}`}</span>
+                          </li>
+                        ))}
+                        </ol>
+
+                        {/* VALOR TOTAL DE ITENS */}
+                        <div className={styles.valueOrderContainer}>
+                          <div className={styles.valueItens}>
+                            <label className={styles.itensLabel}>Itens</label>
+                            <span className={styles.itensValue}>{addedItems.length}</span>
+                          </div>
+
+                          <div className={`${styles.totalValue} ${styles.valueItens}`}>
+                            <label className={styles.itensLabel}>Sub Total</label>
+                            <span className={styles.itensValue}>{`R$ ${totalItemsValue.toFixed(2)}`}</span>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+
                   </div>
-
-                </div>
-              </form>
-            </div>
-        </main>
-        {
-          modalVisible && modalProduct &&(
-            <ModalListProductos 
-              isOpen={modalVisible}
-              onRequestClose={handleCloseModal}
-              productLyList={modalProduct}
-            />
-          )
-        }
-
-        {
-          modalVisibleDelete && addedItems &&(
-            <ModalDeleteItem 
-              isOpen={modalVisibleDelete}
-              onRequestClose={handleCloseModalDeleteItem}
-            />
-          )
-        }
-
-        {
-          modalVisibleAlert && (
-              <ModalAlert 
-                  isOpen={modalVisibleAlert}
-                  onRequestClose={handleDelete}
-                  idOrder={alertIdOrder}
-                  titleAlert={titleAlert}
-                  menssageAlert={menssageAlert}
+                </form>
+              </div>
+          </main>
+          {
+            modalVisible && modalProduct &&(
+              <ModalListProductos 
+                isOpen={modalVisible}
+                onRequestClose={handleCloseModal}
+                productLyList={modalProduct}
               />
-          )
-      }
-      </div>
+            )
+          }
+
+          {
+            modalVisibleDelete && addedItems &&(
+              <ModalDeleteItem 
+                isOpen={modalVisibleDelete}
+                onRequestClose={handleCloseModalDeleteItem}
+              />
+            )
+          }
+
+          {
+            modalVisibleAlert && (
+                <ModalAlert 
+                    isOpen={modalVisibleAlert}
+                    onRequestClose={handleDelete}
+                    idOrder={alertIdOrder}
+                    titleAlert={titleAlert}
+                    menssageAlert={menssageAlert}
+                />
+            )
+        }
+        </div>
+      </>
     );
 }
 

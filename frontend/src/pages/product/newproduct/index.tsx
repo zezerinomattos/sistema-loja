@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
@@ -291,7 +292,13 @@ export default function NewProduct({ section, category, representetive }: ListPr
     }
 
     return(
-        <div className={styles.container}>
+        <>
+            <Head>
+
+                <title>Sistema - new product</title>
+            </Head>
+
+            <div className={styles.container}>
                 <Header title={'NOVO PRODUTO'}/>
 
                 <main className={styles.containerBody}>
@@ -483,7 +490,8 @@ export default function NewProduct({ section, category, representetive }: ListPr
                         
                     </div>
                 </main>
-        </div>
+            </div>
+        </>
     );
 }
 

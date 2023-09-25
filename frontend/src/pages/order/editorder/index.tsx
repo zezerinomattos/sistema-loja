@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { FiUpload } from 'react-icons/fi';
@@ -174,99 +175,105 @@ export default function EditOrder({ caixa }: ListProps){
     }
 
     return(
-        <div className={styles.container}>
-            <Header title={'NOVA FABRICA'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerBody}>
-                <Presentation />
+                <title>Sistema - edit order</title>
+            </Head>
+            <div className={styles.container}>
+                <Header title={'NOVA FABRICA'}/>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={order_id} onChange={(e) => setOrderId(e.target.value)} style={{width:'350px'}}/>
-                        </div>
+                <main className={styles.containerBody}>
+                    <Presentation />
 
-                        <div className={styles.filter}>
-                            <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                        </div>
-                    </div>
-
-                    <form className={styles.formOrder}>
-                        <div className={styles.inputData}>
-                            <span>{`CLIENTE: ${clieteName}`}</span>
-                            <span>|</span>
-                            <span>{`VENDEDOR: ${vendedorName}`}</span>
-                            <span>|</span>
-                            <span>{`CAIXA: ${caixaName}`}</span>
-                        </div>
-
-                        <div className={styles.inputDataEdit}>
-                            <div className={styles.desconto}>
-                                <label htmlFor="desc">DESCONTO</label>
-                                <Input 
-                                    id='desc' 
-                                    type='number' 
-                                    className={styles.inputName} 
-                                    value={desconto? desconto : 0} 
-                                    //onChange={(e) => setDesconto(parseInt(e.target.value))}
-                                    style={{width: '80px'}}
-                                    onChange={(e) => {
-                                        const newValue = parseInt(e.target.value);
-                                        if (!isNaN(newValue) && newValue >= 0) {
-                                          setDesconto(newValue);
-                                        }
-                                    }}
-                                />
-                            </div>
-                            
-                            
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
                             <div className={styles.filter}>
-                                <select 
-                                    name="product" 
-                                    id="product"
-                                    value={''} 
-                                    onChange={(e) => setCaixa_id(e.target.value)}
-                                    className={styles.selectInput}
-                                >
-                                    <option value="" disabled>TROCAR CAIXA</option>
-                                    {caixasAbertos.map((cxa) => (
-                                        <option key={cxa.id} value={cxa.id}>{cxa.colaborador.usuario.nome}</option>
-                                    ))}
-                                </select>
+                                <Input placeholder='CÓDIGO' value={order_id} onChange={(e) => setOrderId(e.target.value)} style={{width:'350px'}}/>
+                            </div>
 
-                                {/* <Button  type='button' ><FcSearch  size={28}/></Button> */}
-                            </div> 
+                            <div className={styles.filter}>
+                                <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
                         </div>
 
-                        <Button type='button' loading={loading}
-                            style={
-                                {width: '500px', 
-                                height: '50px', 
-                                marginTop: '1.5rem', 
-                                fontSize: '20px',
-                                margin: 'auto'
-                            }}
-                            onClick={() => alertConfirm('')}
-                            >ALTERAR PEDIDO
-                        </Button>
+                        <form className={styles.formOrder}>
+                            <div className={styles.inputData}>
+                                <span>{`CLIENTE: ${clieteName}`}</span>
+                                <span>|</span>
+                                <span>{`VENDEDOR: ${vendedorName}`}</span>
+                                <span>|</span>
+                                <span>{`CAIXA: ${caixaName}`}</span>
+                            </div>
 
-                    </form>
-                </div>
-            </main>
+                            <div className={styles.inputDataEdit}>
+                                <div className={styles.desconto}>
+                                    <label htmlFor="desc">DESCONTO</label>
+                                    <Input 
+                                        id='desc' 
+                                        type='number' 
+                                        className={styles.inputName} 
+                                        value={desconto? desconto : 0} 
+                                        //onChange={(e) => setDesconto(parseInt(e.target.value))}
+                                        style={{width: '80px'}}
+                                        onChange={(e) => {
+                                            const newValue = parseInt(e.target.value);
+                                            if (!isNaN(newValue) && newValue >= 0) {
+                                            setDesconto(newValue);
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                
+                                
+                                <div className={styles.filter}>
+                                    <select 
+                                        name="product" 
+                                        id="product"
+                                        value={''} 
+                                        onChange={(e) => setCaixa_id(e.target.value)}
+                                        className={styles.selectInput}
+                                    >
+                                        <option value="" disabled>TROCAR CAIXA</option>
+                                        {caixasAbertos.map((cxa) => (
+                                            <option key={cxa.id} value={cxa.id}>{cxa.colaborador.usuario.nome}</option>
+                                        ))}
+                                    </select>
 
-            {
-                modalVisibleAlert && (
-                    <ModalAlert 
-                        isOpen={modalVisibleAlert}
-                        onRequestClose={hadleRegister}
-                        idOrder={alertIdOrder}
-                        titleAlert={titleAlert}
-                        menssageAlert={menssageAlert}
-                    />
-                )
-            }
+                                    {/* <Button  type='button' ><FcSearch  size={28}/></Button> */}
+                                </div> 
+                            </div>
 
-        </div>
+                            <Button type='button' loading={loading}
+                                style={
+                                    {width: '500px', 
+                                    height: '50px', 
+                                    marginTop: '1.5rem', 
+                                    fontSize: '20px',
+                                    margin: 'auto'
+                                }}
+                                onClick={() => alertConfirm('')}
+                                >ALTERAR PEDIDO
+                            </Button>
+
+                        </form>
+                    </div>
+                </main>
+
+                {
+                    modalVisibleAlert && (
+                        <ModalAlert 
+                            isOpen={modalVisibleAlert}
+                            onRequestClose={hadleRegister}
+                            idOrder={alertIdOrder}
+                            titleAlert={titleAlert}
+                            menssageAlert={menssageAlert}
+                        />
+                    )
+                }
+
+            </div>
+        </>
     )
 }
 

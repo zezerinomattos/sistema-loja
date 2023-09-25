@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
@@ -315,7 +316,12 @@ export default function EditClient(){
     }
 
     return(
-        <div className={styles.container}>
+        <>
+            <Head>
+
+                <title>Sistema - edit client</title>
+            </Head>
+            <div className={styles.container}>
                 <Header title={'EDITAR CLIENTE'}/>
 
                 <main className={styles.containerBody}>
@@ -430,7 +436,8 @@ export default function EditClient(){
                         
                     </div>
                 </main>
-        </div>
+            </div>
+        </>
     );
 }
 

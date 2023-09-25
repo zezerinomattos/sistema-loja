@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
@@ -318,210 +319,216 @@ export default function EditProduct({ section, category, representetive }: ListP
     }
 
     return(
-        <div className={styles.container}>
-                <Header title={'EDITAR PRODUTO'}/>
+        <>
+            <Head>
 
-                <main className={styles.containerBody}>
-                    <Presentation />
+                <title>Sistema - edit product</title>
+            </Head>
+            <div className={styles.container}>
+                    <Header title={'EDITAR PRODUTO'}/>
 
-                    <div className={styles.rigthContainer}>
-                        <div className={styles.filterContainer}>
-                            <div className={styles.filter}>
-                                <Input placeholder='CÓDIGO' value={produto_id} onChange={(e) => setProdutoId(e.target.value)} style={{width:'350px'}}/>
-                            </div>
+                    <main className={styles.containerBody}>
+                        <Presentation />
 
-                            <div className={styles.filter}>
-                                <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                            </div>
-                        </div>
-
-                        <form className={styles.formProduct} onSubmit={hadleRegister}>
-                            <Input placeholder='NOME PRODUTO' type='text' className={styles.inputName} onChange={(e) => setNomeProduto(e.target.value)} value={nome_produto}/>
-
-                            <div className={styles.inputsBasicData}>
-                                <select 
-                                    name="secao" 
-                                    id="secao"
-                                    onChange={(e) => setSecaoId(e.target.value)}
-                                    value={secao_id}
-                                    className={styles.selectInput}
-                                >
-                                    <option value="" disabled>SEÇÃO</option>
-                                    {section.map((sec) => (
-                                        <option key={sec.id} value={sec.id}>{sec.nome_secao}</option>
-                                    ))}
-                                </select>
-
-                                <select 
-                                    name="categoria" 
-                                    id="categoria"
-                                    onChange={(e) => setCategoriaId(e.target.value)}
-                                    value={categoria_id}
-                                    className={styles.selectInput}
-                                >
-                                    <option value="" disabled>CATEGORIA</option>
-                                    {category.map((cat) => (
-                                        <option key={cat.id} value={cat.id}>{cat.nome_categoria}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className={styles.inputsBasicData}>
-                                <Input placeholder='MARCA' type='text' onChange={(e) => setMarca(e.target.value)} value={marca}/>
-                                <Input placeholder='MATERIAL' type='text' onChange={(e) => setMaterial(e.target.value)} value={material} style={{width: '350px'}}/>
-                            </div>
-
-                            <TextArea placeholder='DESCRIÇÃO' onChange={(e) => setDescricao(e.target.value)} value={descricao}/>
-
-                            <div className={styles.inputsBasicData}>
-                                <div className={styles.inputLabel}>
-                                    <label>R$</label>
-                                    <Input placeholder='CUSTO' type='text' onChange={(e) => setCusto(e.target.value)} value={custo}/>
+                        <div className={styles.rigthContainer}>
+                            <div className={styles.filterContainer}>
+                                <div className={styles.filter}>
+                                    <Input placeholder='CÓDIGO' value={produto_id} onChange={(e) => setProdutoId(e.target.value)} style={{width:'350px'}}/>
                                 </div>
 
-                                <div className={styles.inputLabel}>
-                                    <label>%</label>
-                                    <Input placeholder='VENDA' type='text' onChange={(e) => setPorcentagemVenda(e.target.value)} value={porcentagem_venda} style={{width: '80px'}}/>
-                                </div>
-                                
-                                <div className={styles.inputLabel}>
-                                    <label>R$</label>
-                                    <Input placeholder='PREÇO VENDA' type='text' value={preco_venda} disabled/>
-                                </div>
-
-                                <div className={styles.inputLabel}>
-                                    <label>R$</label>
-                                    <Input placeholder='LUCRO' type='text' value={margem_lucro} disabled/>
+                                <div className={styles.filter}>
+                                    <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                                 </div>
                             </div>
 
-                            <div className={styles.inputsBasicData}>
+                            <form className={styles.formProduct} onSubmit={hadleRegister}>
+                                <Input placeholder='NOME PRODUTO' type='text' className={styles.inputName} onChange={(e) => setNomeProduto(e.target.value)} value={nome_produto}/>
 
-                                <div className={styles.inputLabel}>
-                                    <label>DESC. %</label>
-                                    <Input placeholder='ATUAL' type='text' onChange={(e) => setDescontoAtual(e.target.value)} value={desconto_atual} style={{width: '80px'}}/>
-                                </div>
-
-                                <div className={styles.inputLabel}>
-                                    <label>% DESC.</label>
-                                    <Input placeholder='MAXIMO' type='text' onChange={(e) => setDescontoMaximo(e.target.value)} value={desconto_maximo} style={{width: '90px'}}/>
-                                </div>  
-
-                            </div>
-
-                            <div className={styles.inputsBasicData}>
-                                <select 
-                                    name="representante" 
-                                    id="representante"
-                                    onChange={(e) => setRepresentanteId(e.target.value)}
-                                    value={representante_id}
-                                    className={styles.selectInput}
-                                >
-                                    <option value="" disabled>REPRESENTANTE</option>
-                                    {representetive.map((rep) => (
-                                        <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
-                                    ))}
-                                </select>
-
-                                <select 
-                                    name="fabrica" 
-                                    id="fabrica"
-                                    onChange={(e) => setFabricaId(e.target.value)}
-                                    value={fabrica_id}
-                                    className={styles.selectInput}
-                                >
-                                    <option value="" disabled>FABRICA</option>
-                                    {factory.map((fac) => (
-                                        <option key={fac.id} value={fac.id}>{fac.empresa}</option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            
-                            {/* ADICIONAR COR TAMANHO E ESTOQUE */}
-                            <div className={styles.colorContainer}>
-                                {cor_produto.map((color, index) => (
-                                    <div key={index}>
-                                        <Input
-                                        placeholder='COR'
-                                        type='text'
-                                        value={color.cor}
-                                        onChange={(e) => handleColorChange(index, 'cor', e.target.value)}
-                                        />
-
-                                        {color.produto_tamanhos_estoque && color.produto_tamanhos_estoque.map((tamanho_estoque, subIndex) => (
-                                        <div key={subIndex}>
-                                            <Input
-                                            placeholder='EX: P, M, G, GG, EXG'
-                                            type='text'
-                                            value={tamanho_estoque.tamanho}
-                                            onChange={(e) => handleTamanhoEstoqueChange(index, subIndex, 'tamanho', e.target.value)}
-                                            />
-
-                                            <Input
-                                            placeholder='ESTOQUE'
-                                            type='number'
-                                            value={tamanho_estoque.estoque}
-                                            onChange={(e) => handleTamanhoEstoqueChange(index, subIndex, 'estoque', e.target.value)}
-                                            />
-
-                                            <BsTrash 
-                                                size={24} 
-                                                style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                                onClick={() => handleRemoveTamanhoEstoque(index, subIndex)}
-                                            />  
-                                        </div>
+                                <div className={styles.inputsBasicData}>
+                                    <select 
+                                        name="secao" 
+                                        id="secao"
+                                        onChange={(e) => setSecaoId(e.target.value)}
+                                        value={secao_id}
+                                        className={styles.selectInput}
+                                    >
+                                        <option value="" disabled>SEÇÃO</option>
+                                        {section.map((sec) => (
+                                            <option key={sec.id} value={sec.id}>{sec.nome_secao}</option>
                                         ))}
+                                    </select>
 
-                                        <div className={styles.butonColorContainer}>
+                                    <select 
+                                        name="categoria" 
+                                        id="categoria"
+                                        onChange={(e) => setCategoriaId(e.target.value)}
+                                        value={categoria_id}
+                                        className={styles.selectInput}
+                                    >
+                                        <option value="" disabled>CATEGORIA</option>
+                                        {category.map((cat) => (
+                                            <option key={cat.id} value={cat.id}>{cat.nome_categoria}</option>
+                                        ))}
+                                    </select>
+                                </div>
 
-                                            <Button loading={loading} type='button' onClick={() => handleAddTamanhoEstoque(index)} ><strong>+</strong>TAMANHO E ESTOQUE</Button>
+                                <div className={styles.inputsBasicData}>
+                                    <Input placeholder='MARCA' type='text' onChange={(e) => setMarca(e.target.value)} value={marca}/>
+                                    <Input placeholder='MATERIAL' type='text' onChange={(e) => setMaterial(e.target.value)} value={material} style={{width: '350px'}}/>
+                                </div>
 
-                                            {/* <Button onClick={() => handleRemoveColor(index)} style={{marginLeft: '20px'}}>Remover Cor</Button> */}
-                                            <BsTrash 
-                                                size={28} 
-                                                style={{
-                                                    color: '#FF3F4B', 
-                                                    cursor: 'pointer',
-                                                    marginLeft: '15px',
-                                                    
-                                                }}
-                                                onClick={() => handleRemoveColor(index)}
-                                            />  
-                                        </div>
+                                <TextArea placeholder='DESCRIÇÃO' onChange={(e) => setDescricao(e.target.value)} value={descricao}/>
+
+                                <div className={styles.inputsBasicData}>
+                                    <div className={styles.inputLabel}>
+                                        <label>R$</label>
+                                        <Input placeholder='CUSTO' type='text' onChange={(e) => setCusto(e.target.value)} value={custo}/>
                                     </div>
-                                ))}
-                                <Button type='button' loading={loading} onClick={handleAddColor}>ADICIONAR COR</Button>
-                            </div>
 
-                            <label className={styles.labelAvatar}>
-                                <span>
-                                    <FiUpload size={25} color='#fff' />
-                                </span>
-                                <input type="file" accept='image/png, image/jpeg' onChange={handleFile}/>
-                                {
-                                    avatarUrl && 
-                                        <img 
-                                            className={styles.previw} 
-                                            src={avatarUrl} 
-                                            alt="Imagem colaborador" 
-                                            width={'100%'}
-                                            height={'200px'}
-                                        />
-                                }
-                            </label>
+                                    <div className={styles.inputLabel}>
+                                        <label>%</label>
+                                        <Input placeholder='VENDA' type='text' onChange={(e) => setPorcentagemVenda(e.target.value)} value={porcentagem_venda} style={{width: '80px'}}/>
+                                    </div>
+                                    
+                                    <div className={styles.inputLabel}>
+                                        <label>R$</label>
+                                        <Input placeholder='PREÇO VENDA' type='text' value={preco_venda} disabled/>
+                                    </div>
 
-                            <div className={styles.buttonForm}>
-                                <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
-                            </div>
+                                    <div className={styles.inputLabel}>
+                                        <label>R$</label>
+                                        <Input placeholder='LUCRO' type='text' value={margem_lucro} disabled/>
+                                    </div>
+                                </div>
 
-                        </form>
+                                <div className={styles.inputsBasicData}>
 
-                        {message && <span>{message}</span>}
-                        
-                    </div>
-                </main>
-        </div>
+                                    <div className={styles.inputLabel}>
+                                        <label>DESC. %</label>
+                                        <Input placeholder='ATUAL' type='text' onChange={(e) => setDescontoAtual(e.target.value)} value={desconto_atual} style={{width: '80px'}}/>
+                                    </div>
+
+                                    <div className={styles.inputLabel}>
+                                        <label>% DESC.</label>
+                                        <Input placeholder='MAXIMO' type='text' onChange={(e) => setDescontoMaximo(e.target.value)} value={desconto_maximo} style={{width: '90px'}}/>
+                                    </div>  
+
+                                </div>
+
+                                <div className={styles.inputsBasicData}>
+                                    <select 
+                                        name="representante" 
+                                        id="representante"
+                                        onChange={(e) => setRepresentanteId(e.target.value)}
+                                        value={representante_id}
+                                        className={styles.selectInput}
+                                    >
+                                        <option value="" disabled>REPRESENTANTE</option>
+                                        {representetive.map((rep) => (
+                                            <option key={rep.id} value={rep.id}>{rep.usuario.nome}</option>
+                                        ))}
+                                    </select>
+
+                                    <select 
+                                        name="fabrica" 
+                                        id="fabrica"
+                                        onChange={(e) => setFabricaId(e.target.value)}
+                                        value={fabrica_id}
+                                        className={styles.selectInput}
+                                    >
+                                        <option value="" disabled>FABRICA</option>
+                                        {factory.map((fac) => (
+                                            <option key={fac.id} value={fac.id}>{fac.empresa}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                
+                                {/* ADICIONAR COR TAMANHO E ESTOQUE */}
+                                <div className={styles.colorContainer}>
+                                    {cor_produto.map((color, index) => (
+                                        <div key={index}>
+                                            <Input
+                                            placeholder='COR'
+                                            type='text'
+                                            value={color.cor}
+                                            onChange={(e) => handleColorChange(index, 'cor', e.target.value)}
+                                            />
+
+                                            {color.produto_tamanhos_estoque && color.produto_tamanhos_estoque.map((tamanho_estoque, subIndex) => (
+                                            <div key={subIndex}>
+                                                <Input
+                                                placeholder='EX: P, M, G, GG, EXG'
+                                                type='text'
+                                                value={tamanho_estoque.tamanho}
+                                                onChange={(e) => handleTamanhoEstoqueChange(index, subIndex, 'tamanho', e.target.value)}
+                                                />
+
+                                                <Input
+                                                placeholder='ESTOQUE'
+                                                type='number'
+                                                value={tamanho_estoque.estoque}
+                                                onChange={(e) => handleTamanhoEstoqueChange(index, subIndex, 'estoque', e.target.value)}
+                                                />
+
+                                                <BsTrash 
+                                                    size={24} 
+                                                    style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                                    onClick={() => handleRemoveTamanhoEstoque(index, subIndex)}
+                                                />  
+                                            </div>
+                                            ))}
+
+                                            <div className={styles.butonColorContainer}>
+
+                                                <Button loading={loading} type='button' onClick={() => handleAddTamanhoEstoque(index)} ><strong>+</strong>TAMANHO E ESTOQUE</Button>
+
+                                                {/* <Button onClick={() => handleRemoveColor(index)} style={{marginLeft: '20px'}}>Remover Cor</Button> */}
+                                                <BsTrash 
+                                                    size={28} 
+                                                    style={{
+                                                        color: '#FF3F4B', 
+                                                        cursor: 'pointer',
+                                                        marginLeft: '15px',
+                                                        
+                                                    }}
+                                                    onClick={() => handleRemoveColor(index)}
+                                                />  
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <Button type='button' loading={loading} onClick={handleAddColor}>ADICIONAR COR</Button>
+                                </div>
+
+                                <label className={styles.labelAvatar}>
+                                    <span>
+                                        <FiUpload size={25} color='#fff' />
+                                    </span>
+                                    <input type="file" accept='image/png, image/jpeg' onChange={handleFile}/>
+                                    {
+                                        avatarUrl && 
+                                            <img 
+                                                className={styles.previw} 
+                                                src={avatarUrl} 
+                                                alt="Imagem colaborador" 
+                                                width={'100%'}
+                                                height={'200px'}
+                                            />
+                                    }
+                                </label>
+
+                                <div className={styles.buttonForm}>
+                                    <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
+                                </div>
+
+                            </form>
+
+                            {message && <span>{message}</span>}
+                            
+                        </div>
+                    </main>
+            </div>
+        </>
     );
 }
 

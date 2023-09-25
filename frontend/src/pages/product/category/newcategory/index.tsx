@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
@@ -63,28 +64,35 @@ export default function NewCategory(){
     }
 
     return(
-        <div className={styles.container}>
-            <Header title={'NOVA CATEGORIA'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerBody}>
-                <Presentation />
+                <title>Sistema - new category</title>
+            </Head>
 
-                <div className={styles.rigthContainer}>
-                    <form className={styles.formCategoria} onSubmit={hadleRegister}>
-                        <div className={styles.inputContainer}>
-                            <label className={styles.labelInput} htmlFor="secao">CATEGORIA</label>
-                            <Input id='secao' placeholder='EX: Vestidos' type='text' className={styles.inputName} onChange={(e) => setNomeCategoria(e.target.value)} value={nome_categoria}/>
-                        </div>
+            <div className={styles.container}>
+                <Header title={'NOVA CATEGORIA'}/>
 
-                        <div className={styles.buttonForm}>
-                            <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
-                        </div>
-                    </form>
-                    {message && <span>{message}</span>}
-                    
-                </div>
-            </main>
-        </div>
+                <main className={styles.containerBody}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <form className={styles.formCategoria} onSubmit={hadleRegister}>
+                            <div className={styles.inputContainer}>
+                                <label className={styles.labelInput} htmlFor="secao">CATEGORIA</label>
+                                <Input id='secao' placeholder='EX: Vestidos' type='text' className={styles.inputName} onChange={(e) => setNomeCategoria(e.target.value)} value={nome_categoria}/>
+                            </div>
+
+                            <div className={styles.buttonForm}>
+                                <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
+                            </div>
+                        </form>
+                        {message && <span>{message}</span>}
+                        
+                    </div>
+                </main>
+            </div>
+        </>
     );
 }
 

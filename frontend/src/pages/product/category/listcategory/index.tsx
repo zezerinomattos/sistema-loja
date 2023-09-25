@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
@@ -125,58 +126,65 @@ export default function ListCategory({ category }: ListProps){
 
 
     return(
-        <div className={styles.container}>
-            <Header title={'LISTA CATEGORIA'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerFavorit}>
-                <Presentation />
+                <title>Sistema - list category</title>
+            </Head>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+            <div className={styles.container}>
+                <Header title={'LISTA CATEGORIA'}/>
+
+                <main className={styles.containerFavorit}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <Input placeholder='CATEGORIA' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <Input placeholder='CATEGORIA' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                        </div>
+                        <article className={styles.listContainer}>
+                            <ol className={styles.list}>
+                                {categorynList.map(cat => (
+                                    <li key={cat.id}>
+                                        <span className={styles.idDetail}>{cat.id}</span>
+                                        <span className={styles.nameDetail}>{cat.nome_categoria}</span>
+                                        <BsTrash 
+                                            size={20} 
+                                            style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                            onClick={() => alertConfirm(cat.id)}
+                                        />           
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
+                        
                     </div>
+                </main>
 
-                    <article className={styles.listContainer}>
-                        <ol className={styles.list}>
-                            {categorynList.map(cat => (
-                                <li key={cat.id}>
-                                    <span className={styles.idDetail}>{cat.id}</span>
-                                    <span className={styles.nameDetail}>{cat.nome_categoria}</span>
-                                    <BsTrash 
-                                        size={20} 
-                                        style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => alertConfirm(cat.id)}
-                                    />           
-                                </li>
-                            ))}
-                        </ol>
-                    </article>
-                    
-                </div>
-            </main>
-
-            {
-                modalVisibleAlert && (
-                    <ModalAlert 
-                        isOpen={modalVisibleAlert}
-                        onRequestClose={handleDelete}
-                        idOrder={alertIdOrder}
-                        titleAlert={titleAlert}
-                        menssageAlert={menssageAlert}
-                    />
-                )
-            }
-        </div>
+                {
+                    modalVisibleAlert && (
+                        <ModalAlert 
+                            isOpen={modalVisibleAlert}
+                            onRequestClose={handleDelete}
+                            idOrder={alertIdOrder}
+                            titleAlert={titleAlert}
+                            menssageAlert={menssageAlert}
+                        />
+                    )
+                }
+            </div>
+        </>
     );
 }
 

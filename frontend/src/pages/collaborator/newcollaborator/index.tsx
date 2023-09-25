@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FiUpload } from 'react-icons/fi';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -232,6 +233,10 @@ export default function Register(){
 
     return(
         <>  
+            <Head>
+
+                <title>Sistema - new collaborator</title>
+            </Head>
             <div className={styles.container}>
                 <Header title={'CADASTRO DE COLABORADOR'}/>
 

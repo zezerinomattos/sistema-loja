@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
@@ -124,58 +125,65 @@ export default function ListSection({ section }: ListProps){
     }
 
     return(
-        <div className={styles.container}>
-            <Header title={'LISTA SEÇÃO'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerFavorit}>
-                <Presentation />
+                <title>Sistema - list section</title>
+            </Head>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+            <div className={styles.container}>
+                <Header title={'LISTA SEÇÃO'}/>
+
+                <main className={styles.containerFavorit}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <Input placeholder='SEÇÃO' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <Input placeholder='SEÇÃO' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                        </div>
+                        <article className={styles.listContainer}>
+                            <ol className={styles.list}>
+                                {sectionList.map(sec => (
+                                    <li key={sec.id}>
+                                        <span className={styles.idDetail}>{sec.id}</span>
+                                        <span className={styles.nameDetail}>{sec.nome_secao}</span>
+                                        <BsTrash 
+                                            size={20} 
+                                            style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                            onClick={() => alertConfirm(sec.id)}
+                                        />           
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
+                        
                     </div>
+                </main>
 
-                    <article className={styles.listContainer}>
-                        <ol className={styles.list}>
-                            {sectionList.map(sec => (
-                                <li key={sec.id}>
-                                    <span className={styles.idDetail}>{sec.id}</span>
-                                    <span className={styles.nameDetail}>{sec.nome_secao}</span>
-                                    <BsTrash 
-                                        size={20} 
-                                        style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => alertConfirm(sec.id)}
-                                    />           
-                                </li>
-                            ))}
-                        </ol>
-                    </article>
-                    
-                </div>
-            </main>
-
-            {
-                modalVisibleAlert && (
-                    <ModalAlert 
-                        isOpen={modalVisibleAlert}
-                        onRequestClose={handleDelete}
-                        idOrder={alertIdOrder}
-                        titleAlert={titleAlert}
-                        menssageAlert={menssageAlert}
-                    />
-                )
-            }
-        </div>
+                {
+                    modalVisibleAlert && (
+                        <ModalAlert 
+                            isOpen={modalVisibleAlert}
+                            onRequestClose={handleDelete}
+                            idOrder={alertIdOrder}
+                            titleAlert={titleAlert}
+                            menssageAlert={menssageAlert}
+                        />
+                    )
+                }
+            </div>
+        </>
     );
 }
 

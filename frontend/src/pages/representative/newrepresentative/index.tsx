@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
@@ -188,7 +189,12 @@ export default function(){
     }
 
     return(
-        <div className={styles.container}>
+        <>
+            <Head>
+
+                <title>Sistema - new representative</title>
+            </Head>
+            <div className={styles.container}>
                 <Header title={'NOVO REPRESENTANTE'}/>
 
                 <main className={styles.containerBody}>
@@ -265,7 +271,8 @@ export default function(){
 
                     </div>
                 </main>
-        </div>
+            </div>
+        </>
     );
 }
 

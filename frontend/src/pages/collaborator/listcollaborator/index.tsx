@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
@@ -177,52 +178,59 @@ export default function ListCollaborator({ collaborator }: ListProps){
     Modal.setAppElement('#__next');
 
     return(
-        <div className={styles.container}>
-            <Header title={'LISTA DE COLABORADORES'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerFavorit}>
-                <Presentation />
+                <title>Sistema - list collaborator</title>
+            </Head>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+            <div className={styles.container}>
+                <Header title={'LISTA DE COLABORADORES'}/>
+
+                <main className={styles.containerFavorit}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={filterCollaborator} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                            </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <button onClick={filterCollaborator} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                        </div>
+                        <article className={styles.listContainer}>
+                            <ol className={styles.list}>
+                                {collaboratorList.map(colab => (
+                                    <li key={colab.usuario.id}>
+                                        <span style={{width: '320px'}}>{colab.id}</span>
+                                        <span onClick={() => handleOpenModalView(colab.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
+                                        <span style={{width: '52px'}}>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
                     </div>
+                </main>
 
-                    <article className={styles.listContainer}>
-                        <ol className={styles.list}>
-                            {collaboratorList.map(colab => (
-                                <li key={colab.usuario.id}>
-                                    <span style={{width: '320px'}}>{colab.id}</span>
-                                    <span onClick={() => handleOpenModalView(colab.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
-                                    <span style={{width: '52px'}}>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
-                                </li>
-                            ))}
-                        </ol>
-                    </article>
-                </div>
-            </main>
+                {
+                    modalVisible && modalCollaborator && modalCollaborator.length > 0 && (
+                        <ModalCollaborator 
+                            isOpen={modalVisible}
+                            onRequestClose={handleCloseModal}
+                            colaborador={modalCollaborator}
+                        />
+                    )
+                }
 
-            {
-                modalVisible && modalCollaborator && modalCollaborator.length > 0 && (
-                    <ModalCollaborator 
-                        isOpen={modalVisible}
-                        onRequestClose={handleCloseModal}
-                        colaborador={modalCollaborator}
-                    />
-                )
-            }
-
-        </div>
+            </div>
+        </>
     );
 }
 

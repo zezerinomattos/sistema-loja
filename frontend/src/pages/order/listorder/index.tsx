@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { BsTrash } from "react-icons/bs";
@@ -629,150 +630,157 @@ export default function ListOrder({ order }: ListOrder){
     Modal.setAppElement('#__next');
 
     return(
-        <div className={styles.container}>
-            <Header title={'LISTA DE PEDIDOS'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerFavorit}>
-                <Presentation />
+                <title>Sistema - list order</title>
+            </Head>
 
-                <div className={styles.rigthContainer}>
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '300px'}}/>
-                        </div>
+            <div className={styles.container}>
+                <Header title={'LISTA DE PEDIDOS'}/>
 
-                        <div className={styles.filter}>
-                            <select 
-                                name="product" 
-                                id="product"
-                                value={selectedFilter} 
-                                onChange={(e) => setSelectedFilter(e.target.value)}
-                                className={styles.selectInput}
-                            >
-                                <option value="TODOS">TODOS</option>
-                                <option value="VENDEDOR">VENDEDOR</option>
-                                <option value="CAIXA">CAIXA</option>
-                                <option value="CLIENTE">CLIENTE</option>
-                            </select>
-                        </div>
+                <main className={styles.containerFavorit}>
+                    <Presentation />
 
-                        <div className={styles.filter}>
-                            <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
-                        </div>
-
-                        <div className={styles.inputRadioContainer}>
-                            <div className={styles.filterRadio}>
-                                <input
-                                type="radio"
-                                name="filterOption"
-                                value="TODOS"
-                                checked={selectedFilterOption === "TODOS"}
-                                onChange={() => setSelectedFilterOption("TODOS")}
-                                />
-                                <label htmlFor="todos">TODOS</label>
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '300px'}}/>
                             </div>
 
-                            <div className={styles.filterRadio}>
-                                <input
-                                type="radio"
-                                name="filterOption"
-                                value="FECHADOS"
-                                checked={selectedFilterOption === "FECHADOS"}
-                                onChange={() => setSelectedFilterOption("FECHADOS")}
-                                />
-                                <label htmlFor="fechados">FECHADOS</label>
+                            <div className={styles.filter}>
+                                <select 
+                                    name="product" 
+                                    id="product"
+                                    value={selectedFilter} 
+                                    onChange={(e) => setSelectedFilter(e.target.value)}
+                                    className={styles.selectInput}
+                                >
+                                    <option value="TODOS">TODOS</option>
+                                    <option value="VENDEDOR">VENDEDOR</option>
+                                    <option value="CAIXA">CAIXA</option>
+                                    <option value="CLIENTE">CLIENTE</option>
+                                </select>
                             </div>
 
-                            <div className={styles.filterRadio}>
-                                <input
-                                type="radio"
-                                name="filterOption"
-                                value="ABERTOS"
-                                checked={selectedFilterOption === "ABERTOS"}
-                                onChange={() => setSelectedFilterOption("ABERTOS")}
-                                />
-                                <label htmlFor="fechados">ABERTOS</label>
+                            <div className={styles.filter}>
+                                <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
                             </div>
 
-                            <div className={styles.filterRadio}>
-                                <input
-                                type="radio"
-                                name="filterOption"
-                                value="RASCUNHOS"
-                                checked={selectedFilterOption === "RASCUNHOS"}
-                                onChange={() => setSelectedFilterOption("RASCUNHOS")}
-                                />
-                                <label htmlFor="rascunhos">RASCUNHOS</label>
+                            <div className={styles.inputRadioContainer}>
+                                <div className={styles.filterRadio}>
+                                    <input
+                                    type="radio"
+                                    name="filterOption"
+                                    value="TODOS"
+                                    checked={selectedFilterOption === "TODOS"}
+                                    onChange={() => setSelectedFilterOption("TODOS")}
+                                    />
+                                    <label htmlFor="todos">TODOS</label>
+                                </div>
+
+                                <div className={styles.filterRadio}>
+                                    <input
+                                    type="radio"
+                                    name="filterOption"
+                                    value="FECHADOS"
+                                    checked={selectedFilterOption === "FECHADOS"}
+                                    onChange={() => setSelectedFilterOption("FECHADOS")}
+                                    />
+                                    <label htmlFor="fechados">FECHADOS</label>
+                                </div>
+
+                                <div className={styles.filterRadio}>
+                                    <input
+                                    type="radio"
+                                    name="filterOption"
+                                    value="ABERTOS"
+                                    checked={selectedFilterOption === "ABERTOS"}
+                                    onChange={() => setSelectedFilterOption("ABERTOS")}
+                                    />
+                                    <label htmlFor="fechados">ABERTOS</label>
+                                </div>
+
+                                <div className={styles.filterRadio}>
+                                    <input
+                                    type="radio"
+                                    name="filterOption"
+                                    value="RASCUNHOS"
+                                    checked={selectedFilterOption === "RASCUNHOS"}
+                                    onChange={() => setSelectedFilterOption("RASCUNHOS")}
+                                    />
+                                    <label htmlFor="rascunhos">RASCUNHOS</label>
+                                </div>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={filterOrder} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                             </div>
                         </div>
 
-                        <div className={styles.filter}>
-                            <button onClick={filterOrder} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                        <div className={styles.filterContainer}>
+                            <div className={styles.filter}>
+                                <Input type='date' value={listDateStart} onChange={(e) => setListDateStart(e.target.value)} style={{width: '150px', marginTop: '5px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <Input type='date' value={listDateEnd} onChange={(e) => setListDateEnd(e.target.value)} style={{width: '150px', marginTop: '5px'}}/>
+                            </div>
+
+                            <div className={styles.filter}>
+                                <button onClick={clearFilter} className={styles.buttonBuscar} style={{marginTop: '5px'}}>LIMPAR</button>
+                            </div>
                         </div>
+                        
+                        <article className={styles.listContainer}>
+                            <ol className={styles.list}>
+                                {orderLyList.map(ord => (
+                                    <li key={ord.id}>
+                                        <span className={styles.idDetail}>{ord?.id}</span>
+                                        <span 
+                                            className={styles.nameDetail}
+                                            onClick={() => handleDetailOrder(ord.id)}
+                                        >{ord.cliente?.usuario?.nome}
+                                        </span>
+                                        <span className={ord.status === true ? styles.spanStatus : ''}>{ord.status === true ? 'FINALIZADO' : "ABERTO"}</span>
+                                        <span className={ord.draft === true ? styles.spanDraft : ''}>{ord.draft === true ? 'RASCUNHO' : 'PEDIDO'}</span>
+                                        <span>{ord.valor_pagar}</span>
+                                        <span>{new Date(ord.updated_at).toLocaleDateString()}</span>
+                                        <BsTrash 
+                                            size={20} 
+                                            style={{color: '#FF3F4B', cursor: 'pointer'}}
+                                            onClick={() => alertConfirm(ord.id)}
+                                        />           
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
                     </div>
+                </main>
+                {
+                    modalVisible && modalOrderDetail && (
+                        <ModalDetailOrder 
+                            isOpen={modalVisible}
+                            onRequestClose={handleCloseModal}
+                            detalOrder={modalOrderDetail}
+                        />
+                    )
+                }
 
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filter}>
-                            <Input type='date' value={listDateStart} onChange={(e) => setListDateStart(e.target.value)} style={{width: '150px', marginTop: '5px'}}/>
-                        </div>
+                {
+                    modalVisibleAlert && (
+                        <ModalAlert 
+                            isOpen={modalVisibleAlert}
+                            onRequestClose={handleDelete}
+                            idOrder={alertIdOrder}
+                            titleAlert={titleAlert}
+                            menssageAlert={menssageAlert}
+                        />
+                    )
+                }
 
-                        <div className={styles.filter}>
-                            <Input type='date' value={listDateEnd} onChange={(e) => setListDateEnd(e.target.value)} style={{width: '150px', marginTop: '5px'}}/>
-                        </div>
-
-                        <div className={styles.filter}>
-                            <button onClick={clearFilter} className={styles.buttonBuscar} style={{marginTop: '5px'}}>LIMPAR</button>
-                        </div>
-                    </div>
-                    
-                    <article className={styles.listContainer}>
-                        <ol className={styles.list}>
-                            {orderLyList.map(ord => (
-                                <li key={ord.id}>
-                                    <span className={styles.idDetail}>{ord?.id}</span>
-                                    <span 
-                                        className={styles.nameDetail}
-                                        onClick={() => handleDetailOrder(ord.id)}
-                                    >{ord.cliente?.usuario?.nome}
-                                    </span>
-                                    <span className={ord.status === true ? styles.spanStatus : ''}>{ord.status === true ? 'FINALIZADO' : "ABERTO"}</span>
-                                    <span className={ord.draft === true ? styles.spanDraft : ''}>{ord.draft === true ? 'RASCUNHO' : 'PEDIDO'}</span>
-                                    <span>{ord.valor_pagar}</span>
-                                    <span>{new Date(ord.updated_at).toLocaleDateString()}</span>
-                                    <BsTrash 
-                                        size={20} 
-                                        style={{color: '#FF3F4B', cursor: 'pointer'}}
-                                        onClick={() => alertConfirm(ord.id)}
-                                    />           
-                                </li>
-                            ))}
-                        </ol>
-                    </article>
-                </div>
-            </main>
-            {
-                modalVisible && modalOrderDetail && (
-                    <ModalDetailOrder 
-                        isOpen={modalVisible}
-                        onRequestClose={handleCloseModal}
-                        detalOrder={modalOrderDetail}
-                    />
-                )
-            }
-
-            {
-                modalVisibleAlert && (
-                    <ModalAlert 
-                        isOpen={modalVisibleAlert}
-                        onRequestClose={handleDelete}
-                        idOrder={alertIdOrder}
-                        titleAlert={titleAlert}
-                        menssageAlert={menssageAlert}
-                    />
-                )
-            }
-
-        </div>
+            </div>
+        </>
     )
 }
 

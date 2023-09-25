@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
-import { FiUpload } from 'react-icons/fi';
+//import { FiUpload } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 // MY IMPORTS
@@ -98,7 +99,12 @@ export default function dashboard({ representative }: ListProps){
     }
 
     return(
-        <div className={styles.container}>
+        <>
+            <Head>
+
+                <title>Sistema - new factory</title>
+            </Head>
+            <div className={styles.container}>
                 <Header title={'NOVA FABRICA'}/>
 
                 <main className={styles.containerBody}>
@@ -138,7 +144,8 @@ export default function dashboard({ representative }: ListProps){
                         
                     </div>
                 </main>
-        </div>
+            </div>
+        </>
     );
 }
 

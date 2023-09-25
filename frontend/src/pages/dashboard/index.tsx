@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 
 // MY IMPORTS
@@ -23,18 +24,24 @@ export default function dashboard(){
     }
 
     return(
-        <div className={styles.container}>
-                <Header title={'FAVORITOS'}/>
+        <>
+            <Head>
+                <title>Sistema - dashboard</title>
+            </Head>
 
-                <main className={styles.containerFavorit}>
-                    <Presentation />
+            <div className={styles.container}>
+                    <Header title={'FAVORITOS'}/>
 
-                    <div className={styles.rigthContainer}>
-                        
-                        
-                    </div>
-                </main>
-        </div>
+                    <main className={styles.containerFavorit}>
+                        <Presentation />
+
+                        <div className={styles.rigthContainer}>
+                            
+                            
+                        </div>
+                    </main>
+            </div>
+        </>
     );
 }
 

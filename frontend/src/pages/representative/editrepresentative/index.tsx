@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { FcSearch } from "react-icons/fc";
@@ -242,7 +243,13 @@ export default function EditRepresentative(){
     }
 
     return(
-        <div className={styles.container}>
+        <>
+            <Head>
+
+                <title>Sistema - edit representative</title>
+            </Head>
+
+            <div className={styles.container}>
                 <Header title={'EDITAR REPRESENTANTE'}/>
 
                 <main className={styles.containerBody}>
@@ -324,7 +331,8 @@ export default function EditRepresentative(){
                         
                     </div>
                 </main>
-        </div>
+            </div>
+        </>
     );
 }
 

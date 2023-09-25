@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState  } from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
@@ -188,60 +189,66 @@ export default function ListClient({ client }: ListProps){
     Modal.setAppElement('#__next');
 
     return(
-        <div className={styles.container}>
-                <Header title={'LISTA DE CLIENTES'}/>
+        <>
+            <Head>
 
-                <main className={styles.containerFavorit}>
-                    <Presentation />
+                <title>Sistema - list client</title>
+            </Head>
+            <div className={styles.container}>
+                    <Header title={'LISTA DE CLIENTES'}/>
 
-                    <div className={styles.rigthContainer}>
-                        <div className={styles.filterContainer}>
-                            <div className={styles.filter}>
-                                <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
-                            </div>
+                    <main className={styles.containerFavorit}>
+                        <Presentation />
 
-                            <div className={styles.filter}>
-                                <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
-                            </div>
+                        <div className={styles.rigthContainer}>
+                            <div className={styles.filterContainer}>
+                                <div className={styles.filter}>
+                                    <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '320px'}}/>
+                                </div>
 
-                            <div className={styles.filter}>
-                                <div className={styles.filterInativo}>
-                                    <label htmlFor="checkbox" className={styles.labelChecbox}>INATIVOS</label>
-                                    <Input id='checkbox' type='checkbox' checked={listInativo} onChange={() => setListInativo(!listInativo)} className={styles.imputChecbox}/>
+                                <div className={styles.filter}>
+                                    <Input placeholder='NOME' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())}/>
+                                </div>
+
+                                <div className={styles.filter}>
+                                    <div className={styles.filterInativo}>
+                                        <label htmlFor="checkbox" className={styles.labelChecbox}>INATIVOS</label>
+                                        <Input id='checkbox' type='checkbox' checked={listInativo} onChange={() => setListInativo(!listInativo)} className={styles.imputChecbox}/>
+                                    </div>
+                                </div>
+
+                                <div className={styles.filter}>
+                                    <button onClick={filterCollaborator} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                                 </div>
                             </div>
 
-                            <div className={styles.filter}>
-                                <button onClick={filterCollaborator} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                            </div>
+                            <article className={styles.listContainer}>
+                                <ol className={styles.list}>
+                                    {clientList.map(colab => (
+                                        <li key={colab.usuario.id}>
+                                            <span style={{width: '320px'}}>{colab.id}</span>
+                                            <span onClick={() => handleOpenModalView(colab.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
+                                            {/* <span className={styles.nameDetail}>{colab.usuario.nome}</span> */}
+                                            <span style={{width: '52px'}}>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
+                                        </li>
+                                    ))}
+                                </ol>
+                            </article>
+                            
                         </div>
+                    </main>
 
-                        <article className={styles.listContainer}>
-                            <ol className={styles.list}>
-                                {clientList.map(colab => (
-                                    <li key={colab.usuario.id}>
-                                        <span style={{width: '320px'}}>{colab.id}</span>
-                                        <span onClick={() => handleOpenModalView(colab.id)} className={styles.nameDetail}>{colab.usuario.nome}</span>
-                                        {/* <span className={styles.nameDetail}>{colab.usuario.nome}</span> */}
-                                        <span style={{width: '52px'}}>{colab.situacao ? "ATIVO" : "INATIVO"}</span>           
-                                    </li>
-                                ))}
-                            </ol>
-                        </article>
-                        
-                    </div>
-                </main>
-
-                {
-                    modalVisible && modalClient&& modalClient.length > 0 && (
-                        <ModalClient 
-                            isOpen={modalVisible}
-                            onRequestClose={handleCloseModal}
-                            client={modalClient}
-                        />
-                    )
-                }
-        </div>
+                    {
+                        modalVisible && modalClient&& modalClient.length > 0 && (
+                            <ModalClient 
+                                isOpen={modalVisible}
+                                onRequestClose={handleCloseModal}
+                                client={modalClient}
+                            />
+                        )
+                    }
+            </div>
+        </>
     )
 }
 

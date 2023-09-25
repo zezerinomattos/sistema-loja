@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, ChangeEvent, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
@@ -63,28 +64,35 @@ export default function NewSection(){
     }
 
     return(
-        <div className={styles.container}>
-            <Header title={'NOVA SEÇÃO'}/>
+        <>
+            <Head>
 
-            <main className={styles.containerBody}>
-                <Presentation />
+                <title>Sistema - new section</title>
+            </Head>
 
-                <div className={styles.rigthContainer}>
-                    <form className={styles.formSecao} onSubmit={hadleRegister}>
-                        <div className={styles.inputContainer}>
-                            <label className={styles.labelInput} htmlFor="secao">SEÇÃO</label>
-                            <Input id='secao' placeholder='EX: Feminino' type='text' className={styles.inputName} onChange={(e) => setNomeSecao(e.target.value)} value={nome_secao}/>
-                        </div>
+            <div className={styles.container}>
+                <Header title={'NOVA SEÇÃO'}/>
 
-                        <div className={styles.buttonForm}>
-                            <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
-                        </div>
-                    </form>
-                    {message && <span>{message}</span>}
-                    
-                </div>
-            </main>
-        </div>
+                <main className={styles.containerBody}>
+                    <Presentation />
+
+                    <div className={styles.rigthContainer}>
+                        <form className={styles.formSecao} onSubmit={hadleRegister}>
+                            <div className={styles.inputContainer}>
+                                <label className={styles.labelInput} htmlFor="secao">SEÇÃO</label>
+                                <Input id='secao' placeholder='EX: Feminino' type='text' className={styles.inputName} onChange={(e) => setNomeSecao(e.target.value)} value={nome_secao}/>
+                            </div>
+
+                            <div className={styles.buttonForm}>
+                                <Button type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
+                            </div>
+                        </form>
+                        {message && <span>{message}</span>}
+                        
+                    </div>
+                </main>
+            </div>
+        </>
     );
 }
 

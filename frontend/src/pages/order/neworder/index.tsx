@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, FormEvent } from 'react';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import { useRouter } from 'next/router';
@@ -251,9 +252,14 @@ export default function NewOrder({ cliente, caixa }: ListProps){
         return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
     }
 
-
     return(
-        <div className={styles.container}>
+        <>
+            <Head>
+
+                <title>Sistema - new order</title>
+            </Head>
+
+            <div className={styles.container}>
                 <Header title={'NOVO PEDIDO'}/>
 
                 <main className={styles.containerOrder}>
@@ -307,7 +313,8 @@ export default function NewOrder({ cliente, caixa }: ListProps){
                         </article>
                     </div>
                 </main>
-        </div>
+            </div>
+        </>
     );
 }
 

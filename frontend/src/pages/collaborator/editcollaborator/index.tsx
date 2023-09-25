@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, ChangeEvent, FormEvent} from 'react';
-import Image from 'next/image';
+import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FiUpload } from 'react-icons/fi';
 import { FcSearch } from "react-icons/fc";
@@ -313,141 +313,148 @@ export default function DetailCollaborator(){
     }
 
     return(
-        <div className={styles.container}>
-                <Header title={'EDITAR COLABORADOR'}/>
+        <>
+            <Head>
 
-                <main className={styles.containerFavorit}>
-                    <Presentation />
+                <title>Sistema - edit collaborator</title>
+            </Head>
 
-                    <div className={styles.rigthContainer}>
-                        <div className={styles.filterContainer}>
-                            <div className={styles.filter}>
-                                <Input placeholder='CÓDIGO' value={colaboradorId} onChange={(e) => setColaboradorId(e.target.value)} style={{width:'350px'}}/>
-                            </div>
+            <div className={styles.container}>
+                    <Header title={'EDITAR COLABORADOR'}/>
 
-                            <div className={styles.filter}>
-                                <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-                            </div>
-                        </div>
-                        
-                        <form className={styles.formColaborador} >
-                            <Input placeholder='NOME COMPLETO' type='text' className={styles.inputName} onChange={(e) => setNome(e.target.value)} value={nome}/>
+                    <main className={styles.containerFavorit}>
+                        <Presentation />
 
-                            <div className={styles.inputsBasicData}>                               
+                        <div className={styles.rigthContainer}>
+                            <div className={styles.filterContainer}>
+                                <div className={styles.filter}>
+                                    <Input placeholder='CÓDIGO' value={colaboradorId} onChange={(e) => setColaboradorId(e.target.value)} style={{width:'350px'}}/>
+                                </div>
 
-                                <select 
-                                    name="sexo" id="sexo" 
-                                    className={styles.selectInput} 
-                                    value={sexo} onChange={(e) => setSexo(e.target.value)}
-                                >
-                                    <option value="" disabled>SEXO</option>
-                                    <option value="MASCULINO">MASCULINO</option>
-                                    <option value="FEMININO">FEMININO</option>
-                                    <option value="OUTRO">OUTRO</option>
-                                </select>
-
-                                <Input placeholder='EMAIL' type='email' onChange={(e) => setEmail(e.target.value)} value={email}/>
-                            </div>
-
-                            <div className={styles.inputsBasicData}>
-                                <Input placeholder='RG' type='text' onChange={(e) => setRg(e.target.value)} value={rg}/>
-                                <Input placeholder='ORGÃO EMISSOR' type='text' onChange={(e) => setOrgaoEmisor(e.target.value)} value={orgao_emissor}/>
-                            </div>
-
-                            <div className={styles.inputsBasicData}>
-                                <Input placeholder='TITULO DE ELEITOR' type='text' onChange={(e) => setTituloEleitor(e.target.value)} value={titulo_eleitor}/>
-                                <Input placeholder='ZONA' type='text' onChange={(e) => setZonaEleitoral(e.target.value)} value={zona_eleitoral}/>
-                                <Input placeholder='SEÇAO' type='text' onChange={(e) => setSecaoEleitoral(e.target.value)} value={secao_eleitoral}/>
-                            </div>
-
-                            <div className={styles.inputsBasicData}>
-                                <Input placeholder='CARTEIRA DE TRABALHO' type='text' onChange={(e) => setCarteiraTrabalho(e.target.value)} value={carteira_trabalho}/>
-                                <Input placeholder='SERIE' type='text' onChange={(e) => setSerie(e.target.value)} value={serie}/>
-                                <Input placeholder='PIS' type='text' onChange={(e) => setPis(e.target.value)} value={pis}/>
-                            </div>
-
-                            <Input placeholder='CEP' type='text' onChange={(e) => setCep(e.target.value)} value={cep} onKeyDown={handleCep}/>
-
-                            <div className={styles.inputsBasicData}>
-                                
-                                <Input placeholder='LOGRADOURO' type='text' style={{width: '60%'}} onChange={(e) => setLogradouro(e.target.value)} value={logradouro}/>
-                                <Input placeholder='NÚMERO' type='text' onChange={(e) => setNumero(e.target.value)} value={numero}/>
-                                <Input placeholder='COMPLEMENTO' type='text'onChange={(e) => setComplemento(e.target.value)} value={complemento}/>
-                                <Input placeholder='BAIRRO' type='text' onChange={(e) => setBairro(e.target.value)} value={bairro}/>
-                                <Input placeholder='CIDADE' type='text' onChange={(e) => setCidade(e.target.value)} value={cidade}/>
-                                <Input placeholder='UF' type='text' style={{width: '10%'}} onChange={(e) => setUf(e.target.value)} value={uf}/>
-                                <Input placeholder='PAIS' type='text' onChange={(e) => setPais(e.target.value)} value={pais}/>
-                            </div>
-
-                            <div className={styles.inputsBasicData}>
-                                <Input placeholder='CELULAR' type='text' onChange={(e) => setCelular(e.target.value)} value={celular}/>
-                                <Input placeholder='TELEFONE' type='text' onChange={(e) => setTelefone(e.target.value)} value={telefone}/>
+                                <div className={styles.filter}>
+                                    <button onClick={handleFilter} className={styles.buttonBuscar}>{loading ? <FaSpinner /> : 'BUSCAR'} <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
+                                </div>
                             </div>
                             
-                            <div className={styles.inputsBasicData}>
-                                <select 
-                                    name="situacao" id="situacao" 
-                                    className={styles.selectInput} 
-                                    value={situacao} onChange={(e) => setSituacao(e.target.value)}
-                                >
-                                    <option value="" disabled>SITUAÇÃO</option>
-                                    <option value="true">ATIVO</option>
-                                    <option value="false">INATIVO</option>
-                                </select>
-                                
-                                <select 
-                                    name="cargo" id="cargo" 
-                                    className={styles.selectInput} 
-                                    value={cargo} onChange={(e) => setCargo(e.target.value)}
-                                >
-                                    <option value="" disabled>CARGO</option>
-                                    <option value="GERENTE">GERENTE</option>
-                                    <option value="VENDEDOR">VENDEDOR(A)</option>
-                                    <option value="CAIXA">CAIXA</option>
-                                </select>
-                            </div>
+                            <form className={styles.formColaborador} >
+                                <Input placeholder='NOME COMPLETO' type='text' className={styles.inputName} onChange={(e) => setNome(e.target.value)} value={nome}/>
 
-                            
-                            <div className={styles.inputsBasicData}>
-                                <Input placeholder='SALARIO BASE' type='text' onChange={(e) => setSalarioBase(e.target.value)} value={salario_base}/>
-                                {
-                                    cargo === 'CAIXA' ? 
-                                        <Input placeholder='QUEBRA DE CAIXA' type='number' onChange={(e) => setQuebracaixa(e.target.value)} value={quebra_caixa} />
-                                        
-                                    :   <Input placeholder='COMP - COMISSÃO' type='number' onChange={(e) => setComplementoSalario(e.target.value)} value={complemento_salario}/>
+                                <div className={styles.inputsBasicData}>                               
+
+                                    <select 
+                                        name="sexo" id="sexo" 
+                                        className={styles.selectInput} 
+                                        value={sexo} onChange={(e) => setSexo(e.target.value)}
+                                    >
+                                        <option value="" disabled>SEXO</option>
+                                        <option value="MASCULINO">MASCULINO</option>
+                                        <option value="FEMININO">FEMININO</option>
+                                        <option value="OUTRO">OUTRO</option>
+                                    </select>
+
+                                    <Input placeholder='EMAIL' type='email' onChange={(e) => setEmail(e.target.value)} value={email}/>
+                                </div>
+
+                                <div className={styles.inputsBasicData}>
+                                    <Input placeholder='RG' type='text' onChange={(e) => setRg(e.target.value)} value={rg}/>
+                                    <Input placeholder='ORGÃO EMISSOR' type='text' onChange={(e) => setOrgaoEmisor(e.target.value)} value={orgao_emissor}/>
+                                </div>
+
+                                <div className={styles.inputsBasicData}>
+                                    <Input placeholder='TITULO DE ELEITOR' type='text' onChange={(e) => setTituloEleitor(e.target.value)} value={titulo_eleitor}/>
+                                    <Input placeholder='ZONA' type='text' onChange={(e) => setZonaEleitoral(e.target.value)} value={zona_eleitoral}/>
+                                    <Input placeholder='SEÇAO' type='text' onChange={(e) => setSecaoEleitoral(e.target.value)} value={secao_eleitoral}/>
+                                </div>
+
+                                <div className={styles.inputsBasicData}>
+                                    <Input placeholder='CARTEIRA DE TRABALHO' type='text' onChange={(e) => setCarteiraTrabalho(e.target.value)} value={carteira_trabalho}/>
+                                    <Input placeholder='SERIE' type='text' onChange={(e) => setSerie(e.target.value)} value={serie}/>
+                                    <Input placeholder='PIS' type='text' onChange={(e) => setPis(e.target.value)} value={pis}/>
+                                </div>
+
+                                <Input placeholder='CEP' type='text' onChange={(e) => setCep(e.target.value)} value={cep} onKeyDown={handleCep}/>
+
+                                <div className={styles.inputsBasicData}>
                                     
-                                }
+                                    <Input placeholder='LOGRADOURO' type='text' style={{width: '60%'}} onChange={(e) => setLogradouro(e.target.value)} value={logradouro}/>
+                                    <Input placeholder='NÚMERO' type='text' onChange={(e) => setNumero(e.target.value)} value={numero}/>
+                                    <Input placeholder='COMPLEMENTO' type='text'onChange={(e) => setComplemento(e.target.value)} value={complemento}/>
+                                    <Input placeholder='BAIRRO' type='text' onChange={(e) => setBairro(e.target.value)} value={bairro}/>
+                                    <Input placeholder='CIDADE' type='text' onChange={(e) => setCidade(e.target.value)} value={cidade}/>
+                                    <Input placeholder='UF' type='text' style={{width: '10%'}} onChange={(e) => setUf(e.target.value)} value={uf}/>
+                                    <Input placeholder='PAIS' type='text' onChange={(e) => setPais(e.target.value)} value={pais}/>
+                                </div>
+
+                                <div className={styles.inputsBasicData}>
+                                    <Input placeholder='CELULAR' type='text' onChange={(e) => setCelular(e.target.value)} value={celular}/>
+                                    <Input placeholder='TELEFONE' type='text' onChange={(e) => setTelefone(e.target.value)} value={telefone}/>
+                                </div>
                                 
-                            </div>
+                                <div className={styles.inputsBasicData}>
+                                    <select 
+                                        name="situacao" id="situacao" 
+                                        className={styles.selectInput} 
+                                        value={situacao} onChange={(e) => setSituacao(e.target.value)}
+                                    >
+                                        <option value="" disabled>SITUAÇÃO</option>
+                                        <option value="true">ATIVO</option>
+                                        <option value="false">INATIVO</option>
+                                    </select>
+                                    
+                                    <select 
+                                        name="cargo" id="cargo" 
+                                        className={styles.selectInput} 
+                                        value={cargo} onChange={(e) => setCargo(e.target.value)}
+                                    >
+                                        <option value="" disabled>CARGO</option>
+                                        <option value="GERENTE">GERENTE</option>
+                                        <option value="VENDEDOR">VENDEDOR(A)</option>
+                                        <option value="CAIXA">CAIXA</option>
+                                    </select>
+                                </div>
 
-                            <label className={styles.labelAvatar}>
-                                <span>
-                                    <FiUpload size={25} color='#fff' />
-                                </span>
-                                <input type="file" accept='image/png, image/jpeg' onChange={handleFile}/>
-                                {
-                                    avatarUrl && 
-                                        <img 
-                                            className={styles.previw} 
-                                            src={avatarUrl} 
-                                            alt="Imagem colaborador" 
-                                            width={'100%'}
-                                            height={'200px'}
-                                        />
-                                }
-                            </label>
+                                
+                                <div className={styles.inputsBasicData}>
+                                    <Input placeholder='SALARIO BASE' type='text' onChange={(e) => setSalarioBase(e.target.value)} value={salario_base}/>
+                                    {
+                                        cargo === 'CAIXA' ? 
+                                            <Input placeholder='QUEBRA DE CAIXA' type='number' onChange={(e) => setQuebracaixa(e.target.value)} value={quebra_caixa} />
+                                            
+                                        :   <Input placeholder='COMP - COMISSÃO' type='number' onChange={(e) => setComplementoSalario(e.target.value)} value={complemento_salario}/>
+                                        
+                                    }
+                                    
+                                </div>
 
-                            <TextArea placeholder='OBS' onChange={(e) => setObs(e.target.value)} value={obs}/>
+                                <label className={styles.labelAvatar}>
+                                    <span>
+                                        <FiUpload size={25} color='#fff' />
+                                    </span>
+                                    <input type="file" accept='image/png, image/jpeg' onChange={handleFile}/>
+                                    {
+                                        avatarUrl && 
+                                            <img 
+                                                className={styles.previw} 
+                                                src={avatarUrl} 
+                                                alt="Imagem colaborador" 
+                                                width={'100%'}
+                                                height={'200px'}
+                                            />
+                                    }
+                                </label>
 
-                            <div className={styles.buttonForm}>
-                                <Button onClick={hadleEdit} type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
-                            </div>
-                            
-                        </form>
-                        {message && <span>{message}</span>}
-                    </div>
-                </main>
-        </div>
+                                <TextArea placeholder='OBS' onChange={(e) => setObs(e.target.value)} value={obs}/>
+
+                                <div className={styles.buttonForm}>
+                                    <Button onClick={hadleEdit} type='submit' loading={loading} style={{width: '100%', height: '40px'}} >CADASTRAR</Button>
+                                </div>
+                                
+                            </form>
+                            {message && <span>{message}</span>}
+                        </div>
+                    </main>
+            </div>
+        </>
     );
 }
 
