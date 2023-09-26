@@ -147,6 +147,11 @@ export function Header({title, id}: HeaderProps){
                 setRenderPage('pedidos');
                 break;
 
+            //------------
+            //Caixa
+            case 'caixa/opencash':
+                setRenderPage('caixa');
+                break;
             //Default
             default:
                 //setRenderPage(currentPath);

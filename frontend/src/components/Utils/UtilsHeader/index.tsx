@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
 import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList, FcPaid, FcList } from "react-icons/fc";
 import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill, BsTagsFill, BsReverseListColumnsReverse, BsPencilSquare, BsClipboardPlusFill, BsFillFileRuledFill, BsFillGrid1X2Fill, BsClipboard2Plus } from "react-icons/bs";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt, FaCashRegister } from "react-icons/fa";
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -388,6 +388,22 @@ export function UtilsHeader( param: string, title: string ){
             break;
 
         case 'caixa':
+            return(
+                <>
+                    <ul className={styles.paginas}>
+                        <li>
+                            <Link href="/caixa/opencash">
+                                <FaCashRegister size={28} style={{color: '#e99a3b', marginBottom:'2px'}}/>
+                                <span><strong>ABERTURA</strong><br />CAIXA</span>
+                            </Link>
+                        </li>
+                    </ul>
+
+                    <div className={styles.title}>
+                        <h1>{title}</h1>
+                    </div>
+                </>
+            )
         break;
         
         case 'financeiro':
