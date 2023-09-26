@@ -31,7 +31,28 @@ export default function OpenCash(){
 
     //FUNCAO PARA CANCELAR ABERTURA DE CAIXA
     function handleCancel(){
-        router.push('/');
+        toast.error('Abertura de caixa cancelada!');
+        setTimeout(() => {
+            router.push('/');
+        }, 2000)
+    }
+
+    //FUNCAO PARA CRIAR O CAIXA
+    async function handleOpen(){
+        await api.post('/caixa', {
+            colaborador_id: colaborador_id,
+            obs: obs,
+        })
+        .then(() => {
+            toast.success('Caixa aberto, você já pode trabalhar com ele.');
+            setTimeout(() => {
+                router.push('/');
+            }, 2000)
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error(error.response.data.erro);
+        })
     }
 
     useEffect(() => {
@@ -46,7 +67,7 @@ export default function OpenCash(){
             })
             .catch(error => {
                 console.log(error);
-                toast.error(error.response.data.erro);
+                toast.warning(error.response.data.erro);
             });
         }
 
@@ -82,7 +103,7 @@ export default function OpenCash(){
                                 <div className={styles.rigthCash}>
                                     <span>SALDO ANTERIOR: R$</span>
                                     <div className={styles.input}>
-                                        <Input type='text' value={value}/>
+                                        <Input type='text' value={value} disabled/>
                                         <FcMoneyTransfer size={32} />
                                     </div>
 
@@ -90,13 +111,15 @@ export default function OpenCash(){
 
                                     <div className={styles.button}>
                                         <Button style={{width: '150px', height: '40px', marginLeft: '10px', backgroundColor: '#FF3F4B'}} type='button' loading={loading} onClick={handleCancel} >CANCELAR</Button>
-                                        <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading}>ABRIR</Button>
+                                        <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading} onClick={handleOpen}>ABRIR</Button>
                                     </div>
                                 </div>
                             </div>
                             
                         </div>
                     </main>
+
+                    
             </div>
         </>
     );
