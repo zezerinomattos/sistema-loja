@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState  } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { FaSpinner } from 'react-icons/fa';
 import { FcMoneyTransfer } from "react-icons/fc";
-
+import { toast } from 'react-toastify';
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -16,17 +17,44 @@ import { Input, TextArea } from '../../../components/Ui/Input';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 
+import { api } from '../../../services/apiClient';
+
 export default function OpenCash(){ 
+    const router = useRouter();
     const { user } = useContext(AuthContext);
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
 
-    useEffect(() => {
-        
+    const [colaborador_id, setColaborador_id] = useState(user.colaborador_id);
+    const [obs, setObs] = useState('');
+    const [value, setValue] = useState<number>();
 
-        //Escondendo o loading quando ele montar completamente o componente
-        setCarregando(false);
-    }, [])
+    //FUNCAO PARA CANCELAR ABERTURA DE CAIXA
+    function handleCancel(){
+        router.push('/');
+    }
+
+    useEffect(() => {
+        async function detailsCaixa(){
+            await api.get('/detail/caixa', {
+                params:{
+                    colaborador_id: colaborador_id,
+                }
+            })
+            .then(response => {
+                setValue((response.data.valor_final.toFixed(2)));
+            })
+            .catch(error => {
+                console.log(error);
+                toast.error(error.response.data.erro);
+            });
+        }
+
+        detailsCaixa();
+
+         //Escondendo o loading quando ele montar completamente o componente
+         setCarregando(false);
+    }, []);
 
     if (carregando) {
         return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
@@ -52,16 +80,16 @@ export default function OpenCash(){
                                     <Image src={imgCaixa} alt='Imagem de caixa' width={200} height={250}/>
                                 </div>
                                 <div className={styles.rigthCash}>
-                                    <span>VALOR: R$</span>
+                                    <span>SALDO ANTERIOR: R$</span>
                                     <div className={styles.input}>
-                                        <Input type='text'/>
+                                        <Input type='text' value={value}/>
                                         <FcMoneyTransfer size={32} />
                                     </div>
 
-                                    <TextArea style={{width: '400px', height: '200px'}} />
+                                    <TextArea style={{width: '400px', height: '200px'}} onChange={(e) => setObs(e.target.value)} value={obs}/>
 
                                     <div className={styles.button}>
-                                        <Button style={{width: '150px', height: '40px', marginLeft: '10px', backgroundColor: '#FF3F4B'}} type='button' loading={loading}>CANCELAR</Button>
+                                        <Button style={{width: '150px', height: '40px', marginLeft: '10px', backgroundColor: '#FF3F4B'}} type='button' loading={loading} onClick={handleCancel} >CANCELAR</Button>
                                         <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading}>ABRIR</Button>
                                     </div>
                                 </div>
