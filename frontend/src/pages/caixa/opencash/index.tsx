@@ -22,6 +22,8 @@ export default function OpenCash(){
     const [loading, setLoaging] = useState(false);
 
     useEffect(() => {
+        
+
         //Escondendo o loading quando ele montar completamente o componente
         setCarregando(false);
     }, [])
