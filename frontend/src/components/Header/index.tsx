@@ -180,7 +180,7 @@ export function Header({title, id}: HeaderProps){
                     <li onClick={() => handleItemClick('representante')} className={renderPage === 'representante' ? styles.actived : ''} >REPRESENTATES</li>
                     <li onClick={() => handleItemClick('fabricas')} className={renderPage === 'fabricas' ? styles.actived : ''} >FABRICAS</li>
                     <li style={{pointerEvents: isGerente || isAdmim || isVendedor ? 'auto' : 'none'}} onClick={() => handleItemClick('pedidos')} className={renderPage === 'pedidos' ? styles.actived : ''} >PEDIDOS</li>
-                    <li onClick={() => handleItemClick('caixa')} className={renderPage === 'caixa' ? styles.actived : ''} >CAIXA</li>
+                    <li style={{pointerEvents: isGerente || isAdmim || isCaixa ? 'auto' : 'none'}} onClick={() => handleItemClick('caixa')} className={renderPage === 'caixa' ? styles.actived : ''} >CAIXA</li>
                     <li onClick={() => handleItemClick('financeiro')} className={renderPage === 'financeiro' ? styles.actived : ''} >FINANCEIRO</li>
                     <li onClick={() => handleItemClick('crediario')} className={renderPage === 'crediario' ? styles.actived : ''} >CREDIÁRIO</li>
                     <li onClick={signOut}>SAIR</li>
