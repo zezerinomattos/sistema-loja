@@ -149,15 +149,15 @@ export function Header({title, id}: HeaderProps){
 
             //------------
             //Caixa
-            case 'caixa/opencash':
+            case 'cash/opencash':
                 setRenderPage('caixa');
                 break;
 
-            case 'caixa/entrycash':
+            case 'cash/entrycash':
                 setRenderPage('caixa');
                 break;
 
-            case 'caixa/withdrawalcash':
+            case 'cash/withdrawalcash':
                 setRenderPage('caixa');
                 break;
 

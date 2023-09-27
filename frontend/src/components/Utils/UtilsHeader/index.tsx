@@ -394,21 +394,21 @@ export function UtilsHeader( param: string, title: string ){
                 <>
                     <ul className={styles.paginas}>
                         <li>
-                            <Link href="/caixa/opencash">
+                            <Link href="/cash/opencash">
                                 <FaCashRegister size={28} style={{color: '#e99a3b', marginBottom:'2px'}}/>
                                 <span><strong>ABERTURA</strong><br />CAIXA</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/caixa/entrycash">
+                            <Link href="/cash/entrycash">
                                 <FaMoneyBillTrendUp size={28} style={{color: '#088C7F', marginBottom:'2px'}}/>
                                 <span><strong>ENTRADA</strong><br />CAIXA</span>
                             </Link>
                         </li>
 
                         <li>
-                            <Link href="/caixa/withdrawalcash">
+                            <Link href="/cash/withdrawalcash">
                                 <BiMoneyWithdraw size={28} style={{color: '#FF3F4B', marginBottom:'2px'}}/>
                                 <span><strong>RETIRADA</strong><br />CAIXA</span>
                             </Link>
