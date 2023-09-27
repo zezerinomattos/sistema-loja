@@ -122,7 +122,7 @@ export default function EntryCash(){
 
                                     <div className={styles.button}>
                                         <Button style={{width: '150px', height: '40px', marginLeft: '10px', backgroundColor: '#FF3F4B'}} type='button' loading={loading} onClick={handleCancel} >CANCELAR</Button>
-                                        <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading} onClick={handleOpen}>ABRIR</Button>
+                                        <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading} onClick={handleOpen}>SALVAR</Button>
                                     </div>
                                 </div>
                             </div>

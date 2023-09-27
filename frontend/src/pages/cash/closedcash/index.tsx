@@ -19,45 +19,44 @@ import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth
 
 import { api } from '../../../services/apiClient';
 
-export default function WithdrawalCash(){
+export default function ClosedCash(){
     const router = useRouter();
     const { user } = useContext(AuthContext);
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
+    const [message, setMessage] = useState('');
 
     const [caixa_id, setCaixa_id] = useState('');
     const [colaborador_id, setColaborador_id] = useState(user.colaborador_id);
-    const [valor_retirado, setValor_retirado] = useState('');
+    const [valor_final, setValor_final] = useState('')
     const [value, setValue] = useState<number>();
-    const [motivo, setMotivo] = useState('');
     const [obs, setObs] = useState('');
 
     //FUNCAO PARA CANCELAR ENTRADA DE CAIXA
     function handleCancel(){
-        toast.error('Retirada de caixa cancelada!');
+        toast.error('Entrada de caixa cancelada!');
         setTimeout(() => {
             router.push('/');
-        }, 2000)
+        }, 2000);
     }
 
-    //FUNCAO PARA CRIAR RETIRADA DE CAIXA
+    //FUNCAO PARA CRIAR ENTRADA DE CAIXA
     async function handleOpen(){
-        await api.post('/retirada/caixa', {
-            colaborador_id: colaborador_id,
+        await api.put('/close/caixa', {
             caixa_id: caixa_id,
-            valor_retirado: valor_retirado,
-            motivo: motivo,
-            obs: obs
+            obs: obs,
+            valor_final: valor_final
         })
         .then(response => {
-            toast.success(`Foi retirado o valor de R$${valor_retirado} do seu Caixa.`);
+            toast.success(`Seu caixa foi fechado com sucesso!`);
             setTimeout(() => {
                 router.push('/');
             }, 2000);
         })
         .catch(error => {
             console.log(error);
-            toast.error(error.response.data.erro);
+            toast.error('Atenção, você tem divergência nos valores!');
+            setMessage(error.response.data.erro);
         });
     }
 
@@ -92,44 +91,43 @@ export default function WithdrawalCash(){
     return(
         <>
             <Head>
-                <title>Sistema - Cash withdrawal</title>
+                <title>Sistema - Cash closed</title>
             </Head>
 
             <div className={styles.container}>
-                    <Header title={'RETIRADA NO CAIXA'}/>
+                <Header title={'FECHAR CAIXA'}/>
 
-                    <main className={styles.containerFavorit}>
-                        <Presentation />
+                <main className={styles.containerFavorit}>
+                    <Presentation />
 
-                        <div className={styles.rigthContainer}>
-                            <div className={styles.cashContainer}>
+                    <div className={styles.rigthContainer}>
+                        <div className={styles.cashContainer}>
 
-                                <div className={styles.leftCash}>
-                                    <span>{user.cargo}</span>
-                                    <Image src={imgCaixa} alt='Imagem de caixa' width={200} height={250}/>
+                            <div className={styles.leftCash}>
+                                <span>{user.cargo}</span>
+                                <Image src={imgCaixa} alt='Imagem de caixa' width={200} height={250}/>
+                            </div>
+                            <div className={styles.rigthCash}>
+                                <span>SALDO:</span>
+                                <div className={styles.input}>
+                                    <Input type='text' value={value} style={{width: '100px'}} disabled/>
+                                    <Input type='text' value={valor_final} onChange={(e) => setValor_final(e.target.value)} style={{width: '100px'}} placeholder='R$ '/>
+                                    <FcMoneyTransfer size={32} />
                                 </div>
-                                <div className={styles.rigthCash}>
-                                    <span>SALDO:</span>
-                                    <div className={styles.input}>
-                                        <Input type='text' value={value} style={{width: '100px'}} disabled/>
-                                        <Input type='text' value={valor_retirado} onChange={(e) => setValor_retirado(e.target.value)} style={{width: '100px'}} placeholder='R$ '/>
-                                        <FcMoneyTransfer size={32} />
-                                    </div>
 
-                                    <TextArea style={{width: '400px', height: '80px'}} onChange={(e) => setMotivo(e.target.value)} value={motivo} placeholder='MOTIVO DA ENTRADA'/>
+                                <TextArea style={{width: '400px', height: '150px'}} onChange={(e) => setObs(e.target.value)} value={obs} placeholder='OBS - ANOTE AQUI QUALQUER OBSERVAÇÃO COMO EXEMPLO QUEM ENTREGOU O VALOR'/>
 
-                                    <TextArea style={{width: '400px', height: '150px'}} onChange={(e) => setObs(e.target.value)} value={obs} placeholder='OBS - ANOTE AQUI QUALQUER OBSERVAÇÃO COMO EXEMPLO QUEM ENTREGOU O VALOR'/>
-
-                                    <div className={styles.button}>
-                                        <Button style={{width: '150px', height: '40px', marginLeft: '10px', backgroundColor: '#FF3F4B'}} type='button' loading={loading} onClick={handleCancel} >CANCELAR</Button>
-                                        <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading} onClick={handleOpen}>SALVAR</Button>
-                                    </div>
+                                <div className={styles.button}>
+                                    <Button style={{width: '150px', height: '40px', marginLeft: '10px', backgroundColor: '#FF3F4B'}} type='button' loading={loading} onClick={handleCancel} >CANCELAR</Button>
+                                    <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading} onClick={handleOpen}>FECHAR</Button>
                                 </div>
                             </div>
-                            
                         </div>
-                    </main>
 
+                        {message && <span className={styles.message}>{message}</span>}
+
+                    </div>
+                </main>
                     
             </div>
         </>

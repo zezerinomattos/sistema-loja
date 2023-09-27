@@ -26,7 +26,7 @@ class CloseCaixaService{
         const valorToleranciaQuebraCaixa = valor_final - infoCaixa.saldo;
 
         if(valorToleranciaQuebraCaixa < (-10)){
-            throw new Error('O valor de quebra de caixa é menor que $10,00, informe o quebra de caixa');
+            throw new Error('O valor de quebra de caixa é maior que $10,00, informe o quebra de caixa');
         }
 
         if(valorToleranciaQuebraCaixa > 10){

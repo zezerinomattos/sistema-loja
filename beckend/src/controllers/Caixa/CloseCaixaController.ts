@@ -8,9 +8,11 @@ class CloseCaixaController{
 
         const closeCaixaService = new CloseCaixaService;
 
+        const valorFinal = parseFloat(valor_final.replace(',', '.')); 
+
         const caixa = await closeCaixaService.execute({
             caixa_id,
-            valor_final, 
+            valor_final: valorFinal, 
             obs
         });
 
