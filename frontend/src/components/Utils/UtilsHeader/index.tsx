@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList, FcPaid, FcList } from "react-icons/fc";
 import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill, BsTagsFill, BsReverseListColumnsReverse, BsPencilSquare, BsClipboardPlusFill, BsFillFileRuledFill, BsFillGrid1X2Fill, BsClipboard2Plus } from "react-icons/bs";
 import { FaPencilAlt, FaCashRegister } from "react-icons/fa";
+import {FaMoneyBillTrendUp } from "react-icons/fa6";
+import { BiMoneyWithdraw } from 'react-icons/bi';
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -395,6 +397,20 @@ export function UtilsHeader( param: string, title: string ){
                             <Link href="/caixa/opencash">
                                 <FaCashRegister size={28} style={{color: '#e99a3b', marginBottom:'2px'}}/>
                                 <span><strong>ABERTURA</strong><br />CAIXA</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/caixa/entrycash">
+                                <FaMoneyBillTrendUp size={28} style={{color: '#088C7F', marginBottom:'2px'}}/>
+                                <span><strong>ENTRADA</strong><br />CAIXA</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/caixa/withdrawalcash">
+                                <BiMoneyWithdraw size={28} style={{color: '#FF3F4B', marginBottom:'2px'}}/>
+                                <span><strong>RETIRADA</strong><br />CAIXA</span>
                             </Link>
                         </li>
                     </ul>
