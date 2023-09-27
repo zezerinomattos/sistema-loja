@@ -19,7 +19,7 @@ import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth
 
 import { api } from '../../../services/apiClient';
 
-export default function EntryCash(){
+export default function WithdrawalCash(){
     const router = useRouter();
     const { user } = useContext(AuthContext);
     const [carregando, setCarregando] = useState(true);
@@ -27,30 +27,30 @@ export default function EntryCash(){
 
     const [caixa_id, setCaixa_id] = useState('');
     const [colaborador_id, setColaborador_id] = useState(user.colaborador_id);
-    const [valor_entrada, setValor_entrada] = useState('')
+    const [valor_retirado, setValor_retirado] = useState('');
     const [value, setValue] = useState<number>();
     const [motivo, setMotivo] = useState('');
     const [obs, setObs] = useState('');
 
     //FUNCAO PARA CANCELAR ENTRADA DE CAIXA
     function handleCancel(){
-        toast.error('Entrada de caixa cancelada!');
+        toast.error('Retirada de caixa cancelada!');
         setTimeout(() => {
             router.push('/');
         }, 2000)
     }
 
-    //FUNCAO PARA CRIAR ENTRADA DE CAIXA
+    //FUNCAO PARA CRIAR RETIRADA DE CAIXA
     async function handleOpen(){
-        await api.post('/entrada/caixa', {
+        await api.post('/retirada/caixa', {
             colaborador_id: colaborador_id,
             caixa_id: caixa_id,
-            valor_entrada: valor_entrada,
+            valor_retirado: valor_retirado,
             motivo: motivo,
             obs: obs
         })
         .then(response => {
-            toast.success(`Foi inserido o valor de R$${valor_entrada} ao seu Caixa.`);
+            toast.success(`Foi retirado o valor de R$${valor_retirado} do seu Caixa.`);
             setTimeout(() => {
                 router.push('/');
             }, 2000);
@@ -92,11 +92,11 @@ export default function EntryCash(){
     return(
         <>
             <Head>
-                <title>Sistema - Cash entry</title>
+                <title>Sistema - Cash withdrawal</title>
             </Head>
 
             <div className={styles.container}>
-                    <Header title={'ENTRADA NO CAIXA'}/>
+                    <Header title={'RETIRADA NO CAIXA'}/>
 
                     <main className={styles.containerFavorit}>
                         <Presentation />
@@ -112,7 +112,7 @@ export default function EntryCash(){
                                     <span>SALDO:</span>
                                     <div className={styles.input}>
                                         <Input type='text' value={value} style={{width: '100px'}} disabled/>
-                                        <Input type='text' value={valor_entrada} onChange={(e) => setValor_entrada(e.target.value)} style={{width: '100px'}} placeholder='R$ '/>
+                                        <Input type='text' value={valor_retirado} onChange={(e) => setValor_retirado(e.target.value)} style={{width: '100px'}} placeholder='R$ '/>
                                         <FcMoneyTransfer size={32} />
                                     </div>
 

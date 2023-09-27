@@ -8,9 +8,11 @@ class CrateRetiradaCaixaController{
 
         const crateRetiradaCaixaService = new CrateRetiradaCaixaService;
 
+        const valorRetirada = parseFloat(valor_retirado.replace(',', '.')); 
+
         const retiradaCaixa = await crateRetiradaCaixaService.execute({
             colaborador_id, 
-            valor_retirado, 
+            valor_retirado: valorRetirada, 
             motivo, 
             obs, 
             caixa_id 
