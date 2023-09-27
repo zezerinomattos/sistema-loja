@@ -84,7 +84,7 @@ export default function OpenCash(){
     return(
         <>
             <Head>
-                <title>Sistema - Cash box</title>
+                <title>Sistema - Cash open</title>
             </Head>
 
             <div className={styles.container}>

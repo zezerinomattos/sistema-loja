@@ -72,6 +72,7 @@ import { ListOrderColaboradorDateController } from '../controllers/Order/ListOrd
 import { CreateCaixaController } from '../controllers/Caixa/CreateCaixaController';
 import { CloseCaixaController } from '../controllers/Caixa/CloseCaixaController';
 import { DetailCaixaController } from '../controllers/Caixa/DetailCaixaController';
+import { DetailClosedCaixaController } from '../controllers/Caixa/DetailClosedCaixaController';
 import { CreateRegistroCaixaController } from '../controllers/Caixa/CreateRegistroCaixaController';
 import { CancelarRegistroCaixaController } from '../controllers/Caixa/CancelarRegistroCaixaController';
 import { CreateEntradaCartaoController } from '../controllers/Caixa/CreateEntradaCartaoController';
@@ -198,6 +199,7 @@ router.get('/order/colaborador/date', isAuthenticated, new ListOrderColaboradorD
 router.post('/caixa', isAuthenticated, new CreateCaixaController().handle);
 router.get('/caixa', isAuthenticated, new ListCaixaController().handle);
 router.get('/detail/caixa', isAuthenticated, new DetailCaixaController().handle);
+router.get('/detail/closed/caixa', isAuthenticated, new DetailClosedCaixaController().handle);
 router.put('/close/caixa', isAuthenticated, new CloseCaixaController().handle);
 router.post('/registro/caixa', isAuthenticated, new CreateRegistroCaixaController().handle);
 router.put('/cancelar/registro', isAuthenticated, new CancelarRegistroCaixaController().handle);

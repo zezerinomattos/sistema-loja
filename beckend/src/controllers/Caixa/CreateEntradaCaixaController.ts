@@ -8,9 +8,11 @@ class CreateEntradaCaixaController{
 
         const createEntradaCaixaService = new CreateEntradaCaixaService;
 
+        const valorEntrada = parseFloat(valor_entrada.replace(',', '.'));  
+
         const entradaCaixa = await createEntradaCaixaService.execute({
             colaborador_id, 
-            valor_entrada, 
+            valor_entrada: valorEntrada, 
             motivo, 
             obs, 
             caixa_id 
