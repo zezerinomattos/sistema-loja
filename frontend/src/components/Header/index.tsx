@@ -161,9 +161,13 @@ export function Header({title, id}: HeaderProps){
                 setRenderPage('caixa');
                 break;
 
+            case 'cash/closedcash':
+                setRenderPage('caixa');
+                break;
+
             //Default
             default:
-                //setRenderPage(currentPath);
+                //setRenderPage(currentPath); 
                 break;
         }
 

@@ -5,6 +5,7 @@ import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill, BsTagsFill,
 import { FaPencilAlt, FaCashRegister } from "react-icons/fa";
 import {FaMoneyBillTrendUp } from "react-icons/fa6";
 import { BiMoneyWithdraw } from 'react-icons/bi';
+import { LiaCashRegisterSolid } from 'react-icons/lia';
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -411,6 +412,13 @@ export function UtilsHeader( param: string, title: string ){
                             <Link href="/cash/withdrawalcash">
                                 <BiMoneyWithdraw size={28} style={{color: '#FF3F4B', marginBottom:'2px'}}/>
                                 <span><strong>RETIRADA</strong><br />CAIXA</span>
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link href="/cash/closedcash">
+                                <LiaCashRegisterSolid size={28} style={{color: '#e99a3b', marginBottom:'2px'}}/>
+                                <span><strong>FECHAR</strong><br />CAIXA</span>
                             </Link>
                         </li>
                     </ul>
