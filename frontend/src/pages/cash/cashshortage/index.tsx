@@ -51,7 +51,7 @@ export default function CashShortage(){
                     <Presentation />
 
                     <div className={styles.rigthContainer}>
-
+                        
                     </div>
                 </main>
             </div>
