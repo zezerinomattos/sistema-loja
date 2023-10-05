@@ -32,9 +32,9 @@ export default function ClosedCash(){
     const [value, setValue] = useState<number>();
     const [obs, setObs] = useState('');
 
-    //FUNCAO PARA CANCELAR ENTRADA DE CAIXA
+    //FUNCAO PARA FECHAR CAIXA
     function handleCancel(){
-        toast.error('Entrada de caixa cancelada!');
+        toast.error('Cancelamento de caixa cancelada!');
         setTimeout(() => {
             router.push('/');
         }, 2000);
