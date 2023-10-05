@@ -6,6 +6,7 @@ import { FaPencilAlt, FaCashRegister } from "react-icons/fa";
 import {FaMoneyBillTrendUp } from "react-icons/fa6";
 import { BiMoneyWithdraw } from 'react-icons/bi';
 import { LiaCashRegisterSolid } from 'react-icons/lia';
+import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi';
 
 import Modal from 'react-modal';
 import { useRouter } from 'next/router';
@@ -424,10 +425,21 @@ export function UtilsHeader( param: string, title: string ){
 
                         <li>
                             <Link href="/cash/cashshortage">
-                                <LiaCashRegisterSolid size={28} style={{color: '#e99a3b', marginBottom:'2px'}}/>
+                                <GiPayMoney size={28} style={{color: '#FF3F4B', marginBottom:'2px'}}/>
                                 <span><strong>QUEBRA</strong><br />CAIXA</span>
                             </Link>
                         </li>
+
+                        {
+                            user.cargo === 'GERENTE' || user.cargo === 'ADMIM' ? (
+                                <li>
+                                    <Link href="/cash/cashshortage">
+                                        <GiReceiveMoney size={28} style={{color: '#e99a3b', marginBottom:'2px'}}/>
+                                        <span><strong>EDITAR QUEBRA</strong><br />CAIXA</span>
+                                    </Link>
+                                </li>
+                            ) : ''
+                        }
                     </ul>
 
                     <div className={styles.title}>
