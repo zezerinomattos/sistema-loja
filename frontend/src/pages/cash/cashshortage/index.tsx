@@ -26,10 +26,42 @@ export default function CashShortage(){
     const [loading, setLoaging] = useState(false);
 
     const [colaborador_id, setColaborador_id] = useState(user.colaborador_id);
+    const [caixa_id, setCaixa_id] = useState('');
     const [obs, setObs] = useState('');
     const [value, setValue] = useState<number>();
 
+    //FUNCAO PARA CANCELAR QUEBRA DE CAIXA
+    function handleCancel(){
+        toast.error('Quebra de caixa cancelada!');
+        setTimeout(() => {
+            router.push('/');
+        }, 2000)
+    }
+
+    //FUNCAO PARA CRIAR O QUEBRA DE CAIXA
+    async function handleOpen(){
+        alert('ok');
+    }
+
     useEffect(() => {
+        // async function detailsCaixa(){
+        //     await api.get('/detail/caixa', {
+        //         params:{
+        //             colaborador_id: colaborador_id,
+        //         }
+        //     })
+        //     .then(response => {
+        //         // setValue((response.data.valor_final.toFixed(2)));
+        //         console.log(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //         toast.warning(error.response.data.erro);
+        //     });
+        // }
+
+        // detailsCaixa();
+
         //Escondendo o loading quando ele montar completamente o componente
         setCarregando(false);
     }, [])
@@ -51,7 +83,32 @@ export default function CashShortage(){
                     <Presentation />
 
                     <div className={styles.rigthContainer}>
-                        
+                        <div className={styles.rigthContainer}>
+                                <div className={styles.cashContainer}>
+
+                                    <div className={styles.leftCash}>
+                                        <span>{user.cargo}</span>
+                                        <Image src={imgCaixa} alt='Imagem de caixa' width={200} height={250}/>
+                                    </div>
+                                    <div className={styles.rigthCash}>
+                                        <span>VALOR DE QUEBRA: R$</span>
+                                        <div className={styles.input}>
+                                            <Input type='text' value={value} />
+                                            <FcMoneyTransfer size={32} />
+                                        </div>
+
+                                        <TextArea style={{width: '400px', height: '70px'}} onChange={(e) => setObs(e.target.value)} value={obs}/>
+
+                                        <TextArea style={{width: '400px', height: '110px'}} onChange={(e) => setObs(e.target.value)} value={obs}/>
+
+                                        <div className={styles.button}>
+                                            <Button style={{width: '150px', height: '40px', marginLeft: '10px', backgroundColor: '#FF3F4B'}} type='button' loading={loading} onClick={handleCancel} >CANCELAR</Button>
+                                            <Button style={{width: '150px', height: '60px', marginLeft: '1rem'}} type='button' loading={loading} onClick={handleOpen}>ABRIR</Button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
                     </div>
                 </main>
             </div>
