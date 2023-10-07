@@ -27,7 +27,7 @@ export default function EntryCash(){
 
     const [caixa_id, setCaixa_id] = useState('');
     const [colaborador_id, setColaborador_id] = useState(user.colaborador_id);
-    const [valor_entrada, setValor_entrada] = useState('')
+    const [valor_entrada, setValor_entrada] = useState('');
     const [value, setValue] = useState<number>();
     const [motivo, setMotivo] = useState('');
     const [obs, setObs] = useState('');
