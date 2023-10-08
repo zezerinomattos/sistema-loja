@@ -433,7 +433,7 @@ export function UtilsHeader( param: string, title: string ){
                         {
                             user.cargo === 'GERENTE' || user.cargo === 'ADMIM' ? (
                                 <li>
-                                    <Link href="/cash/cashshortage">
+                                    <Link href="/cash/editcashshortage">
                                         <GiReceiveMoney size={28} style={{color: '#e99a3b', marginBottom:'2px'}}/>
                                         <span><strong>EDITAR QUEBRA</strong><br />CAIXA</span>
                                     </Link>

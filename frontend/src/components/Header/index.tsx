@@ -169,6 +169,10 @@ export function Header({title, id}: HeaderProps){
                 setRenderPage('caixa');
                 break;
 
+            case 'cash/editcashshortage':
+                setRenderPage('caixa');
+                break;
+
             //Default
             default:
                 //setRenderPage(currentPath); 
