@@ -57,6 +57,10 @@ export default function ClosedCash(){
             console.log(error);
             toast.error('Atenção, você tem divergência nos valores!');
             setMessage(error.response.data.erro);
+
+            setTimeout(() => {
+                router.push('/cash/cashshortage');
+            }, 2000);
         });
     }
 
