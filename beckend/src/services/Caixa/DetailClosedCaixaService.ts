@@ -22,12 +22,12 @@ class DetailClosedCaixaService{
         });
 
         if(!caixa){
-            throw new Error('Você não tem um caixa anterior, Abra seu caixa antes de fazer entrada.');
+            throw new Error('Você não tem um caixa anterior, Abra seu caixa antes de fazer essa operação.');
             return;
         }
 
         if(caixa.status === false){
-            throw new Error('Este caixa está fechado, não pode fazer uma entrada!');
+            throw new Error('Este caixa está fechado, não pode realizar essa operação!');
             return;
         }
 
