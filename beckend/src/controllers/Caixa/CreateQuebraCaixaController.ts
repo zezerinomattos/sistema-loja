@@ -8,8 +8,10 @@ class CreateQuebraCaixaController{
 
         const createQuebraCaixaService = new CreateQuebraCaixaService;
 
+        const valorQuebra = parseFloat(valor.replace(',', '.'));
+
         const quebraCaixa = await createQuebraCaixaService.execute({
-            valor, 
+            valor: valorQuebra, 
             motivo, 
             obs, 
             caixa_id, 
