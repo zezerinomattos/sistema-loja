@@ -80,6 +80,7 @@ import { CrateRetiradaCaixaController } from '../controllers/Caixa/CrateRetirada
 import { CreateEntradaCaixaController } from '../controllers/Caixa/CreateEntradaCaixaController';
 import { CreateQuebraCaixaController } from '../controllers/Caixa/CreateQuebraCaixaController';
 import { EditQuebraCaixaController } from '../controllers/Caixa/EditQuebraCaixaController';
+import { ListQuebraCaixaController } from '../controllers/Caixa/ListQuebraCaixaController';
 import { ListCaixaController } from '../controllers/Caixa/ListCaixaController';
 
 import { ListRelatorioFluxoCaixaController } from '../controllers/Caixa/ListRelatorioFluxoCaixaController';
@@ -213,6 +214,7 @@ router.post('/retirada/caixa', isAuthenticated, new CrateRetiradaCaixaController
 router.post('/entrada/caixa', isAuthenticated, new CreateEntradaCaixaController().handle);
 router.post('/quebra/caixa', isAuthenticated, new CreateQuebraCaixaController().handle);
 router.put('/edit/quebra/caixa', isAuthenticated, new EditQuebraCaixaController().handle);
+router.get('/quebra/caixa', isAuthenticated, new ListQuebraCaixaController().handle);
 router.get('/fluxo/caixa/day', isAuthenticated, new ListRelatorioFluxoCaixaController().handle);
 router.get('/fluxo/caixa/mes', isAuthenticated, new ListRelatorioFluxoCaixaMesController().handle);
 router.get('/fluxo/caixa/full', isAuthenticated, new ListRelatorioFluxoCaixaFullController().handle);

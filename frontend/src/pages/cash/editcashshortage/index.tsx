@@ -17,9 +17,33 @@ import { Input, TextArea } from '../../../components/Ui/Input';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 
+import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
-export default function CashShortage(){
+type QuebraCaixa ={
+    id: string;
+    data: Date;
+    valor: number;
+    diferenca: number;
+    status: boolean;
+    motivo: string;
+    obs: string;
+    caixa_id: string;
+    colaborador_id: string;
+    caixa:{
+        colaborador: {
+            usuario:{
+                nome: string;
+            };
+        };
+    };
+}
+
+interface ListQuebraCaixa{
+    quebraCaixa: QuebraCaixa;
+}
+
+export default function CashShortage({ quebraCaixa }: ListQuebraCaixa){
     const router = useRouter();
     const { user } = useContext(AuthContext);
     const [carregando, setCarregando] = useState(true);
@@ -112,3 +136,19 @@ export default function CashShortage(){
         </>
     )
 }
+
+// Verificando pelo lado do servidor
+export const getServerSideProps = canSSRAuth(async(ctx) => {
+
+    //@ts-ignore
+    const apiQuebraCaixa = setupAPIClient(ctx)
+    const response = await apiQuebraCaixa.get('quebra/caixa');
+
+    console.log(response.data.quebraCaixa);
+
+    return{
+        props: {
+            quebraCaixa: response.data.quebraCaixa,
+        },
+    }
+});
