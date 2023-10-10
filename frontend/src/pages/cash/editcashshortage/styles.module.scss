@@ -101,6 +101,21 @@ div.rigthCash div.input{
     align-items: center;
 }
 
+div.rigthCash div.input .search{
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    &:hover{
+        opacity: 0.8;
+    }
+
+    &:active {
+        /* EFEITO DE BOTÃO QUANDO CLICAR*/
+        transform: translateY(2px);
+        opacity: 0.6;
+    }
+}
+
 div.button{
     display: flex;
     flex-flow: row;

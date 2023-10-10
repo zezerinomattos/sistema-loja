@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { FaSpinner } from 'react-icons/fa';
 import { FcMoneyTransfer } from "react-icons/fc";
 import { toast } from 'react-toastify';
+import { FcSearch } from "react-icons/fc";
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -14,13 +15,15 @@ import imgCaixa from '../../../../public/CashRegister.png';
 import { Button } from '../../../components/Ui/Button';
 import { Input, TextArea } from '../../../components/Ui/Input';
 
+import { ModalListQuebraCaixa } from '../../../components/ModalLisCashShortage';
+
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
 
 import { setupAPIClient } from '../../../services/api';
 import { api } from '../../../services/apiClient';
 
-type QuebraCaixa ={
+export type QuebraCaixaProps ={
     id: string;
     data: Date;
     valor: number;
@@ -39,11 +42,7 @@ type QuebraCaixa ={
     };
 }
 
-interface ListQuebraCaixa{
-    quebraCaixa: QuebraCaixa;
-}
-
-export default function CashShortage({ quebraCaixa }: ListQuebraCaixa){
+export default function EditCashShortage(){
     const router = useRouter();
     const { user } = useContext(AuthContext);
     const [carregando, setCarregando] = useState(true);
@@ -51,6 +50,10 @@ export default function CashShortage({ quebraCaixa }: ListQuebraCaixa){
 
     const [quebraCaixa_id, setQuebraCaixa_id] = useState('');
     const [motivo, setMotivo] = useState('');
+
+    // const [quebraCaixaList, setQuebraCaixaList] = useState(quebraCaixa || []);
+    const [quebraCaixaList, setQuebraCaixaList] = useState<QuebraCaixaProps[]>([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     //FUNCAO PARA CANCELAR QUEBRA DE CAIXA
     function handleCancel(){
@@ -60,6 +63,23 @@ export default function CashShortage({ quebraCaixa }: ListQuebraCaixa){
         }, 2000)
     }
 
+    //FUNÇÃO ABRE MODAL
+    async function handleOpenModal(){
+        await api.get('/quebra/caixa').then(response => {
+            setQuebraCaixaList(response.data.quebraCaixa);
+            setModalVisible(true);
+        })
+        .catch(error => {
+            console.log(error);
+            alert(error)
+        });
+    }
+
+    // FUNCAO FECHAR MODAL
+    function handleCloseModal(){
+        setModalVisible(false);
+    }
+
     //FUNCAO PARA CRIAR O QUEBRA DE CAIXA
     async function handleOpen(){
         alert('edit quebra de caixa');
@@ -67,23 +87,6 @@ export default function CashShortage({ quebraCaixa }: ListQuebraCaixa){
 
     //CARREGANDO O ID DO CAIXA DINAMICAMENTE
     useEffect(() => {
-        // async function detailsCaixa(){
-        //     await api.get('/detail/closed/caixa', {
-        //         params:{
-        //             colaborador_id: colaborador_id,
-        //         }
-        //     })
-        //     .then(response => {
-        //         setCaixa_id(response.data?.id);
-        //         //setValue(response.data?.saldo);              
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //         toast.error(error.response.data.erro);
-        //     });
-        // }
-
-        // detailsCaixa();
 
         //Escondendo o loading quando ele montar completamente o componente
         setCarregando(false);
@@ -117,7 +120,7 @@ export default function CashShortage({ quebraCaixa }: ListQuebraCaixa){
                                         <span>ID QUEBRA DE CAIXA:</span>
                                         <div className={styles.input}>
                                             <Input type='text' value={quebraCaixa_id} onChange={(e) => setQuebraCaixa_id(e.target.value)}/>
-                                            <FcMoneyTransfer size={32} />
+                                            <FcSearch size={32} className={styles.search} onClick={handleOpenModal}/>
                                         </div>
 
                                         <TextArea style={{width: '400px', height: '70px'}} onChange={(e) => setMotivo(e.target.value)} value={motivo} placeholder='MOTIVO DA REVERSÃO'/>
@@ -132,23 +135,34 @@ export default function CashShortage({ quebraCaixa }: ListQuebraCaixa){
                             </div>
                     </div>
                 </main>
+
+                {
+                    modalVisible && (
+                        <ModalListQuebraCaixa 
+                            isOpen={modalVisible}
+                            onRequestClose={handleCloseModal}
+                            listQuebraCaixa={quebraCaixaList}
+                        />
+                    )
+                    
+                }
             </div>
         </>
     )
 }
 
 // Verificando pelo lado do servidor
-export const getServerSideProps = canSSRAuth(async(ctx) => {
+// export const getServerSideProps = canSSRAuth(async(ctx) => {
 
-    //@ts-ignore
-    const apiQuebraCaixa = setupAPIClient(ctx)
-    const response = await apiQuebraCaixa.get('quebra/caixa');
+//     //@ts-ignore
+//     const apiQuebraCaixa = setupAPIClient(ctx)
+//     const response = await apiQuebraCaixa.get('quebra/caixa');
 
-    console.log(response.data.quebraCaixa);
+//     //console.log(response.data.quebraCaixa);
 
-    return{
-        props: {
-            quebraCaixa: response.data.quebraCaixa,
-        },
-    }
-});
+//     return{
+//         props: {
+//             quebraCaixa: response.data,
+//         },
+//     }
+// });
