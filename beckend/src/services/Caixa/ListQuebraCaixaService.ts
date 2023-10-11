@@ -21,6 +21,9 @@ class ListQuebraCaixaService{
                     },
                 },
             },
+            orderBy: {
+                data: 'desc'
+            },
         });
 
         return { quebraCaixa }

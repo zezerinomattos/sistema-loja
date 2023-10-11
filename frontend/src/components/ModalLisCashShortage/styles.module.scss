@@ -56,13 +56,31 @@ div.filterContainer div.filter button.buttonBuscar{
     border-radius: 0.5rem;
     transition: filter 0.2s;
 
-    //Avimando o Loading do button
+    //Animando o Loading do button
     &[disabled]{
         cursor: not-allowed;
         svg{
             animation: animate 2s infinite;
         }
     }
+
+    &:hover{
+        filter: brightness(0.7);
+    }
+}
+
+div.filterContainer div.filter button.buttonClose{
+    height: 40px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    padding: 10px 10px;
+    margin-left: 10px;
+    background-color: var(--red-900);
+    border: 0;
+    color: var(--white);
+    border-radius: 0.5rem;
+    transition: filter 0.2s;
 
     &:hover{
         filter: brightness(0.7);

@@ -51,6 +51,7 @@ export default function EditCashShortage(){
 
     const [quebraCaixa_id, setQuebraCaixa_id] = useState('');
     const [motivo, setMotivo] = useState('');
+    const [nomeCaixaQuebra, setNomeCaixaQuebra] = useState('');
 
     // const [quebraCaixaList, setQuebraCaixaList] = useState(quebraCaixa || []);
     const [quebraCaixaList, setQuebraCaixaList] = useState<QuebraCaixaProps[]>([]);
@@ -60,7 +61,7 @@ export default function EditCashShortage(){
     function handleCancel(){
         toast.error('Quebra de caixa cancelada!');
         setTimeout(() => {
-            router.push('/');
+            router.push('/cash/closedcash');
         }, 2000)
     }
 
@@ -77,13 +78,29 @@ export default function EditCashShortage(){
     }
 
     // FUNCAO FECHAR MODAL
-    function handleCloseModal(){
+    function handleCloseModal(quebraCaixaId: string, nomeCaixa: string){
+        setQuebraCaixa_id(quebraCaixaId);
+        setNomeCaixaQuebra(nomeCaixa);
+
         setModalVisible(false);
     }
 
     //FUNCAO PARA CRIAR O QUEBRA DE CAIXA
     async function handleOpen(){
-        alert('edit quebra de caixa');
+        await api.put('/edit/quebra/caixa', {
+            quebraCaixa_id: quebraCaixa_id,
+            motivo_reversao: motivo
+        })
+        .then(response => {
+            toast.success(`Foi aprovado a reversão do caixa de ${nomeCaixaQuebra}`);
+            setTimeout(() => {
+                router.push('/');
+            }, 2000)
+        })
+        .catch(error => {
+            toast.error(error.response.data.erro);
+            console.log(error);
+        });
     }
 
     //CARREGANDO O ID DO CAIXA DINAMICAMENTE
@@ -122,7 +139,8 @@ export default function EditCashShortage(){
                                     <div className={styles.rigthCash}>
                                         <span>ID QUEBRA DE CAIXA:</span>
                                         <div className={styles.input}>
-                                            <Input type='text' value={quebraCaixa_id} onChange={(e) => setQuebraCaixa_id(e.target.value)}/>
+                                            <Input type='text' style={{maxWidth: '150px'}} value={quebraCaixa_id} onChange={(e) => setQuebraCaixa_id(e.target.value)}/>
+                                            <Input type='text' style={{width: '230px'}} value={nomeCaixaQuebra}/>
                                             <FcSearch size={32} className={styles.search} onClick={handleOpenModal}/>
                                         </div>
 

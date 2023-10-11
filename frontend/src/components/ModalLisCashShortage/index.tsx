@@ -1,6 +1,7 @@
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 import Modal from 'react-modal';
 import { FcSearch } from "react-icons/fc";
+import { AiOutlineClose } from "react-icons/ai";
 import { toast } from 'react-toastify';
 
 //MY IMPORTS
@@ -12,7 +13,7 @@ import { api } from '../../services/apiClient';
 
 interface ModalProps{
     isOpen: boolean;
-    onRequestClose: (quebraCaixaId: string) => void;
+    onRequestClose: (quebraCaixaId: string, nomeCaixa: string) => void;
     listQuebraCaixa: QuebraCaixaProps[];
 }
 
@@ -82,10 +83,9 @@ export function ModalListCashShortage({ isOpen, onRequestClose, listQuebraCaixa 
     }, [listName, listId]);
 
     //Função de selecionar Quebra de caixa desejado
-    function handleSelectCashShortage(id: string){
-        alert(id);
+    function handleSelectCashShortage(id: string, nomeCaixa: string){
+        onRequestClose(id, nomeCaixa);
     }
-    
 
     return(
         <Modal isOpen={isOpen} onRequestClose={() => onRequestClose} style={customStyles}>
@@ -104,6 +104,10 @@ export function ModalListCashShortage({ isOpen, onRequestClose, listQuebraCaixa 
                     <div className={styles.filter}>
                         <button onClick={filterCashShortage} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
                     </div>
+
+                    <div className={styles.filter}>
+                        <button onClick={() => handleSelectCashShortage('', '')} className={styles.buttonClose}><AiOutlineClose size={28} style={{marginLeft: '10px'}}/></button>
+                    </div>
                 </div>
 
                 <article className={styles.listContainer}>
@@ -116,7 +120,7 @@ export function ModalListCashShortage({ isOpen, onRequestClose, listQuebraCaixa 
                             <span>STATUS</span>
                         </li>
                         {cashShortageList.map((item) => (
-                            <li key={item.id} onClick={() => handleSelectCashShortage(item.id)}>
+                            <li key={item.id} onClick={() => handleSelectCashShortage(item.id, item.caixa.colaborador.usuario.nome)}>
                                 <span className={styles.idCashShortage}>{item.id}</span>
                                 <span className={styles.nameCashShortage}>{item.caixa.colaborador.usuario.nome}</span>
                                 <span>R${item.diferenca}</span>
