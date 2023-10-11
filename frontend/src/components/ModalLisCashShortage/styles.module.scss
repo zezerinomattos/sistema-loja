@@ -1,0 +1,166 @@
+div.container{
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //justify-content: center;
+
+    h1{
+        margin: 1rem;
+        color: var(--white);
+        text-shadow: 1px 1px 2px #0a0a0a;
+        font-family: 'Ubuntu', sans-serif;
+    }
+}
+
+// FILTROS
+div.container div.filterContainer{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+div.filterContainer div.filter{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    height: 40px;
+}
+
+div.filterContainer div.filter select.selectInput{
+    height: 40px;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: var(--dark-700);
+    color: var(--white);
+    
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
+
+div.filterContainer div.filter button.buttonBuscar{
+    height: 40px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    max-width: 600px;
+    background-color: var(--green-700);
+    border: 0;
+    color: var(--white);
+    border-radius: 0.5rem;
+    transition: filter 0.2s;
+
+    //Avimando o Loading do button
+    &[disabled]{
+        cursor: not-allowed;
+        svg{
+            animation: animate 2s infinite;
+        }
+    }
+
+    &:hover{
+        filter: brightness(0.7);
+    }
+}
+
+// LISTA
+article.listContainer{
+    width: 90%;
+    height: 80vh;
+    margin-top: 3rem;
+}
+
+article.listContainer ol.list{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--gray-900);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 20px;
+    border-radius: 0.8rem;
+    box-shadow: 2px 2px 2px 2px var(--green-700);
+
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        width: 0; /* Largura da barra de rolagem */
+    }
+
+    li{
+        width: 100%;
+        list-style: none;       
+        margin-bottom: 0.5rem;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        padding: 0 10px;
+        border-radius: 0.4rem;
+        transition: 0.3s ease-in-out;
+        cursor: pointer;
+        
+        span{
+            font-family: 'Ubuntu', sans-serif;
+            text-shadow: 1px 1px 2px #1a1818;
+            color: var(--white);
+
+            width: 90px;
+            overflow-x: auto;
+
+            &::-webkit-scrollbar{
+                width: 0; /* Largura da barra de rolagem */
+            }
+        }
+
+        &:hover{
+            background-color: var(--green-700);
+        }
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:hover {
+            max-width: none;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: unset;
+        }
+    }
+
+    &.selectedItem {
+        background-color: var(--green-700);
+    }
+}
+
+article.listContainer ol.list li span.idCashShortage{
+    width: 200px;
+}
+
+article.listContainer ol.list li span.nameCashShortage{   
+    width: 280px;
+}
+
+article.listContainer ol.list li.liTitle{
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #FFF;
+    border-radius: 0;
+    padding-bottom: 10px;
+
+    span{
+        color: var(--green-700);
+        font-weight: bold;
+    }
+
+    &:hover{
+        background-color: var(--gray-900);
+    }
+    cursor: auto;
+}

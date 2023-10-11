@@ -15,7 +15,7 @@ import imgCaixa from '../../../../public/CashRegister.png';
 import { Button } from '../../../components/Ui/Button';
 import { Input, TextArea } from '../../../components/Ui/Input';
 
-import { ModalListQuebraCaixa } from '../../../components/ModalLisCashShortage';
+import { ModalListCashShortage } from '../../../components/ModalLisCashShortage';
 
 import { AuthContext } from '../../../contexts/AuthContext';
 import { canSSRAuth } from '../../../components/Utils/serverSideProps/canSSRAuth';
@@ -138,7 +138,7 @@ export default function EditCashShortage(){
 
                 {
                     modalVisible && (
-                        <ModalListQuebraCaixa 
+                        <ModalListCashShortage 
                             isOpen={modalVisible}
                             onRequestClose={handleCloseModal}
                             listQuebraCaixa={quebraCaixaList}
