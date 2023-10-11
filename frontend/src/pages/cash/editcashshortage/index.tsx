@@ -119,7 +119,7 @@ export default function EditCashShortage(){
     return(
         <>
             <Head>
-                <title>Sistema - Cash Shortage</title>
+                <title>Sistema - Edit Cash Shortage</title>
             </Head>
 
             <div className={styles.container}>
