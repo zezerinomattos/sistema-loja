@@ -6,6 +6,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { FcMoneyTransfer } from "react-icons/fc";
 import { toast } from 'react-toastify';
 import { FcSearch } from "react-icons/fc";
+import Modal from 'react-modal';
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -96,6 +97,8 @@ export default function EditCashShortage(){
         return <div className={styles.loadingContainer}><FaSpinner color='#FFF' size={46} className={styles.loading}/></div>;
     }
 
+    Modal.setAppElement('#__next');
+
     return(
         <>
             <Head>
@@ -151,18 +154,10 @@ export default function EditCashShortage(){
     )
 }
 
-// Verificando pelo lado do servidor
-// export const getServerSideProps = canSSRAuth(async(ctx) => {
+//Verificando pelo lado do servidor
+export const getServerSideProps = canSSRAuth(async(ctx) => {
 
-//     //@ts-ignore
-//     const apiQuebraCaixa = setupAPIClient(ctx)
-//     const response = await apiQuebraCaixa.get('quebra/caixa');
-
-//     //console.log(response.data.quebraCaixa);
-
-//     return{
-//         props: {
-//             quebraCaixa: response.data,
-//         },
-//     }
-// });
+    return{
+        props: {},
+    }
+});

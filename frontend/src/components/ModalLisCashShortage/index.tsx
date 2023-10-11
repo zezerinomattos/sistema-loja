@@ -19,7 +19,7 @@ interface ModalProps{
 export function ModalListCashShortage({ isOpen, onRequestClose, listQuebraCaixa }: ModalProps){
     const [listId, setListId] = useState('');
     const [listName, setListName] = useState('');
-    const [selectedFilter, setSelectedFilter] = useState('PRODUTO');
+    const [cashShortageList, setCashShortageList] = useState(listQuebraCaixa || []);
 
     const customStyles = {
         content: {
@@ -35,13 +35,57 @@ export function ModalListCashShortage({ isOpen, onRequestClose, listQuebraCaixa 
 
     // FUNCAO FILTRO 
     function filterCashShortage(){
-        alert('filter');
+        //FILTRANDO SE TEM ID
+        if(listId){
+            const filteredCollaborators = listQuebraCaixa.filter((cashS) => cashS.id.includes(listId));
+            setCashShortageList(filteredCollaborators);
+        }
+
+        //FILTRANDO PELO NOME DO CAIXA
+        if (!listId && listName) {
+            const filteredCollaborators = listQuebraCaixa.filter((cashS) =>
+                cashS.caixa.colaborador.usuario.nome.includes(listName)
+            );
+        
+            // Ordena a lista filtrada por data em ordem decrescente
+            filteredCollaborators.sort((a, b) => {
+                const dateA = new Date(a.data).getTime(); // Converta a data para milissegundos
+                const dateB = new Date(b.data).getTime(); // Converta a data para milissegundos
+            
+                // Ordene em ordem decrescente
+                return dateB - dateA;
+            });
+        
+            setCashShortageList(filteredCollaborators);
+        }
+
+        //FILTRANDO TODOS
+        if(!listName && !listId){
+            clearFilter();
+        }
     }
+
+    // FUNÇÃO LIMPAR FILTRO
+    function clearFilter() {
+        setCashShortageList(listQuebraCaixa);
+        setListId('');
+        setListName('');
+    }
+
+    // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            filterCashShortage();
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [listName, listId]);
 
     //Função de selecionar Quebra de caixa desejado
     function handleSelectCashShortage(id: string){
         alert(id);
     }
+    
 
     return(
         <Modal isOpen={isOpen} onRequestClose={() => onRequestClose} style={customStyles}>
@@ -54,23 +98,7 @@ export function ModalListCashShortage({ isOpen, onRequestClose, listQuebraCaixa 
                     </div>
 
                     <div className={styles.filter}>
-                        <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '350px'}}/>
-                    </div>
-
-                    <div className={styles.filter}>
-                        <select 
-                            name="product" 
-                            id="product"
-                            value={selectedFilter} 
-                            onChange={(e) => setSelectedFilter(e.target.value)}
-                            className={styles.selectInput}
-                        >
-                            <option value="PRODUTO">PRODUTO</option>
-                            <option value="SECAO">SEÇÃO</option>
-                            <option value="CATEGORIA">CATEGORIA</option>
-                            <option value="REPRESENTANTE">REPRESENTANTE</option>
-                            <option value="FABRICA">FÁBRICA</option>
-                        </select>
+                        <Input placeholder='Cash Shortage' value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '350px'}}/>
                     </div>
 
                     <div className={styles.filter}>
@@ -87,7 +115,7 @@ export function ModalListCashShortage({ isOpen, onRequestClose, listQuebraCaixa 
                             <span>CRIAÇÃO</span>
                             <span>STATUS</span>
                         </li>
-                        {listQuebraCaixa.map((item) => (
+                        {cashShortageList.map((item) => (
                             <li key={item.id} onClick={() => handleSelectCashShortage(item.id)}>
                                 <span className={styles.idCashShortage}>{item.id}</span>
                                 <span className={styles.nameCashShortage}>{item.caixa.colaborador.usuario.nome}</span>

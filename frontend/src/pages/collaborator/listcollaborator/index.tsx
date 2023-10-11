@@ -156,7 +156,7 @@ export default function ListCollaborator({ collaborator }: ListProps){
         authenticator();
         
         setCarregando(false);
-    }, [])
+    }, []);
 
     // ATUALIZAR O FILTRO À MEDIDA QUE DIGITA
     useEffect(() => {
