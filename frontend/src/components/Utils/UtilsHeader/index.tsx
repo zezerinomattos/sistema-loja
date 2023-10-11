@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, FormEvent} from 'react';
 import Link from 'next/link';
-import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList, FcPaid, FcList } from "react-icons/fc";
+import { FcBusinessman, FcBookmark, FcEngineering, FcKey, FcDiploma2, FcConferenceCall, FcPortraitMode, FcBusinesswoman, FcPodiumWithAudience, FcCollaboration, FcBriefcase, FcFactory, FcTodoList, FcPaid, FcList, FcCalculator } from "react-icons/fc";
 import { BsPersonLinesFill, BsBuildingFillUp, BsFillPersonVcardFill, BsTagsFill, BsReverseListColumnsReverse, BsPencilSquare, BsClipboardPlusFill, BsFillFileRuledFill, BsFillGrid1X2Fill, BsClipboard2Plus } from "react-icons/bs";
 import { FaPencilAlt, FaCashRegister } from "react-icons/fa";
 import {FaMoneyBillTrendUp } from "react-icons/fa6";
@@ -440,6 +440,13 @@ export function UtilsHeader( param: string, title: string ){
                                 </li>
                             ) : ''
                         }
+
+                        <li>
+                            <Link href="/cash/cashregister">
+                                <FcCalculator size={28}/>
+                                <span><strong>REGITRAR</strong><br />VENDA</span>
+                            </Link>
+                        </li>
                     </ul>
 
                     <div className={styles.title}>

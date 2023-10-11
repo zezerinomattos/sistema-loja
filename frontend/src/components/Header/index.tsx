@@ -172,6 +172,10 @@ export function Header({title, id}: HeaderProps){
             case 'cash/editcashshortage':
                 setRenderPage('caixa');
                 break;
+            
+            case 'cash/cashregister':
+                setRenderPage('caixa');
+                break;
 
             //Default
             default:
