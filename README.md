@@ -1,4 +1,5 @@
 # Sistema de Gestão de Loja de Roupas - Full-Stack
+#### Em desenvolvimento.
 
 Este é um projeto Full-Stack completo para gestão de uma loja de roupas, desenvolvido por mim desde o planejamento até a implementação. O sistema abrange todas as etapas, desde a modelagem do banco de dados utilizando o Br-modelo até a construção do back-end com Node.js e Express, usando o Prisma para auxiliar na criação do banco de dados PostgreSQL. O Front-End foi desenvolvido usando Next.js, enquanto o aplicativo foi construído utilizando React Native.
 
