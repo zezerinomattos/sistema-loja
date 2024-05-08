@@ -42,6 +42,7 @@ export default function EditProduct({ section, category, representetive }: ListP
     const [porcentagem_venda, setPorcentagemVenda] = useState('');
     const [preco_venda, setPrecoVenda] = useState('');
     const [margem_lucro, setMargemLucro] = useState('');
+    const [lucro, setLucro] = useState('');
     const [desconto_atual, setDescontoAtual] = useState('');
     const [desconto_maximo, setDescontoMaximo] = useState('');
     const [representante_id, setRepresentanteId] = useState('');
@@ -271,25 +272,33 @@ export default function EditProduct({ section, category, representetive }: ListP
             let valorCusto = parseFloat(custo.replace(',', '.'));
             let porcentagemVenda = parseInt(porcentagem_venda);
 
+            let descontoAtual = parseInt(desconto_atual);
+
             if(!porcentagemVenda){
                 porcentagemVenda = 0;               
             }
 
-            // Preco de venda
+            // Preco de venda   Novo Valor = 50 - (50 * (10 / 100))
             const responseVenda = valorCusto * (1 + porcentagemVenda / 100);
-            const valorVenda = responseVenda.toFixed(2).replace('.', ',');
+            const valorVenda = responseVenda - ((descontoAtual / 100) * responseVenda);
+            const valorVendaAtual = valorVenda.toFixed(2).replace('.', ',');
 
             // Margem de lucro
-            const responseLucro = responseVenda - valorCusto
-            const margLucro = responseLucro.toFixed(2).replace('.', ',');
+            const responseMargemLucro = valorVenda - valorCusto
+            const margLucro = ((responseMargemLucro / valorVenda) * 100).toFixed(2).replace('.', ',');
 
-            setPrecoVenda(valorVenda.toString());
+            // Lucro Previsto
+            const responseLucro = valorVenda - valorCusto
+            const lucro = responseLucro.toFixed(2).replace('.', ',');
+
+            setPrecoVenda(valorVendaAtual.toString());
             setMargemLucro(margLucro.toString());
+            setLucro(lucro.toString())
         }
 
         handleVenda();
 
-    }, [custo, porcentagem_venda]);
+    }, [custo, porcentagem_venda, desconto_atual]);
 
     //ATUALIZA O SELECT DE FABRICA VIA REPRESENTANTE
     useEffect(() => {
@@ -396,7 +405,7 @@ export default function EditProduct({ section, category, representetive }: ListP
                                     </div>
 
                                     <div className={styles.inputLabel}>
-                                        <label>R$</label>
+                                        <label>%</label>
                                         <Input placeholder='LUCRO' type='text' value={margem_lucro} disabled/>
                                     </div>
                                 </div>
@@ -404,12 +413,17 @@ export default function EditProduct({ section, category, representetive }: ListP
                                 <div className={styles.inputsBasicData}>
 
                                     <div className={styles.inputLabel}>
+                                        <label>R$</label>
+                                        <Input placeholder='LUCRO PREVISTO' type='text' value={lucro} disabled/>
+                                    </div>
+
+                                    <div className={styles.inputLabel}>
                                         <label>DESC. %</label>
                                         <Input placeholder='ATUAL' type='text' onChange={(e) => setDescontoAtual(e.target.value)} value={desconto_atual} style={{width: '80px'}}/>
                                     </div>
 
                                     <div className={styles.inputLabel}>
-                                        <label>% DESC.</label>
+                                        <label>% DESC. MAXIMO</label>
                                         <Input placeholder='MAXIMO' type='text' onChange={(e) => setDescontoMaximo(e.target.value)} value={desconto_maximo} style={{width: '90px'}}/>
                                     </div>  
 

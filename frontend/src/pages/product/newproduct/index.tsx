@@ -72,6 +72,7 @@ export default function NewProduct({ section, category, representetive }: ListPr
     const [porcentagem_venda, setPorcentagemVenda] = useState('');
     const [preco_venda, setPrecoVenda] = useState('');
     const [margem_lucro, setMargemLucro] = useState('');
+    const [lucro, setLucro] = useState('');
     const [desconto_atual, setDescontoAtual] = useState('');
     const [desconto_maximo, setDescontoMaximo] = useState('');
     const [representante_id, setRepresentanteId] = useState('');
@@ -253,11 +254,16 @@ export default function NewProduct({ section, category, representetive }: ListPr
             const valorVenda = responseVenda.toFixed(2).replace('.', ',');
 
             // Margem de lucro
+            const responseMargemLucro = responseVenda - valorCusto
+            const margLucro = ((responseMargemLucro / responseVenda) * 100).toFixed(2).replace('.', ',');
+
+            // Lucro Previsto
             const responseLucro = responseVenda - valorCusto
-            const margLucro = responseLucro.toFixed(2).replace('.', ',');
+            const lucro = responseLucro.toFixed(2).replace('.', ',');
 
             setPrecoVenda(valorVenda.toString());
             setMargemLucro(margLucro.toString());
+            setLucro(lucro.toString())
         }
 
         handleVenda();
@@ -360,12 +366,17 @@ export default function NewProduct({ section, category, representetive }: ListPr
                                 </div>
 
                                 <div className={styles.inputLabel}>
-                                    <label>R$</label>
-                                    <Input placeholder='LUCRO' type='text' value={margem_lucro} disabled/>
+                                    <label>%</label>
+                                    <Input placeholder='MARG. DE LUCRO' type='text' value={margem_lucro} disabled/>
                                 </div>
                             </div>
 
                             <div className={styles.inputsBasicData}>
+
+                                <div className={styles.inputLabel}>
+                                    <label>R$</label>
+                                    <Input placeholder='LUCRO PREVISTO' type='text' value={lucro} disabled/>
+                                </div>
 
                                 <div className={styles.inputLabel}>
                                     <label>DESC. %</label>
